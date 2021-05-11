@@ -103,7 +103,7 @@ HELP_STRINGS = """
 shasa_IMG = "https://telegra.ph/file/c4b69de63b6525efad6dd.jpg"
 
 DONATE_STRING = """Heya, glad to hear you want to donate!
- You can support the project via [Paypal](#) or by contacting @SimpleBoy786 \
+ You can support the project via [Paypal](#) or by contacting @SimpleBoy787 \
  Supporting isnt always financial! \
  Those who cannot provide monetary support are welcome to help us develop the bot at ."""
 
@@ -386,7 +386,7 @@ def Source_about_callback(update, context):
     if query.data == "source_":
         query.message.edit_text(
             text=""" Hi..🤗 I'm *shasa*
-                 \nHere is the [Source Code](https://github.com/MdNoor786/ShasaBot) .""",
+                 \nHere is the [Source Code](https://github.com/MdNoor786/ShasaBot-1) .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(

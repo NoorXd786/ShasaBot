@@ -221,33 +221,5 @@ tg.RegexHandler = CustomRegexHandler
 tg.CommandHandler = CustomCommandHandler
 tg.MessageHandler = CustomMessageHandler
 
-def get_info(app, app2):
-    global BOT_ID, BOT_NAME, BOT_USERNAME, BOT_DC_ID, BOT_MENTION
-    global USERBOT_ID, USERBOT_NAME, USERBOT_USERNAME, USERBOT_DC_ID, USERBOT_MENTION
-    getme = app.get_me()
-    getme2 = app2.get_me()
-    BOT_ID = getme.id
-    USERBOT_ID = getme2.id
-    if getme.last_name:
-        BOT_NAME = getme.first_name + " " + getme.last_name
-    else:
-        BOT_NAME = getme.first_name
-    BOT_USERNAME = getme.username
-    BOT_MENTION = getme.mention
-    BOT_DC_ID = getme.dc_id
 
-    if getme2.last_name:
-        USERBOT_NAME = getme2.first_name + " " + getme2.last_name
-    else:
-        USERBOT_NAME = getme2.first_name
-    USERBOT_USERNAME = getme2.username
-    USERBOT_MENTION = getme2.mention
-    USERBOT_DC_ID = getme2.dc_id
-
-
-print("[INFO]: STARTING BOT CLIENT")
-app.start()
-print("[INFO]: STARTING USERBOT CLIENT")
-app2.start()
-get_info(app, app2)
 

@@ -74,23 +74,23 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-`Hellow` [🤗](https://telegra.ph/file/c4b69de63b6525efad6dd.jpg) `My name is` *Shasa*
-`I'm here to help you manage your groups! Hit` *📚Commands*   
+`𝕳𝖊𝖑𝖑𝖔` {fullname} [🥰](https://telegra.ph/file/c4b69de63b6525efad6dd.jpg) `𝕸𝖞 𝕹𝖆𝖒𝖊 𝕴𝖘` *Shasa*
+`𝕴'𝖒 𝕳𝖊𝖗𝖊 𝖙𝖔 𝖍𝖊𝖑𝖕 𝖞𝖔𝖚 𝖎𝖓 𝖒𝖆𝖓𝖆𝖌𝖊 𝖞𝖔𝖚𝖗 𝖌𝖗𝖔𝖚𝖕𝖘! 𝕳𝖎𝖙` *📚Commands* 𝖔𝖗 /help  
 """
 
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ Add Shasa To Your Group ➕️", url="t.me/MissShasa_bot?startgroup=true"),
+            text="🌹 𝙰𝙳𝙳 𝚂𝙷𝙰𝚂𝙰 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿 🌹", url="t.me/MissShasa_bot?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="About", callback_data="shasa_"),
+        InlineKeyboardButton(text="💞𝕬𝖇𝖔𝖚𝖙💞", callback_data="shasa_"),
         InlineKeyboardButton(
-            text="Support", url=f"https://t.me/{SUPPORT_CHAT}"
+            text="💖𝕾𝖚𝖕𝖕𝖔𝖗𝖙💖, url=f"https://t.me/{SUPPORT_CHAT}"
         ),
     ],
     [
-        InlineKeyboardButton(text="Help & Commands❔", callback_data="help_back"),
+        InlineKeyboardButton(text=💝𝕳𝖊𝖑𝖕 & 𝕮𝖔𝖒𝖒𝖆𝖓𝖉𝖘💝", callback_data="help_back"),
     ],
 ]
 
@@ -350,16 +350,16 @@ def shasa_about_callback(update, context):
     query = update.callback_query
     if query.data == "shasa_":
         query.message.edit_text(
-            text=""" ℹ️ I'm *Shasa*, a powerful group management bot built to help you manage your group easily.
-                 \n❍ I can restrict users.
-                 \n❍ I can greet users with customizable welcome messages and even set a group's rules.
-                 \n❍ I have an advanced anti-flood system.
-                 \n❍ I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
-                 \n❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
-                 \n❍ I check for admins' permissions before executing any command and more stuffs
-                 \n\n_shasa's licensed under the GNU General Public License v3.0_
-                 \nHere is the [💾Repository](https://github.com/MdNoor786/ShasaBot).
-                 \n\nIf you have any question about shasa, let us know at .""",
+            text="""ℹ️ 𝕴'𝖒 *𝕾𝖍𝖆𝖘𝖆*, 𝖆 𝖕𝖔𝖜𝖊𝖗𝖋𝖚𝖑 𝖌𝖗𝖔𝖚𝖕 𝖒𝖆𝖓𝖆𝖌𝖊𝖒𝖊𝖓𝖙 𝖇𝖔𝖙 𝖇𝖚𝖎𝖑𝖙 𝖙𝖔 𝖍𝖊𝖑𝖕 𝖞𝖔𝖚 𝖒𝖆𝖓𝖆𝖌𝖊 𝖞𝖔𝖚𝖗 𝖌𝖗𝖔𝖚𝖕 𝖊𝖆𝖘𝖎𝖑𝖞.
+                 \𝖓❍ 𝕴 𝖈𝖆𝖓 𝖗𝖊𝖘𝖙𝖗𝖎𝖈𝖙 𝖚𝖘𝖊𝖗𝖘.
+                 \𝖓❍ 𝕴 𝖈𝖆𝖓 𝖌𝖗𝖊𝖊𝖙 𝖚𝖘𝖊𝖗𝖘 𝖜𝖎𝖙𝖍 𝖈𝖚𝖘𝖙𝖔𝖒𝖎𝖟𝖆𝖇𝖑𝖊 𝖜𝖊𝖑𝖈𝖔𝖒𝖊 𝖒𝖊𝖘𝖘𝖆𝖌𝖊𝖘 𝖆𝖓𝖉 𝖊𝖛𝖊𝖓 𝖘𝖊𝖙 𝖆 𝖌𝖗𝖔𝖚𝖕'𝖘 𝖗𝖚𝖑𝖊𝖘.
+                 \𝖓❍ 𝕴 𝖍𝖆𝖛𝖊 𝖆𝖓 𝖆𝖉𝖛𝖆𝖓𝖈𝖊𝖉 𝖆𝖓𝖙𝖎-𝖋𝖑𝖔𝖔𝖉 𝖘𝖞𝖘𝖙𝖊𝖒.
+                 \𝖓❍ 𝕴 𝖈𝖆𝖓 𝖜𝖆𝖗𝖓 𝖚𝖘𝖊𝖗𝖘 𝖚𝖓𝖙𝖎𝖑 𝖙𝖍𝖊𝖞 𝖗𝖊𝖆𝖈𝖍 𝖒𝖆𝖝 𝖜𝖆𝖗𝖓𝖘, 𝖜𝖎𝖙𝖍 𝖊𝖆𝖈𝖍 𝖕𝖗𝖊𝖉𝖊𝖋𝖎𝖓𝖊𝖉 𝖆𝖈𝖙𝖎𝖔𝖓𝖘 𝖘𝖚𝖈𝖍 𝖆𝖘 𝖇𝖆𝖓, 𝖒𝖚𝖙𝖊, 𝖐𝖎𝖈𝖐, 𝖊𝖙𝖈.
+                 \𝖓❍ 𝕴 𝖍𝖆𝖛𝖊 𝖆 𝖓𝖔𝖙𝖊 𝖐𝖊𝖊𝖕𝖎𝖓𝖌 𝖘𝖞𝖘𝖙𝖊𝖒, 𝖇𝖑𝖆𝖈𝖐𝖑𝖎𝖘𝖙𝖘, 𝖆𝖓𝖉 𝖊𝖛𝖊𝖓 𝖕𝖗𝖊𝖉𝖊𝖙𝖊𝖗𝖒𝖎𝖓𝖊𝖉 𝖗𝖊𝖕𝖑𝖎𝖊𝖘 𝖔𝖓 𝖈𝖊𝖗𝖙𝖆𝖎𝖓 𝖐𝖊𝖞𝖜𝖔𝖗𝖉𝖘.
+                 \𝖓❍ 𝕴 𝖈𝖍𝖊𝖈𝖐 𝖋𝖔𝖗 𝖆𝖉𝖒𝖎𝖓𝖘' 𝖕𝖊𝖗𝖒𝖎𝖘𝖘𝖎𝖔𝖓𝖘 𝖇𝖊𝖋𝖔𝖗𝖊 𝖊𝖝𝖊𝖈𝖚𝖙𝖎𝖓𝖌 𝖆𝖓𝖞 𝖈𝖔𝖒𝖒𝖆𝖓𝖉 𝖆𝖓𝖉 𝖒𝖔𝖗𝖊 𝖘𝖙𝖚𝖋𝖋𝖘
+                 \𝖓\𝖓_𝖘𝖍𝖆𝖘𝖆'𝖘 𝖑𝖎𝖈𝖊𝖓𝖘𝖊𝖉 𝖚𝖓𝖉𝖊𝖗 𝖙𝖍𝖊 𝕲𝕹𝖀 𝕲𝖊𝖓𝖊𝖗𝖆𝖑 𝕻𝖚𝖇𝖑𝖎𝖈 𝕷𝖎𝖈𝖊𝖓𝖘𝖊 𝖛3.0_
+                 \𝖓𝕳𝖊𝖗𝖊 𝖎𝖘 𝖙𝖍𝖊 [💾𝕽𝖊𝖕𝖔𝖘𝖎𝖙𝖔𝖗𝖞](𝖍𝖙𝖙𝖕𝖘://𝖌𝖎𝖙𝖍𝖚𝖇.𝖈𝖔𝖒/𝕸𝖉𝕹𝖔𝖔𝖗786/𝕾𝖍𝖆𝖘𝖆𝕭𝖔𝖙).
+                 \𝖓\𝖓𝕴𝖋 𝖞𝖔𝖚 𝖍𝖆𝖛𝖊 𝖆𝖓𝖞 𝖖𝖚𝖊𝖘𝖙𝖎𝖔𝖓 𝖆𝖇𝖔𝖚𝖙 𝖘𝖍𝖆𝖘𝖆, 𝖑𝖊𝖙 𝖚𝖘 𝖐𝖓𝖔𝖜 𝖆𝖙 .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(

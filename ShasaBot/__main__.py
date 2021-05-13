@@ -96,8 +96,8 @@ buttons = [
 
 
 HELP_STRINGS = """
-`Hi.. I'm` [Shasa🙋‍♀️](https://telegra.ph/file/c4b69de63b6525efad6dd.jpg)
-`Click on the buttons below to get documentation about specific modules..`"""
+`𝕳𝖎.. 𝕴'𝖒` [𝕾𝖍𝖆𝖘𝖆❤️](https://telegra.ph/file/c4b69de63b6525efad6dd.jpg)
+`𝕴'𝖒 𝖆 𝕳𝖊𝖗𝖔𝖎𝖓𝖊 𝕱𝖔𝖗 𝕱𝖚𝖓 𝖆𝖓𝖉 𝖍𝖊𝖑𝖕 𝖆𝖉𝖒𝖎𝖓𝖘 𝖙𝖔 𝖒𝖆𝖓𝖆𝖌𝖊 𝖙𝖍𝖊𝖎𝖗 𝖌𝖗𝖔𝖚𝖕𝖘! 𝕳𝖆𝖛𝖊 𝖆 𝖑𝖔𝖔𝖐 𝖆𝖙 𝖙𝖍𝖊 𝖋𝖔𝖑𝖑𝖔𝖜𝖎𝖓𝖌 𝖋𝖔𝖗 𝖆𝖓 𝖎𝖉𝖊𝖆 𝖔𝖋 𝖘𝖔𝖒𝖊 𝖔𝖋 𝖙𝖍𝖊 𝖙𝖍𝖎𝖓𝖌𝖘 𝕴 𝖈𝖆𝖓 𝖍𝖊𝖑𝖕 𝖞𝖔𝖚 𝖜𝖎𝖙𝖍.`"""
 
 
 shasa_IMG = "https://telegra.ph/file/c4b69de63b6525efad6dd.jpg"
@@ -358,7 +358,7 @@ def shasa_about_callback(update, context):
                  \𝖓❍ 𝕴 𝖍𝖆𝖛𝖊 𝖆 𝖓𝖔𝖙𝖊 𝖐𝖊𝖊𝖕𝖎𝖓𝖌 𝖘𝖞𝖘𝖙𝖊𝖒, 𝖇𝖑𝖆𝖈𝖐𝖑𝖎𝖘𝖙𝖘, 𝖆𝖓𝖉 𝖊𝖛𝖊𝖓 𝖕𝖗𝖊𝖉𝖊𝖙𝖊𝖗𝖒𝖎𝖓𝖊𝖉 𝖗𝖊𝖕𝖑𝖎𝖊𝖘 𝖔𝖓 𝖈𝖊𝖗𝖙𝖆𝖎𝖓 𝖐𝖊𝖞𝖜𝖔𝖗𝖉𝖘.
                  \𝖓❍ 𝕴 𝖈𝖍𝖊𝖈𝖐 𝖋𝖔𝖗 𝖆𝖉𝖒𝖎𝖓𝖘' 𝖕𝖊𝖗𝖒𝖎𝖘𝖘𝖎𝖔𝖓𝖘 𝖇𝖊𝖋𝖔𝖗𝖊 𝖊𝖝𝖊𝖈𝖚𝖙𝖎𝖓𝖌 𝖆𝖓𝖞 𝖈𝖔𝖒𝖒𝖆𝖓𝖉 𝖆𝖓𝖉 𝖒𝖔𝖗𝖊 𝖘𝖙𝖚𝖋𝖋𝖘
                  \𝖓\𝖓_𝖘𝖍𝖆𝖘𝖆'𝖘 𝖑𝖎𝖈𝖊𝖓𝖘𝖊𝖉 𝖚𝖓𝖉𝖊𝖗 𝖙𝖍𝖊 𝕲𝕹𝖀 𝕲𝖊𝖓𝖊𝖗𝖆𝖑 𝕻𝖚𝖇𝖑𝖎𝖈 𝕷𝖎𝖈𝖊𝖓𝖘𝖊 𝖛3.0_
-                 \𝖓𝕳𝖊𝖗𝖊 𝖎𝖘 𝖙𝖍𝖊 [💾𝕽𝖊𝖕𝖔𝖘𝖎𝖙𝖔𝖗𝖞](𝖍𝖙𝖙𝖕𝖘://𝖌𝖎𝖙𝖍𝖚𝖇.𝖈𝖔𝖒/𝕸𝖉𝕹𝖔𝖔𝖗786/𝕾𝖍𝖆𝖘𝖆𝕭𝖔𝖙-1).
+                 \𝖓𝕳𝖊𝖗𝖊 𝖎𝖘 𝖙𝖍𝖊 [💾𝕽𝖊𝖕𝖔𝖘𝖎𝖙𝖔𝖗𝖞](https://github.com/MdNoor786/Shasabot-1).
                  \𝖓\𝖓𝕴𝖋 𝖞𝖔𝖚 𝖍𝖆𝖛𝖊 𝖆𝖓𝖞 𝖖𝖚𝖊𝖘𝖙𝖎𝖔𝖓 𝖆𝖇𝖔𝖚𝖙 𝖘𝖍𝖆𝖘𝖆, 𝖑𝖊𝖙 𝖚𝖘 𝖐𝖓𝖔𝖜 𝖆𝖙 .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,

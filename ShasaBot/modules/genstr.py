@@ -2,7 +2,7 @@ from ShasaBot import app
 from pyrogram import Client, filters
 from asyncio.exceptions import TimeoutError
 from ShasaBot.utils.errors import capture_err
-from pyrogram.errors import (
+from pyrogramee.errors import (
     SessionPasswordNeeded, PhoneNumberInvalid,
     PhoneCodeInvalid, PhoneCodeExpired
 )

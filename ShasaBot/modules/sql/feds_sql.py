@@ -1,6 +1,9 @@
 import threading
+
+from ShasaBot import dispatcher
 from ShasaBot.modules.sql import BASE, SESSION
 from sqlalchemy import Boolean, Column, Integer, String, UnicodeText
+from telegram.error import BadRequest, Unauthorized
 
 
 class Federations(BASE):
@@ -41,7 +44,7 @@ class BansF(BASE):
     last_name = Column(UnicodeText)
     user_name = Column(UnicodeText)
     reason = Column(UnicodeText, default="")
-    time = Column(UnicodeText, default="")
+    time = Column(Integer, default=0)
 
     def __init__(self, fed_id, user_id, first_name, last_name, user_name, reason, time):
         self.fed_id = fed_id
@@ -121,14 +124,16 @@ def get_fed_id(chat_id):
     get = FEDERATION_CHATS.get(str(chat_id))
     if get is None:
         return False
-    return get["fid"]
+    else:
+        return get["fid"]
 
 
 def get_fed_name(chat_id):
     get = FEDERATION_CHATS.get(str(chat_id))
     if get is None:
         return False
-    return get["chat_name"]
+    else:
+        return get["chat_name"]
 
 
 def get_user_fban(fed_id, user_id):
@@ -323,7 +328,8 @@ def search_user_in_fed(fed_id, user_id):
     getfed = eval(getfed["fusers"])["members"]
     if user_id in eval(getfed):
         return True
-    return False
+    else:
+        return False
 
 
 def user_demote_fed(fed_id, user_id):
@@ -439,7 +445,8 @@ def all_fed_chats(fed_id):
         getfed = FEDERATION_CHATS_BYID.get(fed_id)
         if getfed is None:
             return []
-        return getfed
+        else:
+            return getfed
 
 
 def all_fed_users(fed_id):
@@ -597,7 +604,8 @@ def get_fban_user(fed_id, user_id):
                     reason = I.reason
                     time = I.time
         return True, reason, time
-    return False, None, None
+    else:
+        return False, None, None
 
 
 def get_all_fban_users(fed_id):
@@ -637,7 +645,8 @@ def search_fed_by_id(fed_id):
     get = FEDERATION_BYFEDID.get(fed_id)
     if get is None:
         return False
-    return get
+    else:
+        return get
     result = False
     for Q in curr:
         if Q.fed_id == fed_id:
@@ -673,9 +682,18 @@ def get_fed_log(fed_id):
         return fed_setting
     if fed_setting.get("flog") is None:
         return False
-    if fed_setting.get("flog"):
+    elif fed_setting.get("flog"):
+        try:
+            dispatcher.bot.get_chat(fed_setting.get("flog"))
+        except BadRequest:
+            set_fed_log(fed_id, None)
+            return False
+        except Unauthorized:
+            set_fed_log(fed_id, None)
+            return False
         return fed_setting.get("flog")
-    return False
+    else:
+        return False
 
 
 def set_fed_log(fed_id, chat_id):
@@ -718,18 +736,6 @@ def subs_fed(fed_id, my_fed):
             FEDS_SUBSCRIBER.get(fed_id, set()).add(my_fed)
         return True
 
-def add_sub(my_fed, fed_id):
-     
-        mime = FedSubs(my_fed, fed_id)
-
-        SESSION.merge(mime)  # merge to avoid duplicate key issues
-        SESSION.commit()
-        global MYFEDS_SUBSCRIBER
-        if MYFEDS_SUBSCRIBER.get(my_fed, set()) == set():
-            MYFEDS_SUBSCRIBER[my_fed] = {fed_id}
-        else:
-            MYFEDS_SUBSCRIBER.get(my_fed, set()).add(fed_id)
-        return True
 
 def unsubs_fed(fed_id, my_fed):
     with FEDS_SUBSCRIBER_LOCK:
@@ -745,19 +751,6 @@ def unsubs_fed(fed_id, my_fed):
         SESSION.close()
         return False
 
-def rem_sub(my_fed, fed_id):
-  
-        sox = SESSION.query(FedSubs).get((my_fed, fed_id))
-        if sox:
-            if fed_id in MYFEDS_SUBSCRIBER.get(my_fed, set()):  # sanity check
-                MYFEDS_SUBSCRIBER.get(my_fed, set()).remove(fed_id)
-
-            SESSION.delete(sox)
-            SESSION.commit()
-            return True
-
-        SESSION.close()
-        return False
 
 def get_all_subs(fed_id):
     return FEDS_SUBSCRIBER.get(fed_id, set())
@@ -766,7 +759,8 @@ def get_all_subs(fed_id):
 def get_spec_subs(fed_id, fed_target):
     if FEDS_SUBSCRIBER.get(fed_id, set()) == set():
         return {}
-    return FEDS_SUBSCRIBER.get(fed_id, fed_target)
+    else:
+        return FEDS_SUBSCRIBER.get(fed_id, fed_target)
 
 
 def get_mysubs(my_fed):
@@ -864,6 +858,7 @@ def __load_all_feds_banned():
             }
     finally:
         SESSION.close()
+
 
 def __load_all_feds_settings():
     global FEDERATION_NOTIFICATION

@@ -2347,6 +2347,9 @@ def get_chat(chat_id, chat_data):
 
 
 @run_async
+[
+InlineKeyboardButton(text="Fedadmins", callback_data="fed_help_admin"), 
+       
 def fed_owner_help(update: Update, context: CallbackContext):
     update.effective_message.reply_text(
         """*👑 Fed Owner Only:*

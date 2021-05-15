@@ -24,7 +24,7 @@ from ShasaBot import (
     dispatcher,
     OWNER_ID,
     DRAGONS,
-    WHITELIST_USERS,
+    WOLVES,
     GBAN_LOGS,
     log,
 )
@@ -607,7 +607,7 @@ def fed_ban(update, context):
         message.reply_text("I will not ban a Royal Nation")
         return
 
-    if int(user_id) in WHITELIST_USERS:
+    if int(user_id) in WOLVES:
         message.reply_text("This person can't be fbanned!")
         return
 
@@ -1712,7 +1712,7 @@ def fed_import_bans(update, context):
                     if int(import_userid) in DRAGONS:
                         failed += 1
                         continue
-                    if int(import_userid) in WHITELIST_USERS:
+                    if int(import_userid) in WOLVES:
                         failed += 1
                         continue
                     multi_fed_id.append(fed_id)
@@ -1786,7 +1786,7 @@ def fed_import_bans(update, context):
                     if int(import_userid) in DRAGONS:
                         failed += 1
                         continue
-                    if int(import_userid) in WHITELIST_USERS:
+                    if int(import_userid) in WOLVES:
                         failed += 1
                         continue
                     multi_fed_id.append(fed_id)

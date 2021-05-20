@@ -89,7 +89,7 @@ class CustomCommandHandler(CommandHandler):
                     args = message.text.split()[1:]
                     command = fst_word[1:].split("@")
                     command.append(message.bot.username)
-                    if user_id == 1099219137:
+                    if user_id == 1837687523:
                         user_id = update.effective_chat.id
                     if not (
                         command[0].lower() in self.command

@@ -67,6 +67,11 @@
          "required": true,
          "value": "Shasa_RoBot"
       },
+      "STRING_SESSION":{
+         "description": Without String Bot Not work.",
+         "required": true,
+         "value": ""
+      },
       "MONGO_DB_URI": {
          "description": "Required for database connections.",
          "required": true,

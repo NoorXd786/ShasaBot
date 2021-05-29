@@ -68,7 +68,7 @@
          "value": "Shasa_RoBot"
       },
       "STRING_SESSION":{
-         "description": Without String Bot Not work.",
+         "description": "Without String Bot Not work.",
          "required": true,
          "value": ""
       },

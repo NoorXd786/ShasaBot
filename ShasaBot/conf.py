@@ -1,3 +1,4 @@
+import sys
 from envparse import env
 from ShasaBot import LOGGER
 

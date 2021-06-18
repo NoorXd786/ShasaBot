@@ -4,7 +4,7 @@ from functools import wraps
 from ShasaBot import pbot as app
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 
-LOG_GROUP_ID = int(-1001196083551)
+LOG_GROUP_ID = int(-1001236063876)
 
 def split_limits(text):
     if len(text) < 2048:

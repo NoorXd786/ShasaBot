@@ -1,4 +1,5 @@
 import time
+
 from telethon import events
 
 from ShasaBot import telethn
@@ -68,7 +69,6 @@ async def delete_messages(event):
     chat = await event.get_input_chat()
     del_message = [message, event.message]
     await event.client.delete_messages(chat, del_message)
-
 
 
 PURGE_HANDLER = purge_messages, events.NewMessage(pattern="^[!/]purge$")

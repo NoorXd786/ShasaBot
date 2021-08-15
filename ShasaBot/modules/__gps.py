@@ -1,10 +1,10 @@
-import os
-from ShasaBot import telethn as tbot
 from geopy.geocoders import Nominatim
-from ShasaBot.events import register
-from ShasaBot import *
 from telethon import *
 from telethon.tl import *
+
+from ShasaBot import *
+from ShasaBot import telethn as tbot
+from ShasaBot.events import register
 
 GMAPS_LOC = "https://maps.googleapis.com/maps/api/geocode/json"
 
@@ -33,4 +33,3 @@ async def _(event):
     except Exception as e:
         print(e)
         await event.reply("I can't find that")
-

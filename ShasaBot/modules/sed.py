@@ -2,11 +2,12 @@ import sre_constants
 
 import regex
 import telegram
+from telegram import Update
+from telegram.ext import CallbackContext, Filters, run_async
+
 from ShasaBot import LOGGER, dispatcher
 from ShasaBot.modules.disable import DisableAbleMessageHandler
 from ShasaBot.modules.helper_funcs.regex_helper import infinite_loop_check
-from telegram import Update
-from telegram.ext import CallbackContext, Filters, run_async
 
 DELIMITERS = ("/", ":", "|", "_")
 
@@ -121,7 +122,6 @@ def sed(update: Update, context: CallbackContext):
             )
         elif text:
             update.effective_message.reply_to_message.reply_text(text)
-
 
 
 __mod_name__ = "Sed/Regex"

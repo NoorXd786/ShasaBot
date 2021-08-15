@@ -6,4 +6,3 @@ Set NightMode - /setnightmode timezone : 12:00:00 PM : 07:00:00 AM
 """
 
 __mod_name__ = "NightMode"
-

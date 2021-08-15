@@ -1,13 +1,13 @@
-#Kiitu
+# Kiitu
 import asyncio
 import sys
 
 from motor import motor_asyncio
-from ShasaBot import MONGO_DB_URI 
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
-from ShasaBot.conf import get_int_key, get_str_key
 
+from ShasaBot import MONGO_DB_URI
+from ShasaBot.conf import get_int_key, get_str_key
 
 MONGO_PORT = get_int_key("27017")
 MONGO_DB_URI = get_str_key("MONGO_DB_URI")

@@ -1,168 +1,153 @@
-from ShasaBot.events import register
-
-from ShasaBot import OWNER_ID
-
-from ShasaBot import telethn as tbot
-
-import os 
+import os
 
 from PIL import Image, ImageDraw, ImageFont
 
-import random
+from ShasaBot import OWNER_ID
+from ShasaBot import telethn as tbot
+from ShasaBot.events import register
+
 
 @register(pattern="^/logo ?(.*)")
-
 async def lego(event):
 
- quew = event.pattern_match.group(1)
+    quew = event.pattern_match.group(1)
 
- if event.sender_id == OWNER_ID:
+    if event.sender_id == OWNER_ID:
 
-     pass
-
- else:
-
-     
-
-    if not quew:
-
-       await event.reply('Provide Some Text To Draw!')
-
-       return
+        pass
 
     else:
 
-       pass
+        if not quew:
 
- await event.reply('Creating your logo...wait!')
+            await event.reply("Provide Some Text To Draw!")
 
- try:
+            return
 
-    text = event.pattern_match.group(1)
+        else:
 
-    img = Image.open('./ShasaBot/resources/blackbg.jpg')
+            pass
 
-    draw = ImageDraw.Draw(img)
+    await event.reply("Creating your logo...wait!")
 
-    image_widthz, image_heightz = img.size
+    try:
 
-    pointsize = 500
+        text = event.pattern_match.group(1)
 
-    fillcolor = "gold"
+        img = Image.open("./ShasaBot/resources/blackbg.jpg")
 
-    shadowcolor = "blue"
+        draw = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype("./ShasaBot/resources/Chopsic.otf", 330)
+        image_widthz, image_heightz = img.size
 
-    w, h = draw.textsize(text, font=font)
+        font = ImageFont.truetype("./ShasaBot/resources/Chopsic.otf", 330)
 
-    h += int(h*0.21)
+        w, h = draw.textsize(text, font=font)
 
-    image_width, image_height = img.size
+        h += int(h * 0.21)
 
-    draw.text(((image_widthz-w)/2, (image_heightz-h)/2), text, font=font, fill=(255, 255, 255))
+        image_width, image_height = img.size
 
-    x = (image_widthz-w)/2
+        draw.text(
+            ((image_widthz - w) / 2, (image_heightz - h) / 2),
+            text,
+            font=font,
+            fill=(255, 255, 255),
+        )
 
-    y= ((image_heightz-h)/2+6)
+        x = (image_widthz - w) / 2
 
-    draw.text((x, y), text, font=font, fill="black", stroke_width=25, stroke_fill="yellow")
+        y = (image_heightz - h) / 2 + 6
 
-    fname2 = "LogoByShasa.png"
+        draw.text(
+            (x, y), text, font=font, fill="black", stroke_width=25, stroke_fill="yellow"
+        )
 
-    img.save(fname2, "png")
+        fname2 = "LogoByShasa.png"
 
-    await tbot.send_file(event.chat_id, fname2, caption="Made By ShasaBot")
+        img.save(fname2, "png")
 
-    if os.path.exists(fname2):
+        await tbot.send_file(event.chat_id, fname2, caption="Made By ShasaBot")
+
+        if os.path.exists(fname2):
 
             os.remove(fname2)
 
- except Exception as e:
+    except Exception as e:
 
-   await event.reply(f'Error Report @ShasaSupport, {e}')
+        await event.reply(f"Error Report @ShasaSupport, {e}")
 
-   
 
 @register(pattern="^/wlogo ?(.*)")
-
 async def lego(event):
 
- quew = event.pattern_match.group(1)
+    quew = event.pattern_match.group(1)
 
- if event.sender_id == OWNER_ID:
+    if event.sender_id == OWNER_ID:
 
-     pass
-
- else:
-
-     
-
-    if not quew:
-
-       await event.reply('Provide Some Text To Draw!')
-
-       return
+        pass
 
     else:
 
-       pass
+        if not quew:
 
- await event.reply('Creating your logo...wait!')
+            await event.reply("Provide Some Text To Draw!")
 
- try:
+            return
 
-    text = event.pattern_match.group(1)
+        else:
 
-    img = Image.open('./ShasaBot/resources/blackbg.jpg')
+            pass
 
-    draw = ImageDraw.Draw(img)
+    await event.reply("Creating your logo...wait!")
 
-    image_widthz, image_heightz = img.size
+    try:
 
-    pointsize = 500
+        text = event.pattern_match.group(1)
 
-    fillcolor = "white"
+        img = Image.open("./ShasaBot/resources/blackbg.jpg")
 
-    shadowcolor = "blue"
+        draw = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype("./ShasaBot/resources/Maghrib.ttf", 1000)
+        image_widthz, image_heightz = img.size
 
-    w, h = draw.textsize(text, font=font)
+        font = ImageFont.truetype("./ShasaBot/resources/Maghrib.ttf", 1000)
 
-    h += int(h*0.21)
+        w, h = draw.textsize(text, font=font)
 
-    image_width, image_height = img.size
+        h += int(h * 0.21)
 
-    draw.text(((image_widthz-w)/2, (image_heightz-h)/2), text, font=font, fill=(255, 255, 255))
+        image_width, image_height = img.size
 
-    x = (image_widthz-w)/2
+        draw.text(
+            ((image_widthz - w) / 2, (image_heightz - h) / 2),
+            text,
+            font=font,
+            fill=(255, 255, 255),
+        )
 
-    y= ((image_heightz-h)/2+6)
+        x = (image_widthz - w) / 2
 
-    draw.text((x, y), text, font=font, fill="white", stroke_width=0, stroke_fill="white")
+        y = (image_heightz - h) / 2 + 6
 
-    fname2 = "LogoByShasa.png"
+        draw.text(
+            (x, y), text, font=font, fill="white", stroke_width=0, stroke_fill="white"
+        )
 
-    img.save(fname2, "png")
+        fname2 = "LogoByShasa.png"
 
-    await tbot.send_file(event.chat_id, fname2, caption="Made By ShasaBot")
+        img.save(fname2, "png")
 
-    if os.path.exists(fname2):
+        await tbot.send_file(event.chat_id, fname2, caption="Made By ShasaBot")
+
+        if os.path.exists(fname2):
 
             os.remove(fname2)
 
- except Exception as e:
+    except Exception as e:
 
-   await event.reply(f'Error Report @ShasaSupport, {e}')
+        await event.reply(f"Error Report @ShasaSupport, {e}")
 
-
-
-
-
-
-
-   
 
 file_help = os.path.basename(__file__)
 
@@ -171,4 +156,3 @@ file_help = file_help.replace(".py", "")
 file_helpo = file_help.replace("_", " ")
 
 __mod_name__ = "Logo"
-

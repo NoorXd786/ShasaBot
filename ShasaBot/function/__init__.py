@@ -1,9 +1,15 @@
-from telethon.tl import functions
-from telethon.tl import types
-from ShasaBot import tbot
+from telethon.tl import functions, types
+
 import ShasaBot.modules.sql.elevated_sql as sql
-from ShasaBot.modules.sql.chats_sql import add_chat, rmchat, is_chat, get_all_chat_id
-from ShasaBot.modules.sql.setbio_sql import set_bio, rm_bio, check_bio_status, is_bio, get_all_bio_id
+from ShasaBot import tbot
+from ShasaBot.modules.sql.chats_sql import add_chat, get_all_chat_id, is_chat, rmchat
+from ShasaBot.modules.sql.setbio_sql import (
+    check_bio_status,
+    get_all_bio_id,
+    is_bio,
+    rm_bio,
+    set_bio,
+)
 
 
 async def is_admin(event, user):
@@ -17,6 +23,7 @@ async def is_admin(event, user):
         is_mod = False
     return is_mod
 
+
 async def is_register_admin(chat, user):
     if isinstance(chat, (types.InputPeerChannel, types.InputChannel)):
         return isinstance(
@@ -27,6 +34,7 @@ async def is_register_admin(chat, user):
         )
     if isinstance(chat, types.InputPeerUser):
         return True
+
 
 async def can_approve_users(message):
     result = await tbot(
@@ -39,6 +47,7 @@ async def can_approve_users(message):
     return isinstance(p, types.ChannelParticipantCreator) or (
         isinstance(p, types.ChannelParticipantAdmin) and p.admin_rights.add_admins
     )
+
 
 async def can_change_info(message):
     result = await tbot(
@@ -54,15 +63,16 @@ async def can_change_info(message):
 
 
 def sudo(iid):
-  k = iid
-  if sql.is_sudo(k):
-   return True
-  else:
-   return False
+    k = iid
+    if sql.is_sudo(k):
+        return True
+    else:
+        return False
+
 
 def bio(iid):
- k = iid
- if is_bio(k):
-  return True
- else:
-  return False
+    k = iid
+    if is_bio(k):
+        return True
+    else:
+        return False

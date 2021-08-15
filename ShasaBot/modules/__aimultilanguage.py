@@ -25,15 +25,16 @@ url = "https://acobot-brainshop-ai-v1.p.rapidapi.com/get"
 from google_trans_new import google_translator
 from pyrogram import filters
 
-from ShasaBot.helper_extra.aichat import add_chat, get_session, remove_chat
-from ShasaBot.pyrogramee.pluginshelper import admins_only, edit_or_reply
 from ShasaBot import pbot as shasa
+from ShasaBot.helper_extra.aichat import add_chat, remove_chat
+from ShasaBot.pyrogramee.pluginshelper import admins_only, edit_or_reply
 
 translator = google_translator()
 
 
 def extract_emojis(s):
     return "".join(c for c in s if c in emoji.UNICODE_EMOJI)
+
 
 BOT_ID = 1791708933
 shasa_chats = []
@@ -265,9 +266,8 @@ async def inuka(client, message):
     & ~filters.via_bot
     & ~filters.forwarded
     & ~filters.reply
-    & ~filters.channel  
+    & ~filters.channel
 )
-
 async def inuka(client, message):
     msg = message.text
     if msg.startswith("/") or msg.startswith("@"):

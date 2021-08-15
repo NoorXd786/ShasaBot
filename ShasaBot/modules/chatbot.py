@@ -3,14 +3,9 @@ import html
 # AI module using Intellivoid's Coffeehouse API by @TheRealPhoenix
 from time import sleep, time
 
-import ShasaBot.modules.sql.chatbot_sql as sql
 from coffeehouse.api import API
 from coffeehouse.exception import CoffeeHouseError as CFError
 from coffeehouse.lydia import LydiaAI
-from ShasaBot import AI_API_KEY, OWNER_ID, SUPPORT_CHAT, dispatcher
-from ShasaBot.modules.helper_funcs.chat_status import user_admin
-from ShasaBot.modules.helper_funcs.filters import CustomFilters
-from ShasaBot.modules.log_channel import gloggable
 from telegram import Update
 from telegram.error import BadRequest, RetryAfter, Unauthorized
 from telegram.ext import (
@@ -21,6 +16,12 @@ from telegram.ext import (
     run_async,
 )
 from telegram.utils.helpers import mention_html
+
+import ShasaBot.modules.sql.chatbot_sql as sql
+from ShasaBot import AI_API_KEY, dispatcher
+from ShasaBot.modules.helper_funcs.chat_status import user_admin
+from ShasaBot.modules.helper_funcs.filters import CustomFilters
+from ShasaBot.modules.log_channel import gloggable
 
 CoffeeHouseAPI = API(AI_API_KEY)
 api_client = LydiaAI(CoffeeHouseAPI)
@@ -117,7 +118,7 @@ def chatbot(update: Update, context: CallbackContext):
             rep = api_client.think_thought(sesh, query)
             sleep(0.3)
             msg.reply_text(rep, timeout=60)
-        except CFError as e:
+        except CFError:
             pass
             # bot.send_message(OWNER_ID,
             #                 f"Chatbot error: {e} occurred in {chat_id}!")
@@ -139,7 +140,6 @@ def list_chatbot_chats(update: Update, context: CallbackContext):
         except RetryAfter as e:
             sleep(e.retry_after)
     update.effective_message.reply_text(text, parse_mode="HTML")
-
 
 
 ADD_CHAT_HANDLER = CommandHandler("addchat", add_chat)

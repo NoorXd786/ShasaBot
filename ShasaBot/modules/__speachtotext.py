@@ -1,17 +1,13 @@
-from ShasaBot import telethn as tbot
 import os
-import urllib.request
 from datetime import datetime
-from typing import List
-from typing import Optional
+
 import requests
 from telethon import *
-from telethon import events
-from telethon.tl import functions
-from telethon.tl import types
+from telethon.tl import functions, types
 from telethon.tl.types import *
 
 from ShasaBot import *
+from ShasaBot import telethn as tbot
 from ShasaBot.events import register
 
 
@@ -32,9 +28,11 @@ async def _(event):
     if event.fwd_from:
         return
     if event.is_group:
-     if not (await is_register_admin(event.input_chat, event.message.sender_id)):
-       await event.reply("🚨 Need Admin Pewer.. You can't use this command.. But you can use in my pm")
-       return
+        if not (await is_register_admin(event.input_chat, event.message.sender_id)):
+            await event.reply(
+                "🚨 Need Admin Pewer.. You can't use this command.. But you can use in my pm"
+            )
+            return
 
     start = datetime.now()
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):

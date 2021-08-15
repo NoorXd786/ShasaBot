@@ -1,7 +1,8 @@
 import threading
 
-from ShasaBot.modules.sql import BASE, SESSION
 from sqlalchemy import Column, String, UnicodeText, distinct, func
+
+from ShasaBot.modules.sql import BASE, SESSION
 
 
 class Disable(BASE):

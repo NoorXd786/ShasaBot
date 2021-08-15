@@ -15,31 +15,28 @@ from telegram.ext import (
 from telegram.utils.helpers import mention_html
 
 import ShasaBot.modules.sql.global_bans_sql as sql
-from ShasaBot.modules.sql.users_sql import get_user_com_chats
 from ShasaBot import (
+    DEMONS,
     DEV_USERS,
+    DRAGONS,
     EVENT_LOGS,
     OWNER_ID,
-    STRICT_GBAN,
-    DRAGONS,
-    SUPPORT_CHAT,
     SPAMWATCH_SUPPORT_CHAT,
-    DEMONS,
+    STRICT_GBAN,
+    SUPPORT_CHAT,
     TIGERS,
     WOLVES,
-    sw,
     dispatcher,
+    sw,
 )
 from ShasaBot.modules.helper_funcs.chat_status import (
     is_user_admin,
     support_plus,
     user_admin,
 )
-from ShasaBot.modules.helper_funcs.extraction import (
-    extract_user,
-    extract_user_and_text,
-)
+from ShasaBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from ShasaBot.modules.helper_funcs.misc import send_to_list
+from ShasaBot.modules.sql.users_sql import get_user_com_chats
 
 GBAN_ENFORCE_GROUP = 6
 
@@ -193,7 +190,7 @@ def gban(update: Update, context: CallbackContext):
     if EVENT_LOGS:
         try:
             log = bot.send_message(EVENT_LOGS, log_message, parse_mode=ParseMode.HTML)
-        except BadRequest as excp:
+        except BadRequest:
             log = bot.send_message(
                 EVENT_LOGS,
                 log_message
@@ -323,7 +320,7 @@ def ungban(update: Update, context: CallbackContext):
     if EVENT_LOGS:
         try:
             log = bot.send_message(EVENT_LOGS, log_message, parse_mode=ParseMode.HTML)
-        except BadRequest as excp:
+        except BadRequest:
             log = bot.send_message(
                 EVENT_LOGS,
                 log_message

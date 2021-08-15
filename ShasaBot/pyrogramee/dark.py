@@ -11,4 +11,3 @@ def get_arg(message):
         return ""
 
     return " ".join(split[1:])
-

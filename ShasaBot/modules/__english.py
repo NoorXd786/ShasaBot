@@ -1,19 +1,15 @@
-from ShasaBot import telethn as tbot
 import json
 import os
+
 os.system("pip installPyDictionary")
-import requests
-from ShasaBot.events import register
-from telethon import *
-from telethon.tl import functions
 import os
-import urllib.request
-from typing import List
-from typing import Optional
+
+import requests
 from PyDictionary import PyDictionary
-from telethon.tl import types
+from telethon import *
 from telethon.tl.types import *
 
+from ShasaBot.events import register
 
 API_KEY = "6ae0c3a0-afdc-4532-a810-82ded0054236"
 URL = "http://services.gingersoftware.com/Ginger/correct/json/GingerTheText"
@@ -83,7 +79,6 @@ async def _(event):
     await event.reply(got)
 
 
-
 __help__ = """
 • `/define` `<text>`*:* Type the word or expression you want to search\nFor example /define kill
 • `/spell`*:* while replying to a message, will reply with a grammar corrected version
@@ -91,4 +86,4 @@ __help__ = """
 • `/antonyms` `<word>`*:* Find the antonyms of a word
 """
 
-__mod_name__= "ENGLISH"
+__mod_name__ = "ENGLISH"

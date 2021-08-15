@@ -1,5 +1,8 @@
-import importlib
 import collections
+import importlib
+
+from telegram import ParseMode, Update
+from telegram.ext import CallbackContext, CommandHandler, run_async
 
 from ShasaBot import dispatcher, telethn
 from ShasaBot.__main__ import (
@@ -14,8 +17,6 @@ from ShasaBot.__main__ import (
     USER_SETTINGS,
 )
 from ShasaBot.modules.helper_funcs.chat_status import dev_plus, sudo_plus
-from telegram import ParseMode, Update
-from telegram.ext import CallbackContext, CommandHandler, run_async
 
 
 @run_async

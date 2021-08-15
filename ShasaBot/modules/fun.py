@@ -2,14 +2,15 @@ import html
 import random
 import time
 
+from telegram import ChatPermissions, ParseMode, Update
+from telegram.error import BadRequest
+from telegram.ext import CallbackContext, run_async
+
 import ShasaBot.modules.fun_strings as fun_strings
 from ShasaBot import dispatcher
 from ShasaBot.modules.disable import DisableAbleCommandHandler
 from ShasaBot.modules.helper_funcs.chat_status import is_user_admin
 from ShasaBot.modules.helper_funcs.extraction import extract_user
-from telegram import ChatPermissions, ParseMode, Update
-from telegram.error import BadRequest
-from telegram.ext import CallbackContext, run_async
 
 GIF_ID = "CgACAgQAAx0CSVUvGgAC7KpfWxMrgGyQs-GUUJgt-TSO8cOIDgACaAgAAlZD0VHT3Zynpr5nGxsE"
 

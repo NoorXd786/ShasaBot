@@ -1,20 +1,21 @@
-from time import perf_counter
 from functools import wraps
-from cachetools import TTLCache
 from threading import RLock
+from time import perf_counter
+
+from cachetools import TTLCache
+from telegram import Chat, ChatMember, ParseMode, Update
+from telegram.ext import CallbackContext
+
 from ShasaBot import (
     DEL_CMDS,
+    DEMONS,
     DEV_USERS,
     DRAGONS,
     SUPPORT_CHAT,
-    DEMONS,
     TIGERS,
     WOLVES,
     dispatcher,
 )
-
-from telegram import Chat, ChatMember, ParseMode, Update
-from telegram.ext import CallbackContext
 
 # stores admemes in memory for 10 min.
 ADMIN_CACHE = TTLCache(maxsize=512, ttl=60 * 10, timer=perf_counter)
@@ -100,7 +101,7 @@ def is_user_in_chat(chat: Chat, user_id: int) -> bool:
 def dev_plus(func):
     @wraps(func)
     def is_dev_plus_func(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+        context.bot
         user = update.effective_user
 
         if user.id in DEV_USERS:
@@ -124,7 +125,7 @@ def dev_plus(func):
 def sudo_plus(func):
     @wraps(func)
     def is_sudo_plus_func(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+        context.bot
         user = update.effective_user
         chat = update.effective_chat
 
@@ -148,7 +149,7 @@ def sudo_plus(func):
 def support_plus(func):
     @wraps(func)
     def is_support_plus_func(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+        context.bot
         user = update.effective_user
         chat = update.effective_chat
 
@@ -168,7 +169,7 @@ def whitelist_plus(func):
     def is_whitelist_plus_func(
         update: Update, context: CallbackContext, *args, **kwargs
     ):
-        bot = context.bot
+        context.bot
         user = update.effective_user
         chat = update.effective_chat
 
@@ -185,7 +186,7 @@ def whitelist_plus(func):
 def user_admin(func):
     @wraps(func)
     def is_admin(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+        context.bot
         user = update.effective_user
         chat = update.effective_chat
 
@@ -211,7 +212,7 @@ def user_admin_no_reply(func):
     def is_not_admin_no_reply(
         update: Update, context: CallbackContext, *args, **kwargs
     ):
-        bot = context.bot
+        context.bot
         user = update.effective_user
         chat = update.effective_chat
 
@@ -231,7 +232,7 @@ def user_admin_no_reply(func):
 def user_not_admin(func):
     @wraps(func)
     def is_not_admin(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+        context.bot
         user = update.effective_user
         chat = update.effective_chat
 
@@ -286,7 +287,6 @@ def bot_can_delete(func):
 
 
 def can_pin(func):
-
     @wraps(func)
     def pin_rights(update: Update, context: CallbackContext, *args, **kwargs):
         bot = context.bot
@@ -295,18 +295,20 @@ def can_pin(func):
         message_chat_title = update.effective_message.chat.title
 
         if update_chat_title == message_chat_title:
-            cant_pin = "I can't pin messages here!\nMake sure I'm admin and can pin messages."
+            cant_pin = (
+                "I can't pin messages here!\nMake sure I'm admin and can pin messages."
+            )
         else:
             cant_pin = f"I can't pin messages in <b>{update_chat_title}</b>!\nMake sure I'm admin and can pin messages there."
 
         if chat.get_member(bot.id).can_pin_messages:
             return func(update, context, *args, **kwargs)
         else:
-            update.effective_message.reply_text(
-                cant_pin, parse_mode=ParseMode.HTML)
+            update.effective_message.reply_text(cant_pin, parse_mode=ParseMode.HTML)
 
     return pin_rights
-    
+
+
 def can_promote(func):
     @wraps(func)
     def promote_rights(update: Update, context: CallbackContext, *args, **kwargs):
@@ -357,7 +359,7 @@ def can_restrict(func):
 def user_can_ban(func):
     @wraps(func)
     def user_is_banhammer(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+        context.bot
         user = update.effective_user.id
         member = update.effective_chat.get_member(user)
         if (
@@ -365,9 +367,7 @@ def user_can_ban(func):
             and user not in DRAGONS
             and user not in [777000, 1837687523]
         ):
-            update.effective_message.reply_text(
-                "😹 Sorry You can't do that"
-            )
+            update.effective_message.reply_text("😹 Sorry You can't do that")
             return ""
         return func(update, context, *args, **kwargs)
 

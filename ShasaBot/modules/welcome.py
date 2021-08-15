@@ -2,35 +2,9 @@ import html
 import random
 import re
 import time
-from functools import partial
 from contextlib import suppress
+from functools import partial
 
-import ShasaBot.modules.sql.welcome_sql as sql
-import ShasaBot
-from ShasaBot import (
-    DEV_USERS,
-    LOGGER,
-    OWNER_ID,
-    DRAGONS,
-    DEMONS,
-    TIGERS,
-    WOLVES,
-    sw,
-    dispatcher,
-    JOIN_LOGGER
-)
-from ShasaBot.modules.helper_funcs.chat_status import (
-    is_user_ban_protected,
-    user_admin,
-)
-from ShasaBot.modules.helper_funcs.misc import build_keyboard, revert_buttons
-from ShasaBot.modules.helper_funcs.msg_types import get_welcome_type
-from ShasaBot.modules.helper_funcs.string_handling import (
-    escape_invalid_curly_brackets,
-    markdown_parser,
-)
-from ShasaBot.modules.log_channel import loggable
-from ShasaBot.modules.sql.global_bans_sql import is_user_gbanned
 from telegram import (
     ChatPermissions,
     InlineKeyboardButton,
@@ -48,6 +22,30 @@ from telegram.ext import (
     run_async,
 )
 from telegram.utils.helpers import escape_markdown, mention_html, mention_markdown
+
+import ShasaBot
+import ShasaBot.modules.sql.welcome_sql as sql
+from ShasaBot import (
+    DEMONS,
+    DEV_USERS,
+    DRAGONS,
+    JOIN_LOGGER,
+    LOGGER,
+    OWNER_ID,
+    TIGERS,
+    WOLVES,
+    dispatcher,
+    sw,
+)
+from ShasaBot.modules.helper_funcs.chat_status import is_user_ban_protected, user_admin
+from ShasaBot.modules.helper_funcs.misc import build_keyboard, revert_buttons
+from ShasaBot.modules.helper_funcs.msg_types import get_welcome_type
+from ShasaBot.modules.helper_funcs.string_handling import (
+    escape_invalid_curly_brackets,
+    markdown_parser,
+)
+from ShasaBot.modules.log_channel import loggable
+from ShasaBot.modules.sql.global_bans_sql import is_user_gbanned
 
 VALID_WELCOME_FORMATTERS = [
     "first",
@@ -267,7 +265,9 @@ def new_member(update: Update, context: CallbackContext):
                 creator = None
                 if not ShasaBot.ALLOW_CHATS:
                     with suppress(BadRequest):
-                         update.effective_message.reply_text(f"Groups are disabled for {bot.first_name}, I'm outta here.")
+                        update.effective_message.reply_text(
+                            f"Groups are disabled for {bot.first_name}, I'm outta here."
+                        )
                     bot.leave_chat(update.effective_chat.id)
                     return
                 for x in bot.bot.get_chat_administrators(update.effective_chat.id):

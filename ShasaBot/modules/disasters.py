@@ -3,16 +3,11 @@ import json
 import os
 from typing import Optional
 
-from ShasaBot import (
-    DEV_USERS,
-    OWNER_ID,
-    DRAGONS,
-    SUPPORT_CHAT,
-    DEMONS,
-    TIGERS,
-    WOLVES,
-    dispatcher,
-)
+from telegram import ParseMode, TelegramError, Update
+from telegram.ext import CallbackContext, CommandHandler, run_async
+from telegram.utils.helpers import mention_html
+
+from ShasaBot import DEMONS, DEV_USERS, DRAGONS, OWNER_ID, TIGERS, WOLVES, dispatcher
 from ShasaBot.modules.helper_funcs.chat_status import (
     dev_plus,
     sudo_plus,
@@ -20,9 +15,6 @@ from ShasaBot.modules.helper_funcs.chat_status import (
 )
 from ShasaBot.modules.helper_funcs.extraction import extract_user
 from ShasaBot.modules.log_channel import gloggable
-from telegram import ParseMode, TelegramError, Update
-from telegram.ext import CallbackContext, CommandHandler, run_async
-from telegram.utils.helpers import mention_html
 
 ELEVATED_USERS_FILE = os.path.join(os.getcwd(), "ShasaBot/elevated_users.json")
 
@@ -553,7 +545,7 @@ def devlist(update: Update, context: CallbackContext):
 # __help__ = f"""
 # *⚠️ Notice:*
 # Commands listed here only work for users with special access are mainly used for troubleshooting, debugging purposes.
-# Group admins/group owners do not need these commands. 
+# Group admins/group owners do not need these commands.
 
 # *List all special users:*
 #  ❍ /dragons*:* Lists all Dragon disasters
@@ -584,7 +576,7 @@ def devlist(update: Update, context: CallbackContext):
 #  ❍ /getchats*:* Gets a list of group names the user has been seen in. Bot owner only
 #  ❍ /ginfo username/link/ID*:* Pulls info panel for entire group
 
-# *Access control:* 
+# *Access control:*
 #  ❍ /ignore*:* Blacklists a user from using the bot entirely
 #  ❍ /lockdown <off/on>*:* Toggles bot adding to groups
 #  ❍ /notice*:* Removes user from blacklist
@@ -596,7 +588,7 @@ def devlist(update: Update, context: CallbackContext):
 # *Module loading:*
 #  ❍ /listmodules*:* Lists names of all modules
 #  ❍ /load modulename*:* Loads the said module to memory without restarting.
-#  ❍ /unload modulename*:* Loads the said module frommemory without restarting memory without restarting the bot 
+#  ❍ /unload modulename*:* Loads the said module frommemory without restarting memory without restarting the bot
 
 # *Remote commands:*
 #  ❍ /rban*:* user group*:* Remote ban
@@ -609,10 +601,10 @@ def devlist(update: Update, context: CallbackContext):
 #  ❍ /reboot*:* Restarts the bots service
 #  ❍ /gitpull*:* Pulls the repo and then restarts the bots service
 
-# *Chatbot:* 
+# *Chatbot:*
 #  ❍ /listaichats*:* Lists the chats the chatmode is enabled in
- 
-# *Debugging and Shell:* 
+
+# *Debugging and Shell:*
 #  ❍ /debug <on/off>*:* Logs commands to updates.txt
 #  ❍ /logs*:* Run this in support group to get logs in pm
 #  ❍ /eval*:* Self explanatory
@@ -621,7 +613,7 @@ def devlist(update: Update, context: CallbackContext):
 #  ❍ /clearlocals*:* As the name goes
 #  ❍ /dbcleanup*:* Removes deleted accs and groups from db
 #  ❍ /py*:* Runs python code
- 
+
 # *Global Bans:*
 #  ❍ /gban <id> <reason>*:* Gbans the user, works by reply too
 #  ❍ /ungban*:* Ungbans the user, same usage as gban
@@ -634,7 +626,7 @@ def devlist(update: Update, context: CallbackContext):
 # *shasa Core*
 # *Owner only*
 #  ❍ /send*:* <module name>*:* Send module
-#  ❍ /install*:* <reply to a .py>*:* Install module 
+#  ❍ /install*:* <reply to a .py>*:* Install module
 
 # *Heroku Settings*
 # *Owner only*

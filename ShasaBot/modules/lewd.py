@@ -1,13 +1,12 @@
-import requests
-import nekos
-from PIL import Image
 import os
 
-from telegram import Message, Chat, Update, Bot, MessageEntity
-from telegram import ParseMode
+import nekos
+import requests
+from PIL import Image
+from telegram import Chat
 from telegram.ext import CommandHandler, run_async
 
-from ShasaBot import dispatcher, updater
+from ShasaBot import dispatcher
 
 
 def is_user_in_chat(chat: Chat, user_id: int) -> bool:
@@ -411,6 +410,7 @@ def dva(update, context):
         msg.reply_text("No URL was received from the API!")
         return
     msg.reply_photo(url)
+
 
 __mod_name__ = "Lewd"
 

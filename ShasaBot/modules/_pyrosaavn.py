@@ -17,9 +17,7 @@ async def song(client, message):
     if args.startswith(" "):
         await message.reply("<b>Enter song name❗</b>")
         return ""
-    m = await message.reply_text(
-        "Downloading your song,\nPlz wait ⏳️"
-    )
+    m = await message.reply_text("Downloading your song,\nPlz wait ⏳️")
     try:
         r = requests.get(f"https://snobybuddymusic.herokuapp.com/result/?query={args}")
     except Exception as e:

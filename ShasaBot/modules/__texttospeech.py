@@ -1,15 +1,9 @@
-from ShasaBot import telethn as tbot
 import os
 
-from gtts import gTTS
-from gtts import gTTSError
-from telethon import *
-from telethon.tl import functions
-from telethon.tl import types
-from telethon.tl.types import *
+from gtts import gTTS, gTTSError
+from telethon.tl import functions, types
 
-from ShasaBot import *
-
+from ShasaBot import telethn as tbot
 from ShasaBot.events import register
 
 
@@ -30,9 +24,11 @@ async def _(event):
     if event.fwd_from:
         return
     if event.is_group:
-     if not (await is_register_admin(event.input_chat, event.message.sender_id)):
-       await event.reply("🚨 Need Admin Pewer.. You can't use this command.. But you can use in my pm")
-       return
+        if not (await is_register_admin(event.input_chat, event.message.sender_id)):
+            await event.reply(
+                "🚨 Need Admin Pewer.. You can't use this command.. But you can use in my pm"
+            )
+            return
 
     input_str = event.pattern_match.group(1)
     reply_to_id = event.message.id

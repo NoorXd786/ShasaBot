@@ -1,5 +1,13 @@
-
 import html
+
+from telegram import ParseMode, Update
+from telegram.ext import (
+    CallbackContext,
+    CommandHandler,
+    Filters,
+    MessageHandler,
+    run_async,
+)
 
 from ShasaBot import ALLOW_EXCL, CustomCommandHandler, dispatcher
 from ShasaBot.modules.disable import DisableAbleCommandHandler
@@ -10,14 +18,6 @@ from ShasaBot.modules.helper_funcs.chat_status import (
     user_admin,
 )
 from ShasaBot.modules.sql import cleaner_sql as sql
-from telegram import ParseMode, Update
-from telegram.ext import (
-    CallbackContext,
-    CommandHandler,
-    Filters,
-    MessageHandler,
-    run_async,
-)
 
 CMD_STARTERS = ("/", "!") if ALLOW_EXCL else "/"
 BLUE_TEXT_CLEAN_GROUP = 13

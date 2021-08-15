@@ -1,11 +1,13 @@
-from ShasaBot.events import register
 from ShasaBot import telethn as tbot
+from ShasaBot.events import register
+
 TMP_DOWNLOAD_DIRECTORY = "./"
-from telethon import events
 import os
-from PIL import Image
 from datetime import datetime
-from telegraph import Telegraph, upload_file, exceptions
+
+from PIL import Image
+from telegraph import Telegraph, exceptions, upload_file
+
 mdnoor = "SHASA"
 telegraph = Telegraph()
 r = telegraph.create_account(short_name=mdnoor)
@@ -23,12 +25,13 @@ async def _(event):
         input_str = event.pattern_match.group(1)
         if input_str == "m":
             downloaded_file_name = await tbot.download_media(
-                r_message,
-                TMP_DOWNLOAD_DIRECTORY
+                r_message, TMP_DOWNLOAD_DIRECTORY
             )
             end = datetime.now()
             ms = (end - start).seconds
-            h = await event.reply("Downloaded to {} in {} seconds.".format(downloaded_file_name, ms))
+            h = await event.reply(
+                "Downloaded to {} in {} seconds.".format(downloaded_file_name, ms)
+            )
             if downloaded_file_name.endswith((".webp")):
                 resize_image(downloaded_file_name)
             try:
@@ -39,12 +42,15 @@ async def _(event):
                 os.remove(downloaded_file_name)
             else:
                 end = datetime.now()
-                ms_two = (end - start).seconds
+                (end - start).seconds
                 os.remove(downloaded_file_name)
-                await h.edit("Uploaded to https://telegra.ph{})".format(media_urls[0]), link_preview=True)
+                await h.edit(
+                    "Uploaded to https://telegra.ph{})".format(media_urls[0]),
+                    link_preview=True,
+                )
         elif input_str == "xt":
             user_object = await tbot.get_entity(r_message.sender_id)
-            title_of_page = user_object.first_name # + " " + user_object.last_name
+            title_of_page = user_object.first_name  # + " " + user_object.last_name
             # apparently, all Users do not have last_name field
             if optional_title:
                 title_of_page = optional_title
@@ -53,8 +59,7 @@ async def _(event):
                 if page_content != "":
                     title_of_page = page_content
                 downloaded_file_name = await tbot.download_media(
-                    r_message,
-                    TMP_DOWNLOAD_DIRECTORY
+                    r_message, TMP_DOWNLOAD_DIRECTORY
                 )
                 m_list = None
                 with open(downloaded_file_name, "rb") as fd:
@@ -63,13 +68,15 @@ async def _(event):
                     page_content += m.decode("UTF-8") + "\n"
                 os.remove(downloaded_file_name)
             page_content = page_content.replace("\n", "<br>")
-            response = telegraph.create_page(
-                title_of_page,
-                html_content=page_content
-            )
+            response = telegraph.create_page(title_of_page, html_content=page_content)
             end = datetime.now()
             ms = (end - start).seconds
-            await event.reply("Pasted to https://telegra.ph/{} in {} seconds.".format(response["path"], ms), link_preview=True)
+            await event.reply(
+                "Pasted to https://telegra.ph/{} in {} seconds.".format(
+                    response["path"], ms
+                ),
+                link_preview=True,
+            )
     else:
         await event.reply("Reply to a message to get a permanent telegra.ph link.")
 
@@ -77,5 +84,3 @@ async def _(event):
 def resize_image(image):
     im = Image.open(image)
     im.save(image, "PNG")
-
-

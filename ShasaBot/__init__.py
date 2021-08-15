@@ -2,8 +2,8 @@ import logging
 import os
 import sys
 import time
-import spamwatch
 
+import spamwatch
 import telegram.ext as tg
 from pyrogram import Client, errors
 from telethon import TelegramClient
@@ -82,7 +82,7 @@ if ENV:
     NO_LOAD = os.environ.get("NO_LOAD", "translation").split()
     DEL_CMDS = bool(os.environ.get("DEL_CMDS", False))
     STRICT_GBAN = bool(os.environ.get("STRICT_GBAN", False))
-    STRICT_GMUTE = bool(os.environ.get('STRICT_GMUTE', True))
+    STRICT_GMUTE = bool(os.environ.get("STRICT_GMUTE", True))
     WORKERS = int(os.environ.get("WORKERS", 8))
     BAN_STICKER = os.environ.get("BAN_STICKER", "CAADAgADOwADPPEcAXkko5EB3YGYAg")
     ALLOW_EXCL = os.environ.get("ALLOW_EXCL", False)
@@ -97,13 +97,11 @@ if ENV:
 
     ALLOW_CHATS = os.environ.get("ALLOW_CHATS", True)
 
-    
-#-----------------------------------------------ShasaBot/services/telethonuserbot.py (ENV)-------------------------------------------------------    
+    # -----------------------------------------------ShasaBot/services/telethonuserbot.py (ENV)-------------------------------------------------------
     STRING_SESSION = os.environ.get("STRING_SESSION", True)
     APP_ID = os.environ.get("APP_ID", True)
     APP_HASH = os.environ.get("APP_HASH", True)
-#------------------------------------------------------------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------------------------------------------------------------
 
     try:
         BL_CHATS = set(int(x) for x in os.environ.get("BL_CHATS", "").split())
@@ -144,8 +142,6 @@ else:
     except ValueError:
         raise Exception("Your tiger users list does not contain valid integers.")
 
-   
-
     EVENT_LOGS = Config.EVENT_LOGS
     WEBHOOK = Config.WEBHOOK
     URL = Config.URL
@@ -180,7 +176,7 @@ else:
     INFOPIC = Config.INFOPIC
     REDIS_URL = Config.REDIS_URL
     STRING_SESSION = Config.STRING_SESSION
-    
+
     try:
         BL_CHATS = set(int(x) for x in Config.BL_CHATS or [])
     except ValueError:
@@ -229,6 +225,3 @@ from ShasaBot.modules.helper_funcs.handlers import (
 tg.RegexHandler = CustomRegexHandler
 tg.CommandHandler = CustomCommandHandler
 tg.MessageHandler = CustomMessageHandler
-
-
-

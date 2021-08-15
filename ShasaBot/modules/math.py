@@ -1,10 +1,11 @@
 import math
 
 import pynewtonmath as newton
-from ShasaBot import dispatcher
-from ShasaBot.modules.disable import DisableAbleCommandHandler
 from telegram import Update
 from telegram.ext import CallbackContext, run_async
+
+from ShasaBot import dispatcher
+from ShasaBot.modules.disable import DisableAbleCommandHandler
 
 
 @run_async
@@ -110,7 +111,6 @@ def log(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
     message.reply_text(math.log(int(args[0])))
-
 
 
 __mod_name__ = "Math"

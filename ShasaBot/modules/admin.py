@@ -6,28 +6,23 @@ from telegram.ext import CallbackContext, CommandHandler, Filters, run_async
 from telegram.utils.helpers import mention_html
 
 from ShasaBot import DRAGONS, dispatcher
+from ShasaBot.helper_extra.admin_rights import (
+    user_can_changeinfo,
+    user_can_pin,
+    user_can_promote,
+)
 from ShasaBot.modules.disable import DisableAbleCommandHandler
+from ShasaBot.modules.helper_funcs.alternate import send_message, typing_action
 from ShasaBot.modules.helper_funcs.chat_status import (
+    ADMIN_CACHE,
     bot_admin,
     can_pin,
     can_promote,
     connection_status,
     user_admin,
-    ADMIN_CACHE,
 )
-from ShasaBot.helper_extra.admin_rights import (
-    user_can_pin,
-    user_can_promote,
-    user_can_changeinfo,
-)
-
-from ShasaBot.modules.helper_funcs.extraction import (
-    extract_user,
-    extract_user_and_text,
-)
+from ShasaBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from ShasaBot.modules.log_channel import loggable
-from ShasaBot.modules.helper_funcs.alternate import send_message
-from ShasaBot.modules.helper_funcs.alternate import typing_action
 
 
 @run_async
@@ -376,8 +371,7 @@ def set_sticker(update, context):
         stkr = msg.reply_to_message.sticker.set_name
         try:
             context.bot.set_chat_sticker_set(chat.id, stkr)
-            msg.reply_text(
-                f"Successfully set new group stickers in {chat.title}!")
+            msg.reply_text(f"Successfully set new group stickers in {chat.title}!")
         except BadRequest as excp:
             if excp.message == "Participants_too_few":
                 return msg.reply_text(
@@ -385,8 +379,7 @@ def set_sticker(update, context):
                 )
             msg.reply_text(f"Error! {excp.message}.")
     else:
-        msg.reply_text(
-            "You need to reply to some sticker to set chat sticker set!")
+        msg.reply_text("You need to reply to some sticker to set chat sticker set!")
 
 
 @run_async
@@ -408,11 +401,9 @@ def set_desc(update, context):
         return msg.reply_text("Setting empty description won't do anything!")
     try:
         if len(desc) > 255:
-            return msg.reply_text(
-                "Description must needs to be under 255 characters!")
+            return msg.reply_text("Description must needs to be under 255 characters!")
         context.bot.set_chat_description(chat.id, desc)
-        msg.reply_text(
-            f"Successfully updated chat description in {chat.title}!")
+        msg.reply_text(f"Successfully updated chat description in {chat.title}!")
     except BadRequest as excp:
         msg.reply_text(f"Error! {excp.message}.")
 
@@ -527,16 +518,16 @@ def invite(update: Update, context: CallbackContext):
 def adminlist(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
-    args = context.args
+    context.args
     bot = context.bot
 
     if update.effective_message.chat.type == "private":
         send_message(update.effective_message, "This command only works in Groups.")
         return
 
-    chat = update.effective_chat
+    update.effective_chat
     chat_id = update.effective_chat.id
-    chat_name = update.effective_message.chat.title
+    update.effective_message.chat.title
 
     try:
         msg = update.effective_message.reply_text(
@@ -682,17 +673,12 @@ ADMIN_REFRESH_HANDLER = CommandHandler(
 )
 
 CHAT_PIC_HANDLER = CommandHandler("setgpic", setchatpic, filters=Filters.group)
-DEL_CHAT_PIC_HANDLER = CommandHandler(
-    "delgpic", rmchatpic, filters=Filters.group)
+DEL_CHAT_PIC_HANDLER = CommandHandler("delgpic", rmchatpic, filters=Filters.group)
 SETCHAT_TITLE_HANDLER = CommandHandler(
     "setgtitle", setchat_title, filters=Filters.group
 )
-SETSTICKET_HANDLER = CommandHandler(
-    "setsticker", set_sticker, filters=Filters.group)
-SETDESC_HANDLER = CommandHandler(
-    "setdescription",
-    set_desc,
-    filters=Filters.group)
+SETSTICKET_HANDLER = CommandHandler("setsticker", set_sticker, filters=Filters.group)
+SETDESC_HANDLER = CommandHandler("setdescription", set_desc, filters=Filters.group)
 
 dispatcher.add_handler(ADMINLIST_HANDLER)
 dispatcher.add_handler(PIN_HANDLER)

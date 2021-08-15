@@ -5,9 +5,9 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 from telethon import events
-from ShasaBot import telethn as tbot
 from telethon.tl import functions, types
-from telethon.tl.types import *
+
+from ShasaBot import telethn as tbot
 
 
 async def is_register_admin(chat, user):
@@ -27,9 +27,11 @@ async def _(event):
     if event.fwd_from:
         return
     if event.is_group:
-     if not (await is_register_admin(event.input_chat, event.message.sender_id)):
-       await event.reply("🚨 Need Admin Pewer.. You can't use this command.. But you can use in my pm")
-       return
+        if not (await is_register_admin(event.input_chat, event.message.sender_id)):
+            await event.reply(
+                "🚨 Need Admin Pewer.. You can't use this command.. But you can use in my pm"
+            )
+            return
 
     score_page = "http://static.cricinfo.com/rss/livescores.xml"
     page = urllib.request.urlopen(score_page)

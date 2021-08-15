@@ -1,38 +1,37 @@
 import html
-import re
 import os
+import re
+
 import requests
-
-from telethon.tl.functions.channels import GetFullChannelRequest
-from telethon.tl.types import ChannelParticipantsAdmins
-from telethon import events
-
 from telegram import MAX_MESSAGE_LENGTH, ParseMode, Update
+from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CommandHandler
 from telegram.ext.dispatcher import run_async
-from telegram.error import BadRequest
 from telegram.utils.helpers import escape_markdown, mention_html
+from telethon import events
+from telethon.tl.functions.channels import GetFullChannelRequest
+from telethon.tl.types import ChannelParticipantsAdmins
 
+import ShasaBot.modules.sql.userinfo_sql as sql
 from ShasaBot import (
-    DEV_USERS,
-    OWNER_ID,
-    DRAGONS,
     DEMONS,
+    DEV_USERS,
+    DRAGONS,
+    INFOPIC,
+    OWNER_ID,
     TIGERS,
     WOLVES,
-    INFOPIC,
     dispatcher,
     sw,
 )
+from ShasaBot import telethn as ShasaTelethonClient
 from ShasaBot.__main__ import STATS, TOKEN, USER_INFO
-import ShasaBot.modules.sql.userinfo_sql as sql
 from ShasaBot.modules.disable import DisableAbleCommandHandler
-from ShasaBot.modules.sql.global_bans_sql import is_user_gbanned
-from ShasaBot.modules.sql.afk_sql import is_afk, check_afk_status
-from ShasaBot.modules.sql.users_sql import get_user_num_chats
 from ShasaBot.modules.helper_funcs.chat_status import sudo_plus
 from ShasaBot.modules.helper_funcs.extraction import extract_user
-from ShasaBot import telethn as ShasaTelethonClient, TIGERS, DRAGONS, DEMONS
+from ShasaBot.modules.sql.afk_sql import check_afk_status, is_afk
+from ShasaBot.modules.sql.global_bans_sql import is_user_gbanned
+from ShasaBot.modules.sql.users_sql import get_user_num_chats
 
 
 def no_by_per(totalhp, percentage):

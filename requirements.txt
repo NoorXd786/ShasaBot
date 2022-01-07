@@ -8,7 +8,7 @@ feedparser==6.0.8
 googletrans==4.0.0-rc1
 pyrate-limiter==2.4.7
 lxml==4.6.5
-nltk==3.6.5
+nltk==3.6.6
 pillow>=4.2.0
 pretty-errors==1.2.24
 psutil==5.8.0

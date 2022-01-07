@@ -63,3 +63,35 @@ def callbackquery(**args):
         return func
 
     return decorator
+
+
+def load_module(shortname):
+    if shortname.startswith("__"):
+        pass
+    elif shortname.endswith("_"):
+        import importlib
+
+        import ShasaBot.events
+
+        path = Path(f"ShasaBot/modules/{shortname}.py")
+        name = "ShasaBot.modules.{}".format(shortname)
+        spec = importlib.util.spec_from_file_location(name, path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        print("Successfully imported " + shortname)
+    else:
+        import importlib
+
+        import ShasaBot.events
+
+        path = Path(f"ShasaBot/modules/{shortname}.py")
+        name = "ShasaBot.modules.{}".format(shortname)
+        spec = importlib.util.spec_from_file_location(name, path)
+        mod = importlib.util.module_from_spec(spec)
+        mod.register = register
+        mod.ShasaBot = ShasaBot
+        mod.tbot = telethn
+        mod.logger = logging.getLogger(shortname)
+        spec.loader.exec_module(mod)
+        sys.modules["ShasaBot.modules." + shortname] = mod
+        print("Successfully imported " + shortname)

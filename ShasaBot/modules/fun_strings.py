@@ -443,3 +443,171 @@ TABLE = (
     "I ran out of tables, will order more.",
     "Go do some work instead of flippin tables.",
 )
+
+
+GDNIGHT = [
+    "`Good night keep your dreams alive`",
+    "`Night, night, to a dear friend! May you sleep well!`",
+    "`May the night fill with stars for you. May counting every one, give you contentment!`",
+    "`Wishing you comfort, happiness, and a good night’s sleep!`",
+    "`Now relax. The day is over. You did your best. And tomorrow you’ll do better. Good Night!`",
+    "`Good night to a friend who is the best! Get your forty winks!`",
+    "`May your pillow be soft, and your rest be long! Good night, friend!`",
+    "`Let there be no troubles, dear friend! Have a Good Night!`",
+    "`Rest soundly tonight, friend!`",
+    "`Have the best night’s sleep, friend! Sleep well!`",
+    "`Have a very, good night, friend! You are wonderful!`",
+    "`Relaxation is in order for you! Good night, friend!`",
+    "`Good night. May you have sweet dreams tonight.`",
+    "`Sleep well, dear friend and have sweet dreams.`",
+    "`As we wait for a brand new day, good night and have beautiful dreams.`",
+    "`Dear friend, I wish you a night of peace and bliss. Good night.`",
+    "`Darkness cannot last forever. Keep the hope alive. Good night.`",
+    "`By hook or crook you shall have sweet dreams tonight. Have a good night, buddy!`",
+    "`Good night, my friend. I pray that the good Lord watches over you as you sleep. Sweet dreams.`",
+    "`Good night, friend! May you be filled with tranquility!`",
+    "`Wishing you a calm night, friend! I hope it is good!`",
+    "`Wishing you a night where you can recharge for tomorrow!`",
+    "`Slumber tonight, good friend, and feel well rested, tomorrow!`",
+    "`Wishing my good friend relief from a hard day’s work! Good Night!`",
+    "`Good night, friend! May you have silence for sleep!`",
+    "`Sleep tonight, friend and be well! Know that you have done your very best today, and that you will do your very best, tomorrow!`",
+    "`Friend, you do not hesitate to get things done! Take tonight to relax and do more, tomorrow!`",
+    "`Friend, I want to remind you that your strong mind has brought you peace, before. May it do that again, tonight! May you hold acknowledgment of this with you!`",
+    "`Wishing you a calm, night, friend! Hoping everything winds down to your liking and that the following day meets your standards!`",
+    "`May the darkness of the night cloak you in a sleep that is sound and good! Dear friend, may this feeling carry you through the next day!`",
+    "`Friend, may the quietude you experience tonight move you to have many more nights like it! May you find your peace and hold on to it!`",
+    "`May there be no activity for you tonight, friend! May the rest that you have coming to you arrive swiftly! May the activity that you do tomorrow match your pace and be all of your own making!`",
+    "`When the day is done, friend, may you know that you have done well! When you sleep tonight, friend, may you view all the you hope for, tomorrow!`",
+    "`When everything is brought to a standstill, friend, I hope that your thoughts are good, as you drift to sleep! May those thoughts remain with you, during all of your days!`",
+    "`Every day, you encourage me to do new things, friend! May tonight’s rest bring a new day that overflows with courage and exciting events!`",
+]
+
+GDMORNING = (
+    "`Life is full of uncertainties. But there will always be a sunrise after every sunset. Good morning!`",
+    "`It doesn’t matter how bad was your yesterday. Today, you are going to make it a good one. Wishing you a good morning!`",
+    "`If you want to gain health and beauty, you should wake up early. Good morning!`",
+    "`May this morning offer you new hope for life! May you be happy and enjoy every moment of it. Good morning!`",
+    "`May the sun shower you with blessings and prosperity in the days ahead. Good morning!`",
+    "`Every sunrise marks the rise of life over death, hope over despair and happiness over suffering. Wishing you a very enjoyable morning today!`",
+    "`Wake up and make yourself a part of this beautiful morning. A beautiful world is waiting outside your door. Have an enjoyable time!`",
+    "`Welcome this beautiful morning with a smile on your face. I hope you’ll have a great day today. Wishing you a very good morning!`",
+    "`You have been blessed with yet another day. What a wonderful way of welcoming the blessing with such a beautiful morning! Good morning to you!`",
+    "`Waking up in such a beautiful morning is a guaranty for a day that’s beyond amazing. I hope you’ll make the best of it. Good morning!`",
+    "`Nothing is more refreshing than a beautiful morning that calms your mind and gives you reasons to smile. Good morning! Wishing you a great day.`",
+    "`Another day has just started. Welcome the blessings of this beautiful morning. Rise and shine like you always do. Wishing you a wonderful morning!`",
+    "`Wake up like the sun every morning and light up the world your awesomeness. You have so many great things to achieve today. Good morning!`",
+    "`A new day has come with so many new opportunities for you. Grab them all and make the best out of your day. Here’s me wishing you a good morning!`",
+    "`The darkness of night has ended. A new sun is up there to guide you towards a life so bright and blissful. Good morning dear!`",
+    "`Wake up, have your cup of morning tea and let the morning wind freshen you up like a happiness pill. Wishing you a good morning and a good day ahead!`",
+    "`Sunrises are the best; enjoy a cup of coffee or tea with yourself because this day is yours, good morning! Have a wonderful day ahead.`",
+    "`A bad day will always have a good morning, hope all your worries are gone and everything you wish could find a place. Good morning!`",
+    "`A great end may not be decided but a good creative beginning can be planned and achieved. Good morning, have a productive day!`",
+    "`Having a sweet morning, a cup of coffee, a day with your loved ones is what sets your “Good Morning” have a nice day!`",
+    "`Anything can go wrong in the day but the morning has to be beautiful, so I am making sure your morning starts beautiful. Good morning!`",
+    "`Open your eyes with a smile, pray and thank god that you are waking up to a new beginning. Good morning!`",
+    "`Morning is not only sunrise but A Beautiful Miracle of God that defeats the darkness and spread light. Good Morning.`",
+    "`Life never gives you a second chance. So, enjoy every bit of it. Why not start with this beautiful morning. Good Morning!`",
+    "`If you want to gain health and beauty, you should wake up early. Good Morning!`",
+    "`Birds are singing sweet melodies and a gentle breeze is blowing through the trees, what a perfect morning to wake you up. Good morning!`",
+    "`This morning is so relaxing and beautiful that I really don’t want you to miss it in any way. So, wake up dear friend. A hearty good morning to you!`",
+    "`Mornings come with a blank canvas. Paint it as you like and call it a day. Wake up now and start creating your perfect day. Good morning!`",
+    "`Every morning brings you new hopes and new opportunities. Don’t miss any one of them while you’re sleeping. Good morning!`",
+    "`Start your day with solid determination and great attitude. You’re going to have a good day today. Good morning my friend!`",
+    "`Friendship is what makes life worth living. I want to thank you for being such a special friend of mine. Good morning to you!`",
+    "`A friend like you is pretty hard to come by in life. I must consider myself lucky enough to have you. Good morning. Wish you an amazing day ahead!`",
+    "`The more you count yourself as blessed, the more blessed you will be. Thank God for this beautiful morning and let friendship and love prevail this morning.`",
+    "`Wake up and sip a cup of loving friendship. Eat your heart out from a plate of hope. To top it up, a fork full of kindness and love. Enough for a happy good morning!`",
+    "`It is easy to imagine the world coming to an end. But it is difficult to imagine spending a day without my friends. Good morning.`",
+)
+
+FLIRT_TEXT = (
+    "I hope you know CPR, because you just took my breath away!",
+    "So, aside from taking my breath away, what do you do for a living?",
+    "I ought to complain to Spotify for you not being named this week’s hottest single.",
+    "Your eyes are like the ocean; I could swim in them all day.",
+    "When I look in your eyes, I see a very kind soul",
+    "If you were a vegetable, you’d be a ‘cute-cumber.’",
+    "Do you happen to have a Band-Aid? ‘Cause I scraped my knees falling for you.",
+    "I didn’t know what I wanted in a woman until I saw you.",
+    "I was wondering if you could tell me: If you’re here, who’s running Heaven?",
+    "No wonder the sky is gray tonight , cause all the color is in your eyes.",
+    "You’ve got everything I’ve been searching for, and believe me—I’ve been looking a long time.",
+    "Do you have a map? I just got lost in your eyes.",
+)
+
+ROMANCE_GIFS = [
+    "CgACAgQAAxkBAAIQIWC0g6ovGy7YT-Y66XfpFVEKwTXKAAJ8AgACTu6sUN0m69FQv9tHHwQ",
+    "CgACAgQAAxkBAAIQImC0g62lTsbdQtBB5fY4tX5s9vP8AAJyAgACHdY1UTlYUpF2JAABcx8E",
+    "CgACAgQAAxkBAAIQI2C0g7nn-TRjwilr59dtctGb_cLlAAJ6AgACNkelUhxvFpZgDUbFHwQ",
+    "CgACAgQAAxkBAAIQJGC0g8L4cYfXRxE42YOTOcTCn8d9AAIoAgACqhGMUnPCWXH2RqPwHwQ",
+    "CgACAgQAAxkBAAIQJWC0g9GEFeRewmfL7Ei4ZaCdQ9p4AAIEAgAC_3xlUB5O5hIl3CbxHwQ",
+    "CgACAgQAAxkBAAIQJmC0g92L9jTq89JBieJCumwYCFPwAAIiAgAC1z2UUlOhsI6CxkHXHwQ",
+]
+
+ROMANCE_STICKERS = [
+    "CAACAgQAAxkBAAIQM2C0hTjoZ6imrf90bzPD6RmGkl2ZAAJaLgAClGBOA7Ky9sn-fqeXHwQ",
+    "CAACAgQAAxkBAAIQNGC0hT2OqiTvCvXzONyRU8PfXejQAAJ1LgAClGBOA5yx5Lp5F-ILHwQ",
+    "CAACAgQAAxkBAAIQNWC0hT9jlDuleEyc_FOs9IBVmISYAAJ2LgAClGBOA5rDqeCOsXHNHwQ",
+    "CAACAgQAAxkBAAIQNmC0hUprZQ43ncln60H8tN2Df5Z2AAKILgAClGBOA28NiCHVy1AKHwQ",
+    "CAACAgQAAxkBAAIQN2C0hUu7-A7rehNrLRHCAxZVMTTnAAKHLgAClGBOA3wWNsqsCiN6HwQ",
+]
+
+ROMANCE_TEMPLATES = (
+    "I knew I’d never be able to remember what {user2} wore that day. But I also knew I’d never forget the way she looked.",
+    "So it’s not gonna be easy. It’s gonna be really hard. We’re gonna have to work at this every day, but I want to do that because I want you. I want all of you, forever, you and me, every day.",
+    "I wish I knew how to quit you.",
+    "Make me a radio and turn me up when you feel low.",
+    "I can't see anything that I don't like about you.",
+)
+
+OWO_GIFS = [
+    "CgACAgQAAxkBAAIQWmC0iFdF7kgg7LY9mzNBekbqjhQcAAJmAgAC0BX9UsEPzw08-As7HwQ",
+    "CgACAgQAAxkBAAIQW2C0iHD-zQIMP-KaeuANN10dE6wkAAJDAgACTnelUjD2cJlQc7acHwQ",
+    "CgACAgQAAxkBAAIQXGC0iJiRiYcoGZV1iJ4ntAqwdTZPAAKxAgACxlEsUXBu3m2frBPlHwQ",
+    "CgACAgQAAxkBAAIQXWC0iMihZxq8Za0Wys0syRLQ68s_AAItAgACktbMUm7m-H24_ILTHwQ",
+    "CgACAgQAAxkBAAIQXmC0iRlW8csHLsoxPbUaMWW-5IudAAJsAgACbHesUJ68-FYsjr_xHwQ",
+]
+
+OWO_STICKERS = [
+    "CAACAgEAAx0CRf9PfgACElxgtJhw1QnFz6IIPzzOf4QJYI06OwAC5TIAA-cvCK5J8Qz_LoGKHwQ",
+    "CAACAgUAAxkBAAIQbGC0mik81vkrndPPJ7Vif9yuCdkjAAIOAgACiMGhVWgNT2REBs36HwQ",
+]
+
+GBUN = (
+    "Beware! This Bot-Admeme Can Gbun You Right Off The Map.",
+    "I Guess You've Forgot Spelling Of GBAN Maybe...?",
+    "Don't Misuse Your Powers...",
+    "Nah, He Looks Innocent...",
+)
+
+
+GBAM = "<b>Beginning Of Global Bam For {user2}</b>  \n \nChat Id : <code>{chatid}</code> \nReason : <i>{reason}</i> \nGBammed By {user1}"
+
+GBAM_REASON = (
+    "sasta noob",
+    "sasta waifu stealer",
+    "sasta white-het hekur",
+    "sasta white-het codur",
+    "sasta white-het vala chintu",
+    "sasta hexa hekur",
+    "sasta hexa playur",
+    "sasta tiktokur💃🏾",
+    "sasta membor of team 7",
+    "sasta selmon boi",
+    "sasta fri-fire player",
+    "sasta chhota bhim",
+    "sasta chhapri",
+    "sasta jony sin",
+    "sasta chhapri nibba",
+    "sasta nibba",
+    "sasti ria chokroborti",
+    "sasti nibbi",
+    "sasta camper",
+    "sasta pubji mobeil player",
+    "Aine me khudko dekh ke hilane wala",
+    "Bts ka choda",
+    "Kabhi Kabhi lagta he apun hi bhagwan he",
+    "Aise hi sexy lag raha tha",
+    "Eminem ka choda",
+)

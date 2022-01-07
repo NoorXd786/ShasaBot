@@ -1,3 +1,30 @@
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+import ast
 import html
 
 from alphabet_detector import AlphabetDetector
@@ -11,11 +38,10 @@ from telegram import (
 )
 from telegram.error import BadRequest
 from telegram.ext import CommandHandler, Filters, MessageHandler
-from telegram.ext.dispatcher import run_async
 from telegram.utils.helpers import mention_html
 
 import ShasaBot.modules.sql.locks_sql as sql
-from ShasaBot import DRAGONS, LOGGER, dispatcher
+from ShasaBot import LOGGER, REDIS, dispatcher
 from ShasaBot.modules.connection import connected
 from ShasaBot.modules.disable import DisableAbleCommandHandler
 from ShasaBot.modules.helper_funcs.alternate import send_message, typing_action
@@ -27,7 +53,6 @@ from ShasaBot.modules.helper_funcs.chat_status import (
     user_not_admin,
 )
 from ShasaBot.modules.log_channel import loggable
-from ShasaBot.modules.sql.approve_sql import is_approved
 
 ad = AlphabetDetector()
 
@@ -103,8 +128,6 @@ def restr_members(
     bot, chat_id, members, messages=False, media=False, other=False, previews=False
 ):
     for mem in members:
-        if mem.user in DRAGONS:
-            pass
         try:
             bot.restrict_chat_member(
                 chat_id,
@@ -136,17 +159,15 @@ def unrestr_members(
             pass
 
 
-@run_async
 def locktypes(update, context):
     update.effective_message.reply_text(
-        "\n • ".join(
+        "\n ❍ ".join(
             ["Locks available: "]
             + sorted(list(LOCK_TYPES) + list(LOCK_CHAT_RESTRICTION))
         )
     )
 
 
-@run_async
 @user_admin
 @loggable
 @typing_action
@@ -194,7 +215,7 @@ def lock(update, context) -> str:
                     )
                 )
 
-            elif ltype in LOCK_CHAT_RESTRICTION:
+            if ltype in LOCK_CHAT_RESTRICTION:
                 # Connection check
                 conn = connected(context.bot, update, chat, user.id, need_admin=True)
                 if conn:
@@ -220,7 +241,7 @@ def lock(update, context) -> str:
                 context.bot.set_chat_permissions(
                     chat_id=chat_id,
                     permissions=get_permission_list(
-                        eval(str(current_permission)),
+                        ast.literal_eval(str(current_permission)),
                         LOCK_CHAT_RESTRICTION[ltype.lower()],
                     ),
                 )
@@ -236,12 +257,10 @@ def lock(update, context) -> str:
                         ltype,
                     )
                 )
-
-            else:
-                send_message(
-                    update.effective_message,
-                    "What are you trying to lock...? Try /locktypes for the list of lockables",
-                )
+            send_message(
+                update.effective_message,
+                "What are you trying to lock...? Try /locktypes for the list of lockables",
+            )
         else:
             send_message(update.effective_message, "What are you trying to lock...?")
 
@@ -254,7 +273,6 @@ def lock(update, context) -> str:
     return ""
 
 
-@run_async
 @user_admin
 @loggable
 @typing_action
@@ -298,7 +316,7 @@ def unlock(update, context) -> str:
                     )
                 )
 
-            elif ltype in UNLOCK_CHAT_RESTRICTION:
+            if ltype in UNLOCK_CHAT_RESTRICTION:
                 # Connection check
                 conn = connected(context.bot, update, chat, user.id, need_admin=True)
                 if conn:
@@ -318,20 +336,11 @@ def unlock(update, context) -> str:
                     chat_name = update.effective_message.chat.title
                     text = "Unlocked {} for everyone!".format(ltype)
 
-                can_change_info = chat.get_member(context.bot.id).can_change_info
-                if not can_change_info:
-                    send_message(
-                        update.effective_message,
-                        "I don't have permission to change group info.",
-                        parse_mode="markdown",
-                    )
-                    return
-
                 current_permission = context.bot.getChat(chat_id).permissions
                 context.bot.set_chat_permissions(
                     chat_id=chat_id,
                     permissions=get_permission_list(
-                        eval(str(current_permission)),
+                        ast.literal_eval(str(current_permission)),
                         UNLOCK_CHAT_RESTRICTION[ltype.lower()],
                     ),
                 )
@@ -348,11 +357,10 @@ def unlock(update, context) -> str:
                         ltype,
                     )
                 )
-            else:
-                send_message(
-                    update.effective_message,
-                    "What are you trying to unlock...? Try /locktypes for the list of lockables.",
-                )
+            send_message(
+                update.effective_message,
+                "What are you trying to unlock...? Try /locktypes for the list of lockables.",
+            )
 
         else:
             send_message(update.effective_message, "What are you trying to unlock...?")
@@ -360,63 +368,67 @@ def unlock(update, context) -> str:
     return ""
 
 
-@run_async
 @user_not_admin
 def del_lockables(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
-    message = update.effective_message  # type: Optional[Message]
     user = update.effective_user
-    if is_approved(chat.id, user.id):
+    message = update.effective_message  # type: Optional[Message]
+
+    chat_id = str(chat.id)[1:]
+    approve_list = list(REDIS.sunion(f"approve_list_{chat_id}"))
+    is_user_approved = mention_html(user.id, user.first_name)
+
+    if is_user_approved in approve_list:
         return
     for lockable, filter in LOCK_TYPES.items():
         if lockable == "rtl":
             if sql.is_locked(chat.id, lockable) and can_delete(chat, context.bot.id):
                 if message.caption:
-                    check = ad.detect_alphabet(u"{}".format(message.caption))
+                    check = ad.detect_alphabet("{}".format(message.caption))
                     if "ARABIC" in check:
                         try:
                             message.delete()
                         except BadRequest as excp:
-                            if excp.message == "Message to delete not found":
-                                pass
-                            else:
+                            if excp.message != "Message to delete not found":
                                 LOGGER.exception("ERROR in lockables")
                         break
                 if message.text:
-                    check = ad.detect_alphabet(u"{}".format(message.text))
+                    check = ad.detect_alphabet("{}".format(message.text))
                     if "ARABIC" in check:
                         try:
                             message.delete()
                         except BadRequest as excp:
-                            if excp.message == "Message to delete not found":
-                                pass
-                            else:
+                            if excp.message != "Message to delete not found":
                                 LOGGER.exception("ERROR in lockables")
                         break
             continue
         if lockable == "button":
-            if sql.is_locked(chat.id, lockable) and can_delete(chat, context.bot.id):
-                if message.reply_markup and message.reply_markup.inline_keyboard:
-                    try:
-                        message.delete()
-                    except BadRequest as excp:
-                        if excp.message == "Message to delete not found":
-                            pass
-                        else:
-                            LOGGER.exception("ERROR in lockables")
-                    break
+            if (
+                sql.is_locked(chat.id, lockable)
+                and can_delete(chat, context.bot.id)
+                and message.reply_markup
+                and message.reply_markup.inline_keyboard
+            ):
+                try:
+                    message.delete()
+                except BadRequest as excp:
+                    if excp.message != "Message to delete not found":
+                        LOGGER.exception("ERROR in lockables")
+                break
             continue
         if lockable == "inline":
-            if sql.is_locked(chat.id, lockable) and can_delete(chat, context.bot.id):
-                if message and message.via_bot:
-                    try:
-                        message.delete()
-                    except BadRequest as excp:
-                        if excp.message == "Message to delete not found":
-                            pass
-                        else:
-                            LOGGER.exception("ERROR in lockables")
-                    break
+            if (
+                sql.is_locked(chat.id, lockable)
+                and can_delete(chat, context.bot.id)
+                and message
+                and message.via_bot
+            ):
+                try:
+                    message.delete()
+                except BadRequest as excp:
+                    if excp.message != "Message to delete not found":
+                        LOGGER.exception("ERROR in lockables")
+                break
             continue
         if (
             filter(update)
@@ -435,7 +447,7 @@ def del_lockables(update, context):
                             )
                             return
 
-                        chat.kick_member(new_mem.id)
+                        chat.ban_member(new_mem.id)
                         send_message(
                             update.effective_message,
                             "Only admins are allowed to add bots in this chat! Get outta here.",
@@ -445,9 +457,7 @@ def del_lockables(update, context):
                 try:
                     message.delete()
                 except BadRequest as excp:
-                    if excp.message == "Message to delete not found":
-                        pass
-                    else:
+                    if excp.message != "Message to delete not found":
                         LOGGER.exception("ERROR in lockables")
 
                 break
@@ -460,24 +470,23 @@ def build_lock_message(chat_id):
     permslist = []
     if locks:
         res += "*" + "These are the current locks in this Chat:" + "*"
-        if locks:
-            locklist.append("sticker = `{}`".format(locks.sticker))
-            locklist.append("audio = `{}`".format(locks.audio))
-            locklist.append("voice = `{}`".format(locks.voice))
-            locklist.append("document = `{}`".format(locks.document))
-            locklist.append("video = `{}`".format(locks.video))
-            locklist.append("contact = `{}`".format(locks.contact))
-            locklist.append("photo = `{}`".format(locks.photo))
-            locklist.append("gif = `{}`".format(locks.gif))
-            locklist.append("url = `{}`".format(locks.url))
-            locklist.append("bots = `{}`".format(locks.bots))
-            locklist.append("forward = `{}`".format(locks.forward))
-            locklist.append("game = `{}`".format(locks.game))
-            locklist.append("location = `{}`".format(locks.location))
-            locklist.append("rtl = `{}`".format(locks.rtl))
-            locklist.append("button = `{}`".format(locks.button))
-            locklist.append("egame = `{}`".format(locks.egame))
-            locklist.append("inline = `{}`".format(locks.inline))
+        locklist.append("sticker = `{}`".format(locks.sticker))
+        locklist.append("audio = `{}`".format(locks.audio))
+        locklist.append("voice = `{}`".format(locks.voice))
+        locklist.append("document = `{}`".format(locks.document))
+        locklist.append("video = `{}`".format(locks.video))
+        locklist.append("contact = `{}`".format(locks.contact))
+        locklist.append("photo = `{}`".format(locks.photo))
+        locklist.append("gif = `{}`".format(locks.gif))
+        locklist.append("url = `{}`".format(locks.url))
+        locklist.append("bots = `{}`".format(locks.bots))
+        locklist.append("forward = `{}`".format(locks.forward))
+        locklist.append("game = `{}`".format(locks.game))
+        locklist.append("location = `{}`".format(locks.location))
+        locklist.append("rtl = `{}`".format(locks.rtl))
+        locklist.append("button = `{}`".format(locks.button))
+        locklist.append("egame = `{}`".format(locks.egame))
+        locklist.append("inline = `{}`".format(locks.inline))
     permissions = dispatcher.bot.get_chat(chat_id).permissions
     permslist.append("messages = `{}`".format(permissions.can_send_messages))
     permslist.append("media = `{}`".format(permissions.can_send_media_messages))
@@ -493,14 +502,13 @@ def build_lock_message(chat_id):
         locklist.sort()
         # Building lock list string
         for x in locklist:
-            res += "\n • {}".format(x)
+            res += "\n ❍ {}".format(x)
     res += "\n\n*" + "These are the current chat permissions:" + "*"
     for x in permslist:
-        res += "\n • {}".format(x)
+        res += "\n ❍ {}".format(x)
     return res
 
 
-@run_async
 @user_admin
 @typing_action
 def list_locks(update, context):
@@ -542,8 +550,7 @@ def get_permission_list(current, new):
     }
     permissions.update(current)
     permissions.update(new)
-    new_permissions = ChatPermissions(**permissions)
-    return new_permissions
+    return ChatPermissions(**permissions)
 
 
 def __import_data__(chat_id, data):
@@ -554,8 +561,6 @@ def __import_data__(chat_id, data):
             sql.update_lock(chat_id, itemlock, locked=True)
         elif itemlock in LOCK_CHAT_RESTRICTION:
             sql.update_restriction(chat_id, itemlock, locked=True)
-        else:
-            pass
 
 
 def __migrate__(old_chat_id, new_chat_id):
@@ -566,38 +571,18 @@ def __chat_settings__(chat_id, user_id):
     return build_lock_message(chat_id)
 
 
-__help__ = """
-Do stickers annoy you? or want to avoid people sharing links? or pictures? \
-You're in the right place!
-The locks module allows you to lock away some common items in the \
-telegram world; the bot will automatically delete them!
-
- ❍ /locktypes*:* Lists all possible locktypes
- 
-*Admins only:*
- ❍ /lock <type>*:* Lock items of a certain type (not available in private)
- ❍ /unlock <type>*:* Unlock items of a certain type (not available in private)
- ❍ /locks*:* The current list of locks in this chat.
- 
-Locks can be used to restrict a group's users.
-eg:
-Locking urls will auto-delete all messages with urls, locking stickers will restrict all \
-non-admin users from sending stickers, etc.
-Locking bots will stop non-admins from adding bots to the chat.
-
-*Note:*
- • Unlocking permission *info* will allow members (non-admins) to change the group information, such as the description or the group name
- • Unlocking permission *pin* will allow members (non-admins) to pinned a message in a group
-"""
-
 __mod_name__ = "Locks"
 
-LOCKTYPES_HANDLER = DisableAbleCommandHandler("locktypes", locktypes)
-LOCK_HANDLER = CommandHandler("lock", lock, pass_args=True)  # , filters=Filters.group)
+LOCKTYPES_HANDLER = DisableAbleCommandHandler("locktypes", locktypes, run_async=True)
+LOCK_HANDLER = CommandHandler(
+    "lock", lock, pass_args=True, run_async=True
+)  # , filters=Filters.chat_type.groups)
 UNLOCK_HANDLER = CommandHandler(
-    "unlock", unlock, pass_args=True
-)  # , filters=Filters.group)
-LOCKED_HANDLER = CommandHandler("locks", list_locks)  # , filters=Filters.group)
+    "unlock", unlock, pass_args=True, run_async=True
+)  # , filters=Filters.chat_type.groups)
+LOCKED_HANDLER = CommandHandler(
+    "locks", list_locks, run_async=True
+)  # , filters=Filters.chat_type.groups)
 
 dispatcher.add_handler(LOCK_HANDLER)
 dispatcher.add_handler(UNLOCK_HANDLER)
@@ -605,5 +590,8 @@ dispatcher.add_handler(LOCKTYPES_HANDLER)
 dispatcher.add_handler(LOCKED_HANDLER)
 
 dispatcher.add_handler(
-    MessageHandler(Filters.all & Filters.group, del_lockables), PERM_GROUP
+    MessageHandler(
+        Filters.all & Filters.chat_type.groups, del_lockables, run_async=True
+    ),
+    PERM_GROUP,
 )

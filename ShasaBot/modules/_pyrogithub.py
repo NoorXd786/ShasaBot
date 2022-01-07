@@ -3,7 +3,7 @@ import aiohttp
 from pyrogram import filters
 
 from ShasaBot import pbot
-from ShasaBot.pyrogramee.errors import capture_err
+from ShasaBot.utils.errors import capture_err
 
 __mod_name__ = "Github"
 

@@ -1,11 +1,10 @@
 import requests
 from telegram import ParseMode, Update
-from telegram.ext import CallbackContext, CommandHandler, run_async
+from telegram.ext import CallbackContext, CommandHandler
 
 from ShasaBot import CASH_API_KEY, dispatcher
 
 
-@run_async
 def convert(update: Update, context: CallbackContext):
     args = update.effective_message.text.split(" ")
 
@@ -51,7 +50,7 @@ def convert(update: Update, context: CallbackContext):
         )
 
 
-CONVERTER_HANDLER = CommandHandler("cash", convert)
+CONVERTER_HANDLER = CommandHandler("cash", convert, run_async=True)
 
 dispatcher.add_handler(CONVERTER_HANDLER)
 

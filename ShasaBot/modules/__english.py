@@ -2,7 +2,6 @@ import json
 import os
 
 os.system("pip installPyDictionary")
-import os
 
 import requests
 from PyDictionary import PyDictionary
@@ -77,13 +76,3 @@ async def _(event):
     net = jet.replace("}", "")
     got = net.replace("'", "")
     await event.reply(got)
-
-
-__help__ = """
-• `/define` `<text>`*:* Type the word or expression you want to search\nFor example /define kill
-• `/spell`*:* while replying to a message, will reply with a grammar corrected version
-• `/synonyms` `<word>`*:* Find the synonyms of a word
-• `/antonyms` `<word>`*:* Find the antonyms of a word
-"""
-
-__mod_name__ = "ENGLISH"

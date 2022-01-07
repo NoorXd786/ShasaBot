@@ -4,10 +4,18 @@ import os
 from typing import Optional
 
 from telegram import ParseMode, TelegramError, Update
-from telegram.ext import CallbackContext, CommandHandler, run_async
+from telegram.ext import CallbackContext, CommandHandler
 from telegram.utils.helpers import mention_html
 
-from ShasaBot import DEMONS, DEV_USERS, DRAGONS, OWNER_ID, TIGERS, WOLVES, dispatcher
+from ShasaBot import (
+    DEV_USERS,
+    FAFNIRS,
+    LUINORS,
+    OWNER_ID,
+    REDLIONS,
+    SPRYZONS,
+    dispatcher,
+)
 from ShasaBot.modules.helper_funcs.chat_status import (
     dev_plus,
     sudo_plus,
@@ -44,7 +52,6 @@ def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
 ### Deep link example ends
 
 
-@run_async
 @dev_plus
 @gloggable
 def addsudo(update: Update, context: CallbackContext) -> str:
@@ -64,29 +71,29 @@ def addsudo(update: Update, context: CallbackContext) -> str:
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in DRAGONS:
-        message.reply_text("This member is already a Dragon Disaster")
+    if user_id in REDLIONS:
+        message.reply_text("This member is already a RedLion Disaster")
         return ""
 
-    if user_id in DEMONS:
-        rt += "Requested HA to promote a Demon Disaster to Dragon."
+    if user_id in SPRYZONS:
+        rt += "Requested HA to promote a Spryzon Disaster to RedLion."
         data["supports"].remove(user_id)
-        DEMONS.remove(user_id)
+        SPRYZONS.remove(user_id)
 
-    if user_id in WOLVES:
-        rt += "Requested HA to promote a Wolf Disaster to Dragon."
+    if user_id in LUINORS:
+        rt += "Requested HA to promote a Luinor Disaster to RedLion."
         data["whitelists"].remove(user_id)
-        WOLVES.remove(user_id)
+        LUINORS.remove(user_id)
 
     data["sudos"].append(user_id)
-    DRAGONS.append(user_id)
+    REDLIONS.append(user_id)
 
     with open(ELEVATED_USERS_FILE, "w") as outfile:
         json.dump(data, outfile, indent=4)
 
     update.effective_message.reply_text(
         rt
-        + "\nSuccessfully set Disaster level of {} to Dragon!".format(
+        + "\nSuccessfully set Disaster level of {} to RedLion!".format(
             user_member.first_name
         )
     )
@@ -103,7 +110,6 @@ def addsudo(update: Update, context: CallbackContext) -> str:
     return log_message
 
 
-@run_async
 @sudo_plus
 @gloggable
 def addsupport(
@@ -126,28 +132,28 @@ def addsupport(
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in DRAGONS:
-        rt += "Requested HA to demote this Dragon to Demon"
+    if user_id in REDLIONS:
+        rt += "Requested HA to demote this RedLion to Spryzon"
         data["sudos"].remove(user_id)
-        DRAGONS.remove(user_id)
+        REDLIONS.remove(user_id)
 
-    if user_id in DEMONS:
-        message.reply_text("This user is already a Demon Disaster.")
+    if user_id in SPRYZONS:
+        message.reply_text("This user is already a Spryzon Disaster.")
         return ""
 
-    if user_id in WOLVES:
-        rt += "Requested HA to promote this Wolf Disaster to Demon"
+    if user_id in LUINORS:
+        rt += "Requested HA to promote this Luinor Disaster to Spryzon"
         data["whitelists"].remove(user_id)
-        WOLVES.remove(user_id)
+        LUINORS.remove(user_id)
 
     data["supports"].append(user_id)
-    DEMONS.append(user_id)
+    SPRYZONS.append(user_id)
 
     with open(ELEVATED_USERS_FILE, "w") as outfile:
         json.dump(data, outfile, indent=4)
 
     update.effective_message.reply_text(
-        rt + f"\n{user_member.first_name} was added as a Demon Disaster!"
+        rt + f"\n{user_member.first_name} was added as a Spryzon Disaster!"
     )
 
     log_message = (
@@ -162,7 +168,6 @@ def addsupport(
     return log_message
 
 
-@run_async
 @sudo_plus
 @gloggable
 def addwhitelist(update: Update, context: CallbackContext) -> str:
@@ -182,28 +187,28 @@ def addwhitelist(update: Update, context: CallbackContext) -> str:
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in DRAGONS:
-        rt += "This member is a Dragon Disaster, Demoting to Wolf."
+    if user_id in REDLIONS:
+        rt += "This member is a RedLion Disaster, Demoting to Luinor."
         data["sudos"].remove(user_id)
-        DRAGONS.remove(user_id)
+        REDLIONS.remove(user_id)
 
-    if user_id in DEMONS:
-        rt += "This user is already a Demon Disaster, Demoting to Wolf."
+    if user_id in SPRYZONS:
+        rt += "This user is already a Spryzon Disaster, Demoting to Luinor."
         data["supports"].remove(user_id)
-        DEMONS.remove(user_id)
+        SPRYZONS.remove(user_id)
 
-    if user_id in WOLVES:
-        message.reply_text("This user is already a Wolf Disaster.")
+    if user_id in LUINORS:
+        message.reply_text("This user is already a Luinor Disaster.")
         return ""
 
     data["whitelists"].append(user_id)
-    WOLVES.append(user_id)
+    LUINORS.append(user_id)
 
     with open(ELEVATED_USERS_FILE, "w") as outfile:
         json.dump(data, outfile, indent=4)
 
     update.effective_message.reply_text(
-        rt + f"\nSuccessfully promoted {user_member.first_name} to a Wolf Disaster!"
+        rt + f"\nSuccessfully promoted {user_member.first_name} to a Luinor Disaster!"
     )
 
     log_message = (
@@ -218,10 +223,9 @@ def addwhitelist(update: Update, context: CallbackContext) -> str:
     return log_message
 
 
-@run_async
 @sudo_plus
 @gloggable
-def addtiger(update: Update, context: CallbackContext) -> str:
+def addfafnir(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     user = update.effective_user
     chat = update.effective_chat
@@ -238,37 +242,37 @@ def addtiger(update: Update, context: CallbackContext) -> str:
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in DRAGONS:
-        rt += "This member is a Dragon Disaster, Demoting to Tiger."
+    if user_id in REDLIONS:
+        rt += "This member is a RedLion Disaster, Demoting to Fafnir."
         data["sudos"].remove(user_id)
-        DRAGONS.remove(user_id)
+        REDLIONS.remove(user_id)
 
-    if user_id in DEMONS:
-        rt += "This user is already a Demon Disaster, Demoting to Tiger."
+    if user_id in SPRYZONS:
+        rt += "This user is already a Spryzon Disaster, Demoting to Fafnir."
         data["supports"].remove(user_id)
-        DEMONS.remove(user_id)
+        SPRYZONS.remove(user_id)
 
-    if user_id in WOLVES:
-        rt += "This user is already a Wolf Disaster, Demoting to Tiger."
+    if user_id in LUINORS:
+        rt += "This user is already a Luinor Disaster, Demoting to Fafnir."
         data["whitelists"].remove(user_id)
-        WOLVES.remove(user_id)
+        LUINORS.remove(user_id)
 
-    if user_id in TIGERS:
-        message.reply_text("This user is already a Tiger.")
+    if user_id in FAFNIRS:
+        message.reply_text("This user is already a Fafnir.")
         return ""
 
-    data["tigers"].append(user_id)
-    TIGERS.append(user_id)
+    data["fafnirs"].append(user_id)
+    FAFNIRS.append(user_id)
 
     with open(ELEVATED_USERS_FILE, "w") as outfile:
         json.dump(data, outfile, indent=4)
 
     update.effective_message.reply_text(
-        rt + f"\nSuccessfully promoted {user_member.first_name} to a Tiger Disaster!"
+        rt + f"\nSuccessfully promoted {user_member.first_name} to a Fafnir Disaster!"
     )
 
     log_message = (
-        f"#TIGER\n"
+        f"#FAFNIR\n"
         f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))} \n"
         f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}"
     )
@@ -279,7 +283,6 @@ def addtiger(update: Update, context: CallbackContext) -> str:
     return log_message
 
 
-@run_async
 @dev_plus
 @gloggable
 def removesudo(update: Update, context: CallbackContext) -> str:
@@ -298,9 +301,9 @@ def removesudo(update: Update, context: CallbackContext) -> str:
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in DRAGONS:
+    if user_id in REDLIONS:
         message.reply_text("Requested HA to demote this user to Civilian")
-        DRAGONS.remove(user_id)
+        REDLIONS.remove(user_id)
         data["sudos"].remove(user_id)
 
         with open(ELEVATED_USERS_FILE, "w") as outfile:
@@ -318,11 +321,10 @@ def removesudo(update: Update, context: CallbackContext) -> str:
         return log_message
 
     else:
-        message.reply_text("This user is not a Dragon Disaster!")
+        message.reply_text("This user is not a RedLion Disaster!")
         return ""
 
 
-@run_async
 @sudo_plus
 @gloggable
 def removesupport(update: Update, context: CallbackContext) -> str:
@@ -341,9 +343,9 @@ def removesupport(update: Update, context: CallbackContext) -> str:
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in DEMONS:
+    if user_id in SPRYZONS:
         message.reply_text("Requested HA to demote this user to Civilian")
-        DEMONS.remove(user_id)
+        SPRYZONS.remove(user_id)
         data["supports"].remove(user_id)
 
         with open(ELEVATED_USERS_FILE, "w") as outfile:
@@ -361,11 +363,10 @@ def removesupport(update: Update, context: CallbackContext) -> str:
         return log_message
 
     else:
-        message.reply_text("This user is not a Demon level Disaster!")
+        message.reply_text("This user is not a Spryzon level Disaster!")
         return ""
 
 
-@run_async
 @sudo_plus
 @gloggable
 def removewhitelist(update: Update, context: CallbackContext) -> str:
@@ -384,9 +385,9 @@ def removewhitelist(update: Update, context: CallbackContext) -> str:
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in WOLVES:
+    if user_id in LUINORS:
         message.reply_text("Demoting to normal user")
-        WOLVES.remove(user_id)
+        LUINORS.remove(user_id)
         data["whitelists"].remove(user_id)
 
         with open(ELEVATED_USERS_FILE, "w") as outfile:
@@ -403,14 +404,13 @@ def removewhitelist(update: Update, context: CallbackContext) -> str:
 
         return log_message
     else:
-        message.reply_text("This user is not a Wolf Disaster!")
+        message.reply_text("This user is not a Luinor Disaster!")
         return ""
 
 
-@run_async
 @sudo_plus
 @gloggable
-def removetiger(update: Update, context: CallbackContext) -> str:
+def removefafnir(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     user = update.effective_user
     chat = update.effective_chat
@@ -426,16 +426,16 @@ def removetiger(update: Update, context: CallbackContext) -> str:
     with open(ELEVATED_USERS_FILE, "r") as infile:
         data = json.load(infile)
 
-    if user_id in TIGERS:
+    if user_id in FAFNIRS:
         message.reply_text("Demoting to normal user")
-        TIGERS.remove(user_id)
-        data["tigers"].remove(user_id)
+        FAFNIRS.remove(user_id)
+        data["fafnirs"].remove(user_id)
 
         with open(ELEVATED_USERS_FILE, "w") as outfile:
             json.dump(data, outfile, indent=4)
 
         log_message = (
-            f"#UNTIGER\n"
+            f"#UNFAFNIR\n"
             f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
             f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}"
         )
@@ -445,19 +445,18 @@ def removetiger(update: Update, context: CallbackContext) -> str:
 
         return log_message
     else:
-        message.reply_text("This user is not a Tiger Disaster!")
+        message.reply_text("This user is not a Fafnir Disaster!")
         return ""
 
 
-@run_async
 @whitelist_plus
 def whitelistlist(update: Update, context: CallbackContext):
-    reply = "<b>Known Wolf Disasters 🐺:</b>\n"
+    reply = "<b>Known Luinor Disasters 🐺:</b>\n"
     m = update.effective_message.reply_text(
-        "<code>Gathering intel..</code>", parse_mode=ParseMode.HTML
+        "<code>Gathering Luinors..</code>", parse_mode=ParseMode.HTML
     )
     bot = context.bot
-    for each_user in WOLVES:
+    for each_user in LUINORS:
         user_id = int(each_user)
         try:
             user = bot.get_chat(user_id)
@@ -468,15 +467,14 @@ def whitelistlist(update: Update, context: CallbackContext):
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
-@run_async
 @whitelist_plus
-def tigerlist(update: Update, context: CallbackContext):
-    reply = "<b>Known Tiger Disasters 🐯:</b>\n"
+def fafnirlist(update: Update, context: CallbackContext):
+    reply = "<b>Known Fafnir Disasters 🐯:</b>\n"
     m = update.effective_message.reply_text(
-        "<code>Gathering intel..</code>", parse_mode=ParseMode.HTML
+        "<code>Gathering Fafnirs..</code>", parse_mode=ParseMode.HTML
     )
     bot = context.bot
-    for each_user in TIGERS:
+    for each_user in FAFNIRS:
         user_id = int(each_user)
         try:
             user = bot.get_chat(user_id)
@@ -486,15 +484,14 @@ def tigerlist(update: Update, context: CallbackContext):
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
-@run_async
 @whitelist_plus
 def supportlist(update: Update, context: CallbackContext):
     bot = context.bot
     m = update.effective_message.reply_text(
-        "<code>Gathering intel..</code>", parse_mode=ParseMode.HTML
+        "<code>Gathering Spryzons..</code>", parse_mode=ParseMode.HTML
     )
-    reply = "<b>Known Demon Disasters 👹:</b>\n"
-    for each_user in DEMONS:
+    reply = "<b>Known Spryzon Disasters 👹:</b>\n"
+    for each_user in SPRYZONS:
         user_id = int(each_user)
         try:
             user = bot.get_chat(user_id)
@@ -504,15 +501,14 @@ def supportlist(update: Update, context: CallbackContext):
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
-@run_async
 @whitelist_plus
 def sudolist(update: Update, context: CallbackContext):
     bot = context.bot
     m = update.effective_message.reply_text(
-        "<code>Gathering intel..</code>", parse_mode=ParseMode.HTML
+        "<code>Gathering Redlions..</code>", parse_mode=ParseMode.HTML
     )
-    true_sudo = list(set(DRAGONS) - set(DEV_USERS))
-    reply = "<b>Known Dragon Disasters 🐉:</b>\n"
+    true_sudo = list(set(REDLIONS) - set(DEV_USERS))
+    reply = "<b>Known RedLion Disasters 🐉:</b>\n"
     for each_user in true_sudo:
         user_id = int(each_user)
         try:
@@ -523,12 +519,11 @@ def sudolist(update: Update, context: CallbackContext):
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
-@run_async
 @whitelist_plus
 def devlist(update: Update, context: CallbackContext):
     bot = context.bot
     m = update.effective_message.reply_text(
-        "<code>Gathering intel..</code>", parse_mode=ParseMode.HTML
+        "<code>Gathering Devs..</code>", parse_mode=ParseMode.HTML
     )
     true_dev = list(set(DEV_USERS) - {OWNER_ID})
     reply = "<b>Hero Association Members ⚡️:</b>\n"
@@ -546,126 +541,116 @@ def devlist(update: Update, context: CallbackContext):
 # *⚠️ Notice:*
 # Commands listed here only work for users with special access are mainly used for troubleshooting, debugging purposes.
 # Group admins/group owners do not need these commands.
-
+#
 # *List all special users:*
-#  ❍ /dragons*:* Lists all Dragon disasters
-#  ❍ /demons*:* Lists all Demon disasters
-#  ❍ /tigers*:* Lists all Tigers disasters
-#  ❍ /wolves*:* Lists all Wolf disasters
-#  ❍ /heroes*:* Lists all Hero Association members
-#  ❍ /adddragon*:* Adds a user to Dragon
-#  ❍ /adddemon*:* Adds a user to Demon
-#  ❍ /addtiger*:* Adds a user to Tiger
-#  ❍ /addwolf*:* Adds a user to Wolf
-#  ❍ `Add dev doesnt exist, devs should know how to add themselves`
-
+# ❍ /REDLIONS*:* Lists all RedLion disasters
+# ❍ /spryzon*:* Lists all Spryzon disasters
+# ❍ /fafnirs*:* Lists all Fafnirs disasters
+# ❍ /luinors*:* Lists all Luinor disasters
+# ❍ /heroes*:* Lists all Hero Association members
+# ❍ /addredlion*:* Adds a user to RedLion
+# ❍ /addspryzon*:* Adds a user to Spryzon
+# ❍ /addfafnir*:* Adds a user to Fafnir
+# ❍ /addluinor*:* Adds a user to Luinor
+# ❍ `Add dev doesnt exist, devs should know how to add themselves`
+#
 # *Ping:*
-#  ❍ /ping*:* gets ping time of bot to telegram server
-#  ❍ /pingall*:* gets all listed ping times
-
+# ❍ /ping*:* gets ping time of bot to telegram server
+# ❍ /pingall*:* gets all listed ping times
+#
 # *Broadcast: (Bot owner only)*
 # *Note:* This supports basic markdown
-#  ❍ /broadcastall*:* Broadcasts everywhere
-#  ❍ /broadcastusers*:* Broadcasts too all users
-#  ❍ /broadcastgroups*:* Broadcasts too all groups
-
+# ❍ /broadcastall*:* Broadcasts everywhere
+# ❍ /broadcastusers*:* Broadcasts too all users
+# ❍ /broadcastgroups*:* Broadcasts too all groups
+#
 # *Groups Info:*
-#  ❍ /groups*:* List the groups with Name, ID, members count as a txt
-#  ❍ /leave <ID>*:* Leave the group, ID must have hyphen
-#  ❍ /stats*:* Shows overall bot stats
-#  ❍ /getchats*:* Gets a list of group names the user has been seen in. Bot owner only
-#  ❍ /ginfo username/link/ID*:* Pulls info panel for entire group
-
+# ❍ /groups*:* List the groups with Name, ID, members count as a txt
+# ❍ /leave <ID>*:* Leave the group, ID must have hyphen
+# ❍ /stats*:* Shows overall bot stats
+# ❍ /getchats*:* Gets a list of group names the user has been seen in. Bot owner only
+# ❍ /ginfo username/link/ID*:* Pulls info panel for entire group
+#
 # *Access control:*
-#  ❍ /ignore*:* Blacklists a user from using the bot entirely
-#  ❍ /lockdown <off/on>*:* Toggles bot adding to groups
-#  ❍ /notice*:* Removes user from blacklist
-#  ❍ /ignoredlist*:* Lists ignored users
+# ❍ /ignore*:* Blacklists a user from using the bot entirely
+# ❍ /lockdown <off/on>*:* Toggles bot adding to groups
+# ❍ /notice*:* Removes user from blacklist
+# ❍ /ignoredlist*:* Lists ignored users
 
 # *Speedtest:*
-#  ❍ /speedtest*:* Runs a speedtest and gives you 2 options to choose from, text or image output
-
+# ❍ /speedtest*:* Runs a speedtest and gives you 2 options to choose from, text or image output
+#
 # *Module loading:*
-#  ❍ /listmodules*:* Lists names of all modules
-#  ❍ /load modulename*:* Loads the said module to memory without restarting.
-#  ❍ /unload modulename*:* Loads the said module frommemory without restarting memory without restarting the bot
-
-# *Remote commands:*
-#  ❍ /rban*:* user group*:* Remote ban
-#  ❍ /runban*:* user group*:* Remote un-ban
-#  ❍ /rpunch*:* user group*:* Remote punch
-#  ❍ /rmute*:* user group*:* Remote mute
-#  ❍ /runmute*:* user group*:* Remote un-mute
-
+# ❍ /listmodules*:* Lists names of all modules
+# ❍ /load modulename*:* Loads the said module to memory without restarting.
+# ❍ /unload modulename*:* Loads the said module frommemory without restarting memory without restarting the bot
+#
 # *Windows self hosted only:*
-#  ❍ /reboot*:* Restarts the bots service
-#  ❍ /gitpull*:* Pulls the repo and then restarts the bots service
-
-# *Chatbot:*
-#  ❍ /listaichats*:* Lists the chats the chatmode is enabled in
-
+# ❍ /reboot*:* Restarts the bots service
+# ❍ /gitpull*:* Pulls the repo and then restarts the bots service
+#
 # *Debugging and Shell:*
-#  ❍ /debug <on/off>*:* Logs commands to updates.txt
-#  ❍ /logs*:* Run this in support group to get logs in pm
-#  ❍ /eval*:* Self explanatory
-#  ❍ /sh*:* Runs shell command
-#  ❍ /shell*:* Runs shell command
-#  ❍ /clearlocals*:* As the name goes
-#  ❍ /dbcleanup*:* Removes deleted accs and groups from db
-#  ❍ /py*:* Runs python code
-
-# *Global Bans:*
-#  ❍ /gban <id> <reason>*:* Gbans the user, works by reply too
-#  ❍ /ungban*:* Ungbans the user, same usage as gban
-#  ❍ /gbanlist*:* Outputs a list of gbanned users
-
-# *Global Blue Text*
-#  ❍ /gignoreblue*:* <word>*:* Globally ignorea bluetext cleaning of saved word across ShasaBot.
-#  ❍ /ungignoreblue*:* <word>*:* Remove said command from global cleaning list
-
-# *shasa Core*
-# *Owner only*
-#  ❍ /send*:* <module name>*:* Send module
-#  ❍ /install*:* <reply to a .py>*:* Install module
-
+# ❍ /debug <on/off>*:* Logs commands to updates.txt
+# ❍ /logs*:* Run this in support group to get logs in pm
+# ❍ /eval*:* Self explanatory
+# ❍ /sh*:* Runs shell command
+# ❍ /shell*:* Runs shell command
+# ❍ /clearlocals*:* As the name goes
+# ❍ /dbcleanup*:* Removes deleted accs and groups from db
+# ❍ /py*:* Runs python code
+#
 # *Heroku Settings*
 # *Owner only*
-#  ❍ /usage*:* Check your heroku dyno hours remaining.
-#  ❍ /see var <var>*:* Get your existing varibles, use it only on your private group!
-#  ❍ /set var <newvar> <vavariable>*:* Add new variable or update existing value variable.
-#  ❍ /del var <var>*:* Delete existing variable.
-#  ❍ /logs Get heroku dyno logs.
-
+# ❍ /usage*:* Check your heroku dyno hours remaining.
+# ❍ /see var <var>*:* Get your existing varibles, use it only on your private group!
+# ❍ /set var <newvar> <vavariable>*:* Add new variable or update existing value variable.
+# ❍ /del var <var>*:* Delete existing variable.
+# ❍ /logs Get heroku dyno logs.
+#
 # `⚠️ Read from top`
 # Visit @{SUPPORT_CHAT} for more information.
 # """
 
-SUDO_HANDLER = CommandHandler(("addsudo", "adddragon"), addsudo)
-SUPPORT_HANDLER = CommandHandler(("addsupport", "adddemon"), addsupport)
-TIGER_HANDLER = CommandHandler(("addtiger"), addtiger)
-WHITELIST_HANDLER = CommandHandler(("addwhitelist", "addwolf"), addwhitelist)
-UNSUDO_HANDLER = CommandHandler(("removesudo", "removedragon"), removesudo)
-UNSUPPORT_HANDLER = CommandHandler(("removesupport", "removedemon"), removesupport)
-UNTIGER_HANDLER = CommandHandler(("removetiger"), removetiger)
-UNWHITELIST_HANDLER = CommandHandler(("removewhitelist", "removewolf"), removewhitelist)
+SUDO_HANDLER = CommandHandler(("addsudo", "addredlion"), addsudo, run_async=True)
+SUPPORT_HANDLER = CommandHandler(
+    ("addsupport", "addspryzon"), addsupport, run_async=True
+)
+FAFNIR_HANDLER = CommandHandler(("addfafnir"), addfafnir, run_async=True)
+WHITELIST_HANDLER = CommandHandler(
+    ("addwhitelist", "addluinor"), addwhitelist, run_async=True
+)
+UNSUDO_HANDLER = CommandHandler(
+    ("removesudo", "removeredlion"), removesudo, run_async=True
+)
+UNSUPPORT_HANDLER = CommandHandler(
+    ("removesupport", "removespryzon"), removesupport, run_async=True
+)
+UNFAFNIR_HANDLER = CommandHandler(("removefafnir"), removefafnir, run_async=True)
+UNWHITELIST_HANDLER = CommandHandler(
+    ("removewhitelist", "removeluinor"), removewhitelist, run_async=True
+)
 
-WHITELISTLIST_HANDLER = CommandHandler(["whitelistlist", "wolves"], whitelistlist)
-TIGERLIST_HANDLER = CommandHandler(["tigers"], tigerlist)
-SUPPORTLIST_HANDLER = CommandHandler(["supportlist", "demons"], supportlist)
-SUDOLIST_HANDLER = CommandHandler(["sudolist", "dragons"], sudolist)
-DEVLIST_HANDLER = CommandHandler(["devlist", "heroes"], devlist)
+WHITELISTLIST_HANDLER = CommandHandler(
+    ["whitelistlist", "luinors"], whitelistlist, run_async=True
+)
+FAFNIRLIST_HANDLER = CommandHandler(["fafnirs"], fafnirlist, run_async=True)
+SUPPORTLIST_HANDLER = CommandHandler(
+    ["supportlist", "spryzon"], supportlist, run_async=True
+)
+SUDOLIST_HANDLER = CommandHandler(["sudolist", "REDLIONS"], sudolist, run_async=True)
+DEVLIST_HANDLER = CommandHandler(["devlist", "heroes"], devlist, run_async=True)
 
 dispatcher.add_handler(SUDO_HANDLER)
 dispatcher.add_handler(SUPPORT_HANDLER)
-dispatcher.add_handler(TIGER_HANDLER)
+dispatcher.add_handler(FAFNIR_HANDLER)
 dispatcher.add_handler(WHITELIST_HANDLER)
 dispatcher.add_handler(UNSUDO_HANDLER)
 dispatcher.add_handler(UNSUPPORT_HANDLER)
-dispatcher.add_handler(UNTIGER_HANDLER)
+dispatcher.add_handler(UNFAFNIR_HANDLER)
 dispatcher.add_handler(UNWHITELIST_HANDLER)
 
 dispatcher.add_handler(WHITELISTLIST_HANDLER)
-dispatcher.add_handler(TIGERLIST_HANDLER)
+dispatcher.add_handler(FAFNIRLIST_HANDLER)
 dispatcher.add_handler(SUPPORTLIST_HANDLER)
 dispatcher.add_handler(SUDOLIST_HANDLER)
 dispatcher.add_handler(DEVLIST_HANDLER)
@@ -674,14 +659,14 @@ __mod_name__ = "Dev"
 __handlers__ = [
     SUDO_HANDLER,
     SUPPORT_HANDLER,
-    TIGER_HANDLER,
+    FAFNIR_HANDLER,
     WHITELIST_HANDLER,
     UNSUDO_HANDLER,
     UNSUPPORT_HANDLER,
-    UNTIGER_HANDLER,
+    UNFAFNIR_HANDLER,
     UNWHITELIST_HANDLER,
     WHITELISTLIST_HANDLER,
-    TIGERLIST_HANDLER,
+    FAFNIRLIST_HANDLER,
     SUPPORTLIST_HANDLER,
     SUDOLIST_HANDLER,
     DEVLIST_HANDLER,

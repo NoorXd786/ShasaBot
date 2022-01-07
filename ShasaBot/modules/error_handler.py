@@ -1,3 +1,29 @@
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import html
 import io
 import random
@@ -9,7 +35,7 @@ import requests
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext, CommandHandler
 
-from ShasaBot import DEV_USERS, OWNER_ID, dispatcher
+from ShasaBot import DEV_USERS, ERROR_LOGS, dispatcher
 
 pretty_errors.mono()
 
@@ -47,7 +73,9 @@ def error_callback(update: Update, context: CallbackContext):
         stringio = io.StringIO()
         pretty_errors.output_stderr = stringio
         output = pretty_errors.excepthook(
-            type(context.error), context.error, context.error.__traceback__
+            type(context.error),
+            context.error,
+            context.error.__traceback__,
         )
         pretty_errors.output_stderr = sys.stderr
         pretty_error = stringio.getvalue()
@@ -55,7 +83,9 @@ def error_callback(update: Update, context: CallbackContext):
     except:
         pretty_error = "Failed to create pretty error."
     tb_list = traceback.format_exception(
-        None, context.error, context.error.__traceback__
+        None,
+        context.error,
+        context.error.__traceback__,
     )
     tb = "".join(tb_list)
     pretty_message = (
@@ -77,25 +107,28 @@ def error_callback(update: Update, context: CallbackContext):
         tb,
     )
     key = requests.post(
-        "https://nekobin.com/api/documents", json={"content": pretty_message}
+        "https://hastebin.com/documents",
+        data=pretty_message.encode("UTF-8"),
     ).json()
     e = html.escape(f"{context.error}")
-    if not key.get("result", {}).get("key"):
+    if not key.get("key"):
         with open("error.txt", "w+") as f:
             f.write(pretty_message)
         context.bot.send_document(
-            OWNER_ID,
+            ERROR_LOGS,
             open("error.txt", "rb"),
             caption=f"#{context.error.identifier}\n<b>An unknown error occured:</b>\n<code>{e}</code>",
             parse_mode="html",
         )
         return
-    key = key.get("result").get("key")
-    url = f"https://nekobin.com/{key}.py"
+    key = key.get("key")
+    url = f"https://hastebin.com/{key}"
     context.bot.send_message(
-        OWNER_ID,
+        ERROR_LOGS,
         text=f"#{context.error.identifier}\n<b>An unknown error occured:</b>\n<code>{e}</code>",
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Nekobin", url=url)]]),
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("HasteBin", url=url)]],
+        ),
         parse_mode="html",
     )
 
@@ -103,12 +136,10 @@ def error_callback(update: Update, context: CallbackContext):
 def list_errors(update: Update, context: CallbackContext):
     if update.effective_user.id not in DEV_USERS:
         return
-    e = {
-        k: v for k, v in sorted(errors.items(), key=lambda item: item[1], reverse=True)
-    }
+    e = dict(sorted(errors.items(), key=lambda item: item[1], reverse=True))
     msg = "<b>Errors List:</b>\n"
-    for x in e:
-        msg += f"• <code>{x}:</code> <b>{e[x]}</b> #{x.identifier}\n"
+    for x, value in e.items():
+        msg += f"• <code>{x}:</code> <b>{value}</b> #{x.identifier}\n"
     msg += f"{len(errors)} have occurred since startup."
     if len(msg) > 4096:
         with open("errors_msg.txt", "w+") as f:
@@ -116,7 +147,7 @@ def list_errors(update: Update, context: CallbackContext):
         context.bot.send_document(
             update.effective_chat.id,
             open("errors_msg.txt", "rb"),
-            caption=f"Too many errors have occured..",
+            caption="Too many errors have occured..",
             parse_mode="html",
         )
         return

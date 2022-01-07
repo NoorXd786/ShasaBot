@@ -1,3 +1,29 @@
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import importlib
 from typing import Union
 
@@ -20,8 +46,6 @@ FILENAME = __name__.rsplit(".", 1)[-1]
 
 # If module is due to be loaded, then setup all the magical handlers
 if is_module_loaded(FILENAME):
-
-    from telegram.ext.dispatcher import run_async
 
     from ShasaBot.modules.helper_funcs.chat_status import (
         connection_status,
@@ -48,47 +72,43 @@ if is_module_loaded(FILENAME):
                     ADMIN_CMDS.extend(command)
 
         def check_update(self, update):
-            if isinstance(update, Update) and update.effective_message:
-                message = update.effective_message
+            if not isinstance(update, Update) or not update.effective_message:
+                return
+            message = update.effective_message
 
-                if message.text and len(message.text) > 1:
-                    fst_word = message.text.split(None, 1)[0]
-                    if len(fst_word) > 1 and any(
-                        fst_word.startswith(start) for start in CMD_STARTERS
+            if message.text and len(message.text) > 1:
+                fst_word = message.text.split(None, 1)[0]
+                if len(fst_word) > 1 and any(
+                    fst_word.startswith(start) for start in CMD_STARTERS
+                ):
+                    args = message.text.split()[1:]
+                    command = fst_word[1:].split("@")
+                    command.append(message.bot.username)
+
+                    if not (
+                        command[0].lower() in self.command
+                        and command[1].lower() == message.bot.username.lower()
                     ):
-                        args = message.text.split()[1:]
-                        command = fst_word[1:].split("@")
-                        command.append(message.bot.username)
-
-                        if not (
-                            command[0].lower() in self.command
-                            and command[1].lower() == message.bot.username.lower()
-                        ):
-                            return None
-                        chat = update.effective_chat
-                        user = update.effective_user
-                        if user.id == 1087968824:
-                            user_id = chat.id
-                        else:
-                            user_id = user.id
-                        if SpamChecker.check_user(user_id):
-                            return None
-                        filter_result = self.filters(update)
-                        if filter_result:
-                            # disabled, admincmd, user admin
-                            if sql.is_command_disabled(chat.id, command[0].lower()):
-                                # check if command was disabled
-                                is_disabled = command[
-                                    0
-                                ] in ADMIN_CMDS and is_user_admin(chat, user.id)
-                                if not is_disabled:
-                                    return None
-                                else:
-                                    return args, filter_result
-
+                        return None
+                    chat = update.effective_chat
+                    user = update.effective_user
+                    user_id = chat.id if user.id == 1087968824 else user.id
+                    if SpamChecker.check_user(user_id):
+                        return None
+                    filter_result = self.filters(update)
+                    if filter_result:
+                        # disabled, admincmd, user admin
+                        if sql.is_command_disabled(chat.id, command[0].lower()):
+                            # check if command was disabled
+                            is_disabled = command[0] in ADMIN_CMDS and is_user_admin(
+                                chat, user.id
+                            )
+                            if not is_disabled:
+                                return None
                             return args, filter_result
-                        else:
-                            return False
+
+                        return args, filter_result
+                    return False
 
     class DisableAbleMessageHandler(MessageHandler):
         def __init__(self, filters, callback, friendly, **kwargs):
@@ -115,8 +135,7 @@ if is_module_loaded(FILENAME):
             if super().check_update(update):
                 if sql.is_command_disabled(chat.id, self.friendly):
                     return False
-                else:
-                    return args, filter_result
+                return args, filter_result
 
     class DisableAbleRegexHandler(RegexHandler):
         def __init__(self, pattern, callback, friendly="", filters=None, **kwargs):
@@ -127,12 +146,8 @@ if is_module_loaded(FILENAME):
         def check_update(self, update):
             chat = update.effective_chat
             if super().check_update(update):
-                if sql.is_command_disabled(chat.id, self.friendly):
-                    return False
-                else:
-                    return True
+                return not sql.is_command_disabled(chat.id, self.friendly)
 
-    @run_async
     @connection_status
     @user_admin
     def disable(update: Update, context: CallbackContext):
@@ -155,7 +170,6 @@ if is_module_loaded(FILENAME):
         else:
             update.effective_message.reply_text("What should I disable?")
 
-    @run_async
     @connection_status
     @user_admin
     def disable_module(update: Update, context: CallbackContext):
@@ -174,7 +188,7 @@ if is_module_loaded(FILENAME):
                 command_list = module.__command_list__
             except:
                 update.effective_message.reply_text(
-                    "Module does not contain command list!"
+                    "Module does not contain command list!",
                 )
                 return
 
@@ -208,7 +222,6 @@ if is_module_loaded(FILENAME):
         else:
             update.effective_message.reply_text("What should I disable?")
 
-    @run_async
     @connection_status
     @user_admin
     def enable(update: Update, context: CallbackContext):
@@ -221,7 +234,8 @@ if is_module_loaded(FILENAME):
 
             if sql.enable_command(chat.id, enable_cmd):
                 update.effective_message.reply_text(
-                    f"Enabled the use of `{enable_cmd}`", parse_mode=ParseMode.MARKDOWN
+                    f"Enabled the use of `{enable_cmd}`",
+                    parse_mode=ParseMode.MARKDOWN,
                 )
             else:
                 update.effective_message.reply_text("Is that even disabled?")
@@ -229,7 +243,6 @@ if is_module_loaded(FILENAME):
         else:
             update.effective_message.reply_text("What should I enable?")
 
-    @run_async
     @connection_status
     @user_admin
     def enable_module(update: Update, context: CallbackContext):
@@ -249,7 +262,7 @@ if is_module_loaded(FILENAME):
                 command_list = module.__command_list__
             except:
                 update.effective_message.reply_text(
-                    "Module does not contain command list!"
+                    "Module does not contain command list!",
                 )
                 return
 
@@ -282,14 +295,15 @@ if is_module_loaded(FILENAME):
         else:
             update.effective_message.reply_text("What should I enable?")
 
-    @run_async
     @connection_status
     @user_admin
     def list_cmds(update: Update, context: CallbackContext):
         if DISABLE_CMDS + DISABLE_OTHER:
-            result = ""
-            for cmd in set(DISABLE_CMDS + DISABLE_OTHER):
-                result += f" - `{escape_markdown(cmd)}`\n"
+            result = "".join(
+                f" - `{escape_markdown(cmd)}`\n"
+                for cmd in set(DISABLE_CMDS + DISABLE_OTHER)
+            )
+
             update.effective_message.reply_text(
                 f"The following commands are toggleable:\n{result}",
                 parse_mode=ParseMode.MARKDOWN,
@@ -303,17 +317,15 @@ if is_module_loaded(FILENAME):
         if not disabled:
             return "No commands are disabled!"
 
-        result = ""
-        for cmd in disabled:
-            result += " - `{}`\n".format(escape_markdown(cmd))
+        result = "".join(" - `{}`\n".format(escape_markdown(cmd)) for cmd in disabled)
         return "The following commands are currently restricted:\n{}".format(result)
 
-    @run_async
     @connection_status
     def commands(update: Update, context: CallbackContext):
         chat = update.effective_chat
         update.effective_message.reply_text(
-            build_curr_disabled(chat.id), parse_mode=ParseMode.MARKDOWN
+            build_curr_disabled(chat.id),
+            parse_mode=ParseMode.MARKDOWN,
         )
 
     def __stats__():
@@ -325,12 +337,16 @@ if is_module_loaded(FILENAME):
     def __chat_settings__(chat_id, user_id):
         return build_curr_disabled(chat_id)
 
-    DISABLE_HANDLER = CommandHandler("disable", disable)
-    DISABLE_MODULE_HANDLER = CommandHandler("disablemodule", disable_module)
-    ENABLE_HANDLER = CommandHandler("enable", enable)
-    ENABLE_MODULE_HANDLER = CommandHandler("enablemodule", enable_module)
-    COMMANDS_HANDLER = CommandHandler(["cmds", "disabled"], commands)
-    TOGGLE_HANDLER = CommandHandler("listcmds", list_cmds)
+    DISABLE_HANDLER = CommandHandler("disable", disable, run_async=True)
+    DISABLE_MODULE_HANDLER = CommandHandler(
+        "disablemodule", disable_module, run_async=True
+    )
+    ENABLE_HANDLER = CommandHandler("enable", enable, run_async=True)
+    ENABLE_MODULE_HANDLER = CommandHandler(
+        "enablemodule", enable_module, run_async=True
+    )
+    COMMANDS_HANDLER = CommandHandler(["cmds", "disabled"], commands, run_async=True)
+    TOGGLE_HANDLER = CommandHandler("listcmds", list_cmds, run_async=True)
 
     dispatcher.add_handler(DISABLE_HANDLER)
     dispatcher.add_handler(DISABLE_MODULE_HANDLER)
@@ -339,18 +355,7 @@ if is_module_loaded(FILENAME):
     dispatcher.add_handler(COMMANDS_HANDLER)
     dispatcher.add_handler(TOGGLE_HANDLER)
 
-    __help__ = """
-    ❍ /cmds*:* check the current status of disabled commands
-
-    *Admins only:*
-    ❍ /enable <cmd name>*:* enable that command
-    ❍ /disable <cmd name>*:* disable that command
-    ❍ /enablemodule <module name>*:* enable all commands in that module
-    ❍ /disablemodule <module name>*:* disable all commands in that module
-    ❍ /listcmds*:* list all possible toggleable commands
-    """
-
-    __mod_name__ = "Disable"
+    __mod_name__ = "Disabling"
 
 else:
     DisableAbleCommandHandler = CommandHandler

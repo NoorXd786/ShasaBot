@@ -1,7 +1,7 @@
 import flag
 from countryinfo import CountryInfo
 
-from ShasaBot import telethn as borg
+from ShasaBot import pbot as borg
 from ShasaBot.events import register
 
 

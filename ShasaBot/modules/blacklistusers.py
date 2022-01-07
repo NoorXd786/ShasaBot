@@ -1,22 +1,57 @@
-# Module to blacklist users and prevent them from using commands by @TheRealPhoenix
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import html
 
 from telegram import ParseMode, Update
 from telegram.error import BadRequest
-from telegram.ext import CallbackContext, CommandHandler, run_async
+from telegram.ext import CallbackContext, CommandHandler
 from telegram.utils.helpers import mention_html
 
 import ShasaBot.modules.sql.blacklistusers_sql as sql
-from ShasaBot import DEMONS, DEV_USERS, DRAGONS, OWNER_ID, TIGERS, WOLVES, dispatcher
+from ShasaBot import (
+    DEV_USERS,
+    FAFNIRS,
+    LUINORS,
+    OWNER_ID,
+    REDLIONS,
+    SPRYZONS,
+    dispatcher,
+)
 from ShasaBot.modules.helper_funcs.chat_status import dev_plus
-from ShasaBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
+from ShasaBot.modules.helper_funcs.extraction import (
+    extract_user,
+    extract_user_and_text,
+)
 from ShasaBot.modules.log_channel import gloggable
 
-BLACKLISTWHITELIST = [OWNER_ID] + DEV_USERS + DRAGONS + WOLVES + DEMONS
+BLACKLISTWHITELIST = [OWNER_ID] + DEV_USERS + REDLIONS + LUINORS + SPRYZONS
 BLABLEUSERS = [OWNER_ID] + DEV_USERS
 
 
-@run_async
 @dev_plus
 @gloggable
 def bl_user(update: Update, context: CallbackContext) -> str:
@@ -43,8 +78,7 @@ def bl_user(update: Update, context: CallbackContext) -> str:
         if excp.message == "User not found":
             message.reply_text("I can't seem to find this user.")
             return ""
-        else:
-            raise
+        raise
 
     sql.blacklist_user(user_id, reason)
     message.reply_text("I shall ignore the existence of this user!")
@@ -59,7 +93,6 @@ def bl_user(update: Update, context: CallbackContext) -> str:
     return log_message
 
 
-@run_async
 @dev_plus
 @gloggable
 def unbl_user(update: Update, context: CallbackContext) -> str:
@@ -82,8 +115,7 @@ def unbl_user(update: Update, context: CallbackContext) -> str:
         if excp.message == "User not found":
             message.reply_text("I can't seem to find this user.")
             return ""
-        else:
-            raise
+        raise
 
     if sql.is_user_blacklisted(user_id):
 
@@ -96,13 +128,10 @@ def unbl_user(update: Update, context: CallbackContext) -> str:
         )
 
         return log_message
-
-    else:
-        message.reply_text("I am not ignoring them at all though!")
-        return ""
+    message.reply_text("I am not ignoring them at all though!")
+    return ""
 
 
-@run_async
 @dev_plus
 def bl_users(update: Update, context: CallbackContext):
     users = []
@@ -113,7 +142,7 @@ def bl_users(update: Update, context: CallbackContext):
 
         if reason:
             users.append(
-                f"• {mention_html(user.id, html.escape(user.first_name))} :- {reason}"
+                f"• {mention_html(user.id, html.escape(user.first_name))} :- {reason}",
             )
         else:
             users.append(f"• {mention_html(user.id, html.escape(user.first_name))}")
@@ -131,11 +160,11 @@ def __user_info__(user_id):
     is_blacklisted = sql.is_user_blacklisted(user_id)
 
     text = "Blacklisted: <b>{}</b>"
-    if user_id in [777000, 1087968824]:
+    if user_id in [777000, 1902787452]:
         return ""
     if user_id == dispatcher.bot.id:
         return ""
-    if int(user_id) in DRAGONS + TIGERS + WOLVES:
+    if int(user_id) in REDLIONS + FAFNIRS + LUINORS:
         return ""
     if is_blacklisted:
         text = text.format("Yes")
@@ -148,9 +177,9 @@ def __user_info__(user_id):
     return text
 
 
-BL_HANDLER = CommandHandler("ignore", bl_user)
-UNBL_HANDLER = CommandHandler("notice", unbl_user)
-BLUSERS_HANDLER = CommandHandler("ignoredlist", bl_users)
+BL_HANDLER = CommandHandler("ignore", bl_user, run_async=True)
+UNBL_HANDLER = CommandHandler("notice", unbl_user, run_async=True)
+BLUSERS_HANDLER = CommandHandler("ignoredlist", bl_users, run_async=True)
 
 dispatcher.add_handler(BL_HANDLER)
 dispatcher.add_handler(UNBL_HANDLER)

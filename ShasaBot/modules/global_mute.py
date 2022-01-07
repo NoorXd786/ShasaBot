@@ -4,32 +4,34 @@ from typing import Optional
 
 from telegram import Chat, ChatPermissions, Message, User
 from telegram.error import BadRequest, TelegramError
-from telegram.ext import CommandHandler, Filters, MessageHandler, run_async
+from telegram.ext import CommandHandler, Filters, MessageHandler
 
 import ShasaBot.modules.sql.global_mutes_sql as sql
 from ShasaBot import (
-    DEMONS,
     DEV_USERS,
-    DRAGONS,
+    FAFNIRS,
     OWNER_ID,
+    REDLIONS,
+    SPRYZONS,
     STRICT_GMUTE,
-    TIGERS,
     dispatcher,
 )
 from ShasaBot.modules.helper_funcs.chat_status import is_user_admin, user_admin
-from ShasaBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
+from ShasaBot.modules.helper_funcs.extraction import (
+    extract_user,
+    extract_user_and_text,
+)
 from ShasaBot.modules.helper_funcs.filters import CustomFilters
 from ShasaBot.modules.sql.users_sql import get_all_chats
 
 GMUTE_ENFORCE_GROUP = 6
 
-OFFICERS = [OWNER_ID] + DEV_USERS + DRAGONS + DEMONS + TIGERS
+OFFICERS = [OWNER_ID] + DEV_USERS + REDLIONS + SPRYZONS + FAFNIRS
 
 
 ERROR_DUMP = None
 
 
-@run_async
 def gmute(update, context):
     message = update.effective_message  # type: Optional[Message]
     chat = update.effective_chat
@@ -143,7 +145,6 @@ def gmute(update, context):
     message.reply_text("They won't be talking again anytime soon.")
 
 
-@run_async
 def ungmute(update, context):
     message = update.effective_message  # type: Optional[Message]
     bot = context.bot
@@ -228,7 +229,6 @@ def ungmute(update, context):
     message.reply_text("Person has been un-gmuted.")
 
 
-@run_async
 def gmutelist(update, context):
     muted_users = sql.get_gmute_list()
 
@@ -264,7 +264,6 @@ def check_and_mute(update, user_id, should_message=True):
             )
 
 
-@run_async
 def enforce_gmute(update, context):
     # Not using @restrict handler to avoid spamming - just ignore if cant gmute.
     if (
@@ -287,7 +286,6 @@ def enforce_gmute(update, context):
                 check_and_mute(update, user.id, should_message=True)
 
 
-@run_async
 @user_admin
 def gmutestat(update, context):
     args = context.args
@@ -342,12 +340,14 @@ GMUTE_HANDLER = CommandHandler(
     gmute,
     pass_args=True,
     filters=CustomFilters.sudo_filter | CustomFilters.support_filter,
+    run_async=True,
 )
 UNGMUTE_HANDLER = CommandHandler(
     "ungmute",
     ungmute,
     pass_args=True,
     filters=CustomFilters.sudo_filter | CustomFilters.support_filter,
+    run_async=True,
 )
 GMUTE_LIST = CommandHandler(
     "gmutelist",
@@ -356,10 +356,16 @@ GMUTE_LIST = CommandHandler(
 )
 
 GMUTE_STATUS = CommandHandler(
-    "gmutespam", gmutestat, pass_args=True, filters=Filters.group
+    "gmutespam",
+    gmutestat,
+    pass_args=True,
+    filters=Filters.chat_type.groups,
+    run_async=True,
 )
 
-GMUTE_ENFORCER = MessageHandler(Filters.all & Filters.group, enforce_gmute)
+GMUTE_ENFORCER = MessageHandler(
+    Filters.all & Filters.chat_type.groups, enforce_gmute, run_async=True
+)
 
 dispatcher.add_handler(GMUTE_HANDLER)
 dispatcher.add_handler(UNGMUTE_HANDLER)

@@ -1,6 +1,6 @@
 from telethon.tl.types import ChannelParticipantsAdmins
 
-from ShasaBot import DRAGONS
+from ShasaBot import REDLIONS
 from ShasaBot.modules.helper_funcs.telethn import IMMUNE_USERS, telethn
 
 
@@ -10,7 +10,8 @@ async def user_is_ban_protected(user_id: int, message):
         return True
 
     async for user in telethn.iter_participants(
-        message.chat_id, filter=ChannelParticipantsAdmins
+        message.chat_id,
+        filter=ChannelParticipantsAdmins,
     ):
         if user_id == user.id:
             status = True
@@ -24,9 +25,10 @@ async def user_is_admin(user_id: int, message):
         return True
 
     async for user in telethn.iter_participants(
-        message.chat_id, filter=ChannelParticipantsAdmins
+        message.chat_id,
+        filter=ChannelParticipantsAdmins,
     ):
-        if user_id == user.id or user_id in DRAGONS:
+        if user_id == user.id or user_id in REDLIONS:
             status = True
             break
     return status
@@ -35,9 +37,10 @@ async def user_is_admin(user_id: int, message):
 async def is_user_admin(user_id: int, chat_id):
     status = False
     async for user in telethn.iter_participants(
-        chat_id, filter=ChannelParticipantsAdmins
+        chat_id,
+        filter=ChannelParticipantsAdmins,
     ):
-        if user_id == user.id or user_id in DRAGONS:
+        if user_id == user.id or user_id in REDLIONS:
             status = True
             break
     return status
@@ -47,7 +50,8 @@ async def shasa_is_admin(chat_id: int):
     status = False
     shasa = await telethn.get_me()
     async for user in telethn.iter_participants(
-        chat_id, filter=ChannelParticipantsAdmins
+        chat_id,
+        filter=ChannelParticipantsAdmins,
     ):
         if shasa.id == user.id:
             status = True
@@ -65,46 +69,33 @@ async def is_user_in_chat(chat_id: int, user_id: int):
 
 
 async def can_change_info(message):
-    status = False
-    if message.chat.admin_rights:
-        status = message.chat.admin_rights.change_info
-    return status
+    return message.chat.admin_rights.change_info if message.chat.admin_rights else False
 
 
 async def can_ban_users(message):
-    status = False
-    if message.chat.admin_rights:
-        status = message.chat.admin_rights.ban_users
-    return status
+    return message.chat.admin_rights.ban_users if message.chat.admin_rights else False
 
 
 async def can_pin_messages(message):
-    status = False
-    if message.chat.admin_rights:
-        status = message.chat.admin_rights.pin_messages
-    return status
+    return (
+        message.chat.admin_rights.pin_messages if message.chat.admin_rights else False
+    )
 
 
 async def can_invite_users(message):
-    status = False
-    if message.chat.admin_rights:
-        status = message.chat.admin_rights.invite_users
-    return status
+    return (
+        message.chat.admin_rights.invite_users if message.chat.admin_rights else False
+    )
 
 
 async def can_add_admins(message):
-    status = False
-    if message.chat.admin_rights:
-        status = message.chat.admin_rights.add_admins
-    return status
+    return message.chat.admin_rights.add_admins if message.chat.admin_rights else False
 
 
 async def can_delete_messages(message):
 
     if message.is_private:
         return True
-    elif message.chat.admin_rights:
-        status = message.chat.admin_rights.delete_messages
-        return status
-    else:
-        return False
+    if message.chat.admin_rights:
+        return message.chat.admin_rights.delete_messages
+    return False

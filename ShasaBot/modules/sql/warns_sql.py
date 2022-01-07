@@ -1,3 +1,29 @@
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import threading
 
 from sqlalchemy import Boolean, Column, Integer, String, UnicodeText, distinct, func
@@ -22,7 +48,10 @@ class Warns(BASE):
 
     def __repr__(self):
         return "<{} warns for {} in {} for reasons {}>".format(
-            self.num_warns, self.user_id, self.chat_id, self.reasons
+            self.num_warns,
+            self.user_id,
+            self.chat_id,
+            self.reasons,
         )
 
 
@@ -44,7 +73,7 @@ class WarnFilters(BASE):
         return bool(
             isinstance(other, WarnFilters)
             and self.chat_id == other.chat_id
-            and self.keyword == other.keyword
+            and self.keyword == other.keyword,
         )
 
 
@@ -83,7 +112,7 @@ def warn_user(user_id, chat_id, reason=None):
         warned_user.num_warns += 1
         if reason:
             warned_user.reasons = warned_user.reasons + [
-                reason
+                reason,
             ]  # TODO:: double check this wizardry
 
         reasons = warned_user.reasons
@@ -212,8 +241,7 @@ def get_warn_setting(chat_id):
         setting = SESSION.query(WarnSettings).get(str(chat_id))
         if setting:
             return setting.warn_limit, setting.soft_warn
-        else:
-            return 3, False
+        return 3, False
 
     finally:
         SESSION.close()

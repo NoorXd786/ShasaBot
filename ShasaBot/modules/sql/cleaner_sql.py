@@ -1,3 +1,29 @@
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import threading
 
 from sqlalchemy import Boolean, Column, UnicodeText
@@ -150,17 +176,17 @@ def is_command_ignored(chat_id, command):
     if command.lower() in GLOBAL_IGNORE_COMMANDS:
         return True
 
-    if str(chat_id) in CLEANER_CHATS:
-        if command.lower() in CLEANER_CHATS.get(str(chat_id)).get("commands"):
-            return True
+    if str(chat_id) in CLEANER_CHATS and command.lower() in CLEANER_CHATS.get(
+        str(chat_id)
+    ).get("commands"):
+        return True
 
     return False
 
 
 def is_enabled(chat_id):
     if str(chat_id) in CLEANER_CHATS:
-        settings = CLEANER_CHATS.get(str(chat_id)).get("setting")
-        return settings
+        return CLEANER_CHATS.get(str(chat_id)).get("setting")
 
     return False
 
@@ -176,11 +202,10 @@ def get_all_ignored(chat_id):
 
 def __load_cleaner_list():
     global GLOBAL_IGNORE_COMMANDS
-    global CLEANER_CHATS
 
     try:
         GLOBAL_IGNORE_COMMANDS = {
-            int(x.command) for x in SESSION.query(CleanerBlueTextGlobal).all()
+            x.command for x in SESSION.query(CleanerBlueTextGlobal).all()
         }
     finally:
         SESSION.close()

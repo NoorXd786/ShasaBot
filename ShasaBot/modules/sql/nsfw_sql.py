@@ -26,56 +26,54 @@ SOFTWARE.
 
 import threading
 
-from sqlalchemy import Column, String, UnicodeText, distinct, func
+from sqlalchemy import Column, String
 
 from ShasaBot.modules.sql import BASE, SESSION
 
 
-class Rules(BASE):
-    __tablename__ = "rules"
+#   |----------------------------------|
+#   |  Test Module by @EverythingSuckz |
+#   |        Kang with Credits         |
+#   |----------------------------------|
+class NSFWChats(BASE):
+    __tablename__ = "nsfw_chats"
     chat_id = Column(String(14), primary_key=True)
-    rules = Column(UnicodeText, default="")
 
     def __init__(self, chat_id):
         self.chat_id = chat_id
 
-    def __repr__(self):
-        return "<Chat {} rules: {}>".format(self.chat_id, self.rules)
 
-
-Rules.__table__.create(checkfirst=True)
-
+NSFWChats.__table__.create(checkfirst=True)
 INSERTION_LOCK = threading.RLock()
 
 
-def set_rules(chat_id, rules_text):
-    with INSERTION_LOCK:
-        rules = SESSION.query(Rules).get(str(chat_id))
-        if not rules:
-            rules = Rules(str(chat_id))
-        rules.rules = rules_text
-
-        SESSION.add(rules)
-        SESSION.commit()
-
-
-def get_rules(chat_id):
-    rules = SESSION.query(Rules).get(str(chat_id))
-    ret = rules.rules if rules else ""
-    SESSION.close()
-    return ret
-
-
-def num_chats():
+def is_nsfw(chat_id):
     try:
-        return SESSION.query(func.count(distinct(Rules.chat_id))).scalar()
+        chat = SESSION.query(NSFWChats).get(str(chat_id))
+        return bool(chat)
     finally:
         SESSION.close()
 
 
-def migrate_chat(old_chat_id, new_chat_id):
+def set_nsfw(chat_id):
     with INSERTION_LOCK:
-        chat = SESSION.query(Rules).get(str(old_chat_id))
-        if chat:
-            chat.chat_id = str(new_chat_id)
+        nsfwchat = SESSION.query(NSFWChats).get(str(chat_id))
+        if not nsfwchat:
+            nsfwchat = NSFWChats(str(chat_id))
+        SESSION.add(nsfwchat)
         SESSION.commit()
+
+
+def rem_nsfw(chat_id):
+    with INSERTION_LOCK:
+        nsfwchat = SESSION.query(NSFWChats).get(str(chat_id))
+        if nsfwchat:
+            SESSION.delete(nsfwchat)
+        SESSION.commit()
+
+
+def get_all_nsfw_chats():
+    try:
+        return SESSION.query(NSFWChats.chat_id).all()
+    finally:
+        SESSION.close()

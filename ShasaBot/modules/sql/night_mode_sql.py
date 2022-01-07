@@ -24,58 +24,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import threading
-
-from sqlalchemy import Column, String, UnicodeText, distinct, func
+from sqlalchemy import Column, String
 
 from ShasaBot.modules.sql import BASE, SESSION
 
 
-class Rules(BASE):
-    __tablename__ = "rules"
+class Nightmode(BASE):
+    __tablename__ = "nightmode"
     chat_id = Column(String(14), primary_key=True)
-    rules = Column(UnicodeText, default="")
 
     def __init__(self, chat_id):
         self.chat_id = chat_id
 
-    def __repr__(self):
-        return "<Chat {} rules: {}>".format(self.chat_id, self.rules)
+
+Nightmode.__table__.create(checkfirst=True)
 
 
-Rules.__table__.create(checkfirst=True)
+def add_nightmode(chat_id: str):
+    nightmoddy = Nightmode(str(chat_id))
+    SESSION.add(nightmoddy)
+    SESSION.commit()
 
-INSERTION_LOCK = threading.RLock()
 
-
-def set_rules(chat_id, rules_text):
-    with INSERTION_LOCK:
-        rules = SESSION.query(Rules).get(str(chat_id))
-        if not rules:
-            rules = Rules(str(chat_id))
-        rules.rules = rules_text
-
-        SESSION.add(rules)
+def rmnightmode(chat_id: str):
+    rmnightmoddy = SESSION.query(Nightmode).get(str(chat_id))
+    if rmnightmoddy:
+        SESSION.delete(rmnightmoddy)
         SESSION.commit()
 
 
-def get_rules(chat_id):
-    rules = SESSION.query(Rules).get(str(chat_id))
-    ret = rules.rules if rules else ""
+def get_all_chat_id():
+    stark = SESSION.query(Nightmode).all()
     SESSION.close()
-    return ret
+    return stark
 
 
-def num_chats():
+def is_nightmode_indb(chat_id: str):
     try:
-        return SESSION.query(func.count(distinct(Rules.chat_id))).scalar()
+        s__ = SESSION.query(Nightmode).get(str(chat_id))
+        if s__:
+            return str(s__.chat_id)
     finally:
         SESSION.close()
-
-
-def migrate_chat(old_chat_id, new_chat_id):
-    with INSERTION_LOCK:
-        chat = SESSION.query(Rules).get(str(old_chat_id))
-        if chat:
-            chat.chat_id = str(new_chat_id)
-        SESSION.commit()

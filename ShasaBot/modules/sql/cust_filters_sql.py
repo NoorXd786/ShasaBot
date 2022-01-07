@@ -1,3 +1,29 @@
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import threading
 
 from sqlalchemy import Boolean, Column, Integer, String, UnicodeText, distinct, func
@@ -69,7 +95,7 @@ class CustomFilters(BASE):
         return bool(
             isinstance(other, CustomFilters)
             and self.chat_id == other.chat_id
-            and self.keyword == other.keyword
+            and self.keyword == other.keyword,
         )
 
 
@@ -95,7 +121,7 @@ class NewCustomFilters(BASE):
         return bool(
             isinstance(other, CustomFilters)
             and self.chat_id == other.chat_id
-            and self.keyword == other.keyword
+            and self.keyword == other.keyword,
         )
 
 
@@ -143,7 +169,6 @@ def add_filter(
     is_video=False,
     buttons=None,
 ):
-    global CHAT_FILTERS
 
     if buttons is None:
         buttons = []
@@ -188,7 +213,6 @@ def add_filter(
 
 
 def new_add_filter(chat_id, keyword, reply_text, file_type, file_id, buttons):
-    global CHAT_FILTERS
 
     if buttons is None:
         buttons = []
@@ -236,7 +260,6 @@ def new_add_filter(chat_id, keyword, reply_text, file_type, file_id, buttons):
 
 
 def remove_filter(chat_id, keyword):
-    global CHAT_FILTERS
     with CUST_FILT_LOCK:
         filt = SESSION.query(CustomFilters).get((str(chat_id), keyword))
         if filt:
@@ -360,11 +383,19 @@ def __migrate_filters():
             print(str(x.chat_id), x.keyword, x.reply, file_type.value)
             if file_type == Types.TEXT:
                 filt = CustomFilters(
-                    str(x.chat_id), x.keyword, x.reply, file_type.value, None
+                    str(x.chat_id),
+                    x.keyword,
+                    x.reply,
+                    file_type.value,
+                    None,
                 )
             else:
                 filt = CustomFilters(
-                    str(x.chat_id), x.keyword, None, file_type.value, x.reply
+                    str(x.chat_id),
+                    x.keyword,
+                    None,
+                    file_type.value,
+                    x.reply,
                 )
 
             SESSION.add(filt)

@@ -55,9 +55,7 @@ from ShasaBot.modules.helper_funcs.chat_status import connection_status, user_ad
 from ShasaBot.modules.helper_funcs.handlers import MessageHandlerChecker
 from ShasaBot.modules.helper_funcs.misc import build_keyboard, revert_buttons
 from ShasaBot.modules.helper_funcs.msg_types import get_note_type
-from ShasaBot.modules.helper_funcs.string_handling import (
-    escape_invalid_curly_brackets,
-)
+from ShasaBot.modules.helper_funcs.string_handling import escape_invalid_curly_brackets
 
 FILE_MATCHER = re.compile(r"^###file_id(!photo)?###:(.*?)(?:\s|$)")
 STICKER_MATCHER = re.compile(r"^###sticker(!photo)?###:")

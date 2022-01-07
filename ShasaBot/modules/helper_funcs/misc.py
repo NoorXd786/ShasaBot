@@ -1,7 +1,32 @@
-from math import ceil
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from typing import Dict, List
 
-from telegram import MAX_MESSAGE_LENGTH, Bot, InlineKeyboardButton, ParseMode, Update
+from telegram import MAX_MESSAGE_LENGTH, Bot, InlineKeyboardButton, ParseMode
 from telegram.error import TelegramError
 
 from ShasaBot import NO_LOAD
@@ -22,21 +47,19 @@ def split_message(msg: str) -> List[str]:
     if len(msg) < MAX_MESSAGE_LENGTH:
         return [msg]
 
-    else:
-        lines = msg.splitlines(True)
-        small_msg = ""
-        result = []
-        for line in lines:
-            if len(small_msg) + len(line) < MAX_MESSAGE_LENGTH:
-                small_msg += line
-            else:
-                result.append(small_msg)
-                small_msg = line
+    lines = msg.splitlines(True)
+    small_msg = ""
+    result = []
+    for line in lines:
+        if len(small_msg) + len(line) < MAX_MESSAGE_LENGTH:
+            small_msg += line
         else:
-            # Else statement at the end of the for loop, so append the leftover string.
             result.append(small_msg)
+            small_msg = line
+    # Else statement at the end of the for loop, so append the leftover string.
+    result.append(small_msg)
 
-        return result
+    return result
 
 
 def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
@@ -69,30 +92,10 @@ def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
 
     round_num = len(modules) / 3
     calc = len(modules) - round(round_num)
-    if calc == 1:
+    if calc in [1, 2]:
         pairs.append((modules[-1],))
-    elif calc == 2:
-        pairs.append((modules[-1],))
-
-    max_num_pages = ceil(len(pairs) / 10)
-    modulo_page = page_n % max_num_pages
-
-    # can only have a certain amount of buttons side by side
-    if len(pairs) > 7:
-        pairs = pairs[modulo_page * 7 : 7 * (modulo_page + 1)] + [
-            (
-                EqInlineKeyboardButton(
-                    "👈🏻", callback_data="{}_prev({})".format(prefix, modulo_page)
-                ),
-                EqInlineKeyboardButton("🌹", callback_data="shasa_back"),
-                EqInlineKeyboardButton(
-                    "👉🏻", callback_data="{}_next({})".format(prefix, modulo_page)
-                ),
-            )
-        ]
-
     else:
-        pairs += [[EqInlineKeyboardButton("Home", callback_data="bot_start")]]
+        pairs += [[EqInlineKeyboardButton("【༶Bᴀᴄᴋ༶】", callback_data="shasa_back")]]
 
     return pairs
 
@@ -126,22 +129,11 @@ def build_keyboard(buttons):
 
 
 def revert_buttons(buttons):
-    res = ""
-    for btn in buttons:
-        if btn.same_line:
-            res += "\n[{}](buttonurl://{}:same)".format(btn.name, btn.url)
-        else:
-            res += "\n[{}](buttonurl://{})".format(btn.name, btn.url)
-
-    return res
-
-
-def sendMessage(text: str, bot: Bot, update: Update):
-    return bot.send_message(
-        update.message.chat_id,
-        reply_to_message_id=update.message.message_id,
-        text=text,
-        parse_mode=ParseMode.HTML,
+    return "".join(
+        "\n[{}](buttonurl://{}:same)".format(btn.name, btn.url)
+        if btn.same_line
+        else "\n[{}](buttonurl://{})".format(btn.name, btn.url)
+        for btn in buttons
     )
 
 

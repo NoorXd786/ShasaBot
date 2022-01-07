@@ -24,25 +24,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import regex
 
+def get_readable_time(seconds: int) -> str:
+    count = 0
+    readable_time = ""
+    time_list = []
+    time_suffix_list = ["s", "m", "h", "days"]
 
-def regex_searcher(regex_string, string):
-    try:
-        search = regex.search(regex_string, string, timeout=6)
-    except (TimeoutError, Exception):
-        return False
-    return search
+    while count < 4:
+        count += 1
+        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
+        if seconds == 0 and remainder == 0:
+            break
+        time_list.append(int(result))
+        seconds = int(remainder)
 
+    for x in range(len(time_list)):
+        time_list[x] = str(time_list[x]) + time_suffix_list[x]
+    if len(time_list) == 4:
+        readable_time += time_list.pop() + ", "
 
-def infinite_loop_check(regex_string):
-    loop_matches = [
-        r"\((.{1,}[\+\*]){1,}\)[\+\*].",
-        r"[\(\[].{1,}\{\d(,)?\}[\)\]]\{\d(,)?\}",
-        r"\(.{1,}\)\{.{1,}(,)?\}\(.*\)(\+|\* |\{.*\})",
-    ]
-    for match in loop_matches:
-        match_1 = regex.search(match, regex_string)
-        if match_1:
-            return True
-    return False
+    time_list.reverse()
+    readable_time += ":".join(time_list)
+
+    return readable_time

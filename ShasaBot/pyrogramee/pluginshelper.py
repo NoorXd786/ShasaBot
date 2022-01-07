@@ -1,10 +1,7 @@
 import asyncio
 import math
 import shlex
-import sys
 import time
-import traceback
-from functools import wraps
 from typing import Callable, Coroutine, Dict, List, Tuple, Union
 
 from PIL import Image
@@ -12,7 +9,7 @@ from pyrogram import Client
 from pyrogram.errors import FloodWait, MessageNotModified
 from pyrogram.types import Chat, Message, User
 
-from ShasaBot import OWNER_ID, SUPPORT_CHAT, pbot
+from ShasaBot import OWNER_ID, pbot
 
 
 def get_user(message: Message, text: str) -> [int, str, None]:
@@ -32,6 +29,15 @@ def get_user(message: Message, text: str) -> [int, str, None]:
         if len(asplit) == 2:
             reason_ = asplit[1]
     return user_s, reason_
+
+
+async def is_admin(event, user):
+    try:
+        sed = await event.client.get_permissions(event.chat_id, user)
+        is_mod = bool(sed.is_admin)
+    except:
+        is_mod = False
+    return is_mod
 
 
 def get_readable_time(seconds: int) -> int:
@@ -299,32 +305,19 @@ def admins_only(func: Callable) -> Coroutine:
     return wrapper
 
 
-# @Mr_Dark_Prince
-def capture_err(func):
-    @wraps(func)
-    async def capture(client, message, *args, **kwargs):
-        try:
-            return await func(client, message, *args, **kwargs)
-        except Exception as err:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            errors = traceback.format_exception(
-                etype=exc_type,
-                value=exc_obj,
-                tb=exc_tb,
-            )
-            error_feedback = split_limits(
-                "**ERROR** | `{}` | `{}`\n\n```{}```\n\n```{}```\n".format(
-                    0 if not message.from_user else message.from_user.id,
-                    0 if not message.chat else message.chat.id,
-                    message.text or message.caption,
-                    "".join(errors),
-                ),
-            )
-            for x in error_feedback:
-                await pbot.send_message(SUPPORT_CHAT, x)
-            raise err
+async def convert_seconds_to_minutes(seconds: int):
 
-    return capture
+    seconds = int(seconds)
+
+    seconds = seconds % (24 * 3600)
+
+    seconds %= 3600
+
+    minutes = seconds // 60
+
+    seconds %= 60
+
+    return "%02d:%02d" % (minutes, seconds)
 
 
 # Special credits to kittu

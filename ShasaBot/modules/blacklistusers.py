@@ -42,10 +42,7 @@ from ShasaBot import (
     dispatcher,
 )
 from ShasaBot.modules.helper_funcs.chat_status import dev_plus
-from ShasaBot.modules.helper_funcs.extraction import (
-    extract_user,
-    extract_user_and_text,
-)
+from ShasaBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from ShasaBot.modules.log_channel import gloggable
 
 BLACKLISTWHITELIST = [OWNER_ID] + DEV_USERS + REDLIONS + LUINORS + SPRYZONS

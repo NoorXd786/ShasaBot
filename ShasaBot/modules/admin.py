@@ -16,10 +16,7 @@ from ShasaBot.modules.helper_funcs.chat_status import (
     connection_status,
     user_admin,
 )
-from ShasaBot.modules.helper_funcs.extraction import (
-    extract_user,
-    extract_user_and_text,
-)
+from ShasaBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from ShasaBot.modules.log_channel import loggable
 from ShasaBot.utils.admin_rights import (
     user_can_changeinfo,

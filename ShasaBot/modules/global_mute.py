@@ -17,10 +17,7 @@ from ShasaBot import (
     dispatcher,
 )
 from ShasaBot.modules.helper_funcs.chat_status import is_user_admin, user_admin
-from ShasaBot.modules.helper_funcs.extraction import (
-    extract_user,
-    extract_user_and_text,
-)
+from ShasaBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from ShasaBot.modules.helper_funcs.filters import CustomFilters
 from ShasaBot.modules.sql.users_sql import get_all_chats
 

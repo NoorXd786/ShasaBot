@@ -34,12 +34,7 @@ from telegram.ext import Filters, MessageHandler
 from ShasaBot import REDIS, dispatcher
 from ShasaBot.modules.disable import DisableAbleCommandHandler
 from ShasaBot.modules.helper_funcs.readable_time import get_readable_time
-from ShasaBot.modules.redis.afk_redis import (
-    afk_reason,
-    end_afk,
-    is_user_afk,
-    start_afk,
-)
+from ShasaBot.modules.redis.afk_redis import afk_reason, end_afk, is_user_afk, start_afk
 from ShasaBot.modules.users import get_user_id
 
 AFK_GROUP = 7

@@ -5,7 +5,7 @@ from telethon.errors import ChatAdminRequiredError, UserAdminInvalidError
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChannelParticipantsAdmins, ChatBannedRights
 
-from ShasaBot import DEMONS, DEV_USERS, DRAGONS, OWNER_ID, telethn
+from ShasaBot import DEV_USERS, OWNER_ID, REDLIONS, SPRYZONS, telethn
 
 # =================== CONSTANT ===================
 
@@ -33,11 +33,11 @@ UNBAN_RIGHTS = ChatBannedRights(
     embed_links=None,
 )
 
-OFFICERS = [OWNER_ID] + DEV_USERS + DRAGONS + DEMONS
+OFFICERS = [OWNER_ID] + DEV_USERS + REDLIONS + SPRYZONS
 
 # Check if user has admin rights
 async def is_administrator(user_id: int, message):
-    admin = False
+    admin = True
     async for user in telethn.iter_participants(
         message.chat_id, filter=ChannelParticipantsAdmins
     ):
@@ -47,7 +47,7 @@ async def is_administrator(user_id: int, message):
     return admin
 
 
-@telethn.on(events.NewMessage(pattern="^[!/]zombies ?(.*)"))
+@telethn.on(events.NewMessage(pattern=f"^[!/]zombies ?(.*)"))
 async def zombies(event):
     """For .zombies command, list all the zombies in a chat."""
 
@@ -64,7 +64,7 @@ async def zombies(event):
                 await sleep(1)
         if del_u > 0:
             del_status = f"Found **{del_u}** Zombies In This Group.\
-            \nClean Them By Using :\n👉 `/zombies clean`"
+            \nClean Them By Using - `/zombies clean`"
         await find_zombies.edit(del_status)
         return
 
@@ -109,3 +109,6 @@ async def zombies(event):
         \n`{del_a}` Zombie Admin Accounts Are Not Removed!"
 
     await cleaning_zombies.edit(del_status)
+
+
+__mod_name__ = "Zombies"

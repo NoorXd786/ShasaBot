@@ -1,12 +1,11 @@
 import requests
 from telegram import ParseMode, Update
-from telegram.ext import CallbackContext, run_async
+from telegram.ext import CallbackContext
 
 from ShasaBot import dispatcher
 from ShasaBot.modules.disable import DisableAbleCommandHandler
 
 
-@run_async
 def ud(update: Update, context: CallbackContext):
     message = update.effective_message
     text = message.text[len("/ud ") :]
@@ -20,7 +19,7 @@ def ud(update: Update, context: CallbackContext):
     message.reply_text(reply_text, parse_mode=ParseMode.MARKDOWN)
 
 
-UD_HANDLER = DisableAbleCommandHandler(["ud"], ud)
+UD_HANDLER = DisableAbleCommandHandler(["ud"], ud, run_async=True)
 
 dispatcher.add_handler(UD_HANDLER)
 

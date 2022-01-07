@@ -17,6 +17,77 @@ from ShasaBot.conf import get_str_key
 from ShasaBot.pyrogramee.pluginshelper import get_text, progress
 
 GENIUS = get_str_key("GENIUS_API_TOKEN", None)
+import youtube_dl
+from youtube_search import YoutubeSearch
+
+from ShasaBot import BOT_USERNAME
+
+
+def time_to_seconds(time):
+    stringt = str(time)
+    return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
+
+
+@pbot.on_message(filters.command(["song", f"song@{BOT_USERNAME}"]))
+def song(client, message):
+
+    user_id = message.from_user.id
+    user_name = message.from_user.first_name
+    rpk = "[" + user_name + "](tg://user?id=" + str(user_id) + ")"
+
+    query = "".join(" " + str(i) for i in message.command[1:])
+    print(query)
+    m = message.reply("🔎 Finding the song...")
+    ydl_opts = {"format": "bestaudio[ext=m4a]"}
+    try:
+        results = YoutubeSearch(query, max_results=1).to_dict()
+        link = f"https://youtube.com{results[0]['url_suffix']}"
+        # print(results)
+        title = results[0]["title"][:40]
+        thumbnail = results[0]["thumbnails"][0]
+        thumb_name = f"thumb{title}.jpg"
+        thumb = requests.get(thumbnail, allow_redirects=True)
+        open(thumb_name, "wb").write(thumb.content)
+
+        duration = results[0]["duration"]
+        results[0]["url_suffix"]
+        views = results[0]["views"]
+
+    except Exception as e:
+        m.edit(
+            "✖️ Found Nothing. Sorry.\n\nTry another keywork or maybe spell it properly."
+        )
+        print(str(e))
+        return
+    m.edit("`Downloading Song... Please wait ⏱`")
+    try:
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(link, download=False)
+            audio_file = ydl.prepare_filename(info_dict)
+            ydl.process_info(info_dict)
+        rep = f"🎙 **Title**: [{title[:35]}]({link})\n🎬 **Source**: YouTube\n⏱️ **Duration**: `{duration}`\n👁‍🗨 **Views**: `{views}`\n📤 **By**: @Shasa_Robot"
+        secmul, dur, dur_arr = 1, 0, duration.split(":")
+        for i in range(len(dur_arr) - 1, -1, -1):
+            dur += int(dur_arr[i]) * secmul
+            secmul *= 60
+        message.reply_audio(
+            audio_file,
+            caption=rep,
+            thumb=thumb_name,
+            parse_mode="md",
+            title=title,
+            duration=dur,
+        )
+        m.delete()
+    except Exception as e:
+        m.edit("❌ Error")
+        print(e)
+
+    try:
+        os.remove(audio_file)
+        os.remove(thumb_name)
+    except Exception as e:
+        print(e)
 
 
 @pbot.on_message(filters.command(["vsong", "video"]))
@@ -84,6 +155,7 @@ async def ytmusic(client, message: Message):
             os.remove(files)
 
 
+"""
 @pbot.on_message(filters.command(["music", "song"]))
 async def ytmusic(client, message: Message):
     urlissed = get_text(message)
@@ -154,7 +226,7 @@ async def ytmusic(client, message: Message):
     await pablo.delete()
     for files in (sedlyf, file_stark):
         if files and os.path.exists(files):
-            os.remove(files)
+            os.remove(files)"""
 
 
 @pbot.on_message(filters.command(["deezer", "dsong"]))

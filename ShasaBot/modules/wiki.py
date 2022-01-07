@@ -1,19 +1,40 @@
+"""
+MIT License
+
+Copyright (C) 2021 MdNoor786
+
+This file is part of @Shasa_RoBot (Telegram Bot)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import wikipedia
 from telegram import ParseMode, Update
-from telegram.ext import CallbackContext, run_async
+from telegram.ext import CallbackContext
 from wikipedia.exceptions import DisambiguationError, PageError
 
 from ShasaBot import dispatcher
 from ShasaBot.modules.disable import DisableAbleCommandHandler
 
 
-@run_async
 def wiki(update: Update, context: CallbackContext):
-    msg = (
-        update.effective_message.reply_to_message
-        if update.effective_message.reply_to_message
-        else update.effective_message
-    )
+    msg = update.effective_message.reply_to_message or update.effective_message
     res = ""
     if msg == update.effective_message:
         search = msg.text.split(" ", maxsplit=1)[1]
@@ -24,13 +45,14 @@ def wiki(update: Update, context: CallbackContext):
     except DisambiguationError as e:
         update.message.reply_text(
             "Disambiguated pages found! Adjust your query accordingly.\n<i>{}</i>".format(
-                e
+                e,
             ),
             parse_mode=ParseMode.HTML,
         )
     except PageError as e:
         update.message.reply_text(
-            "<code>{}</code>".format(e), parse_mode=ParseMode.HTML
+            "<code>{}</code>".format(e),
+            parse_mode=ParseMode.HTML,
         )
     if res:
         result = f"<b>{search}</b>\n\n"
@@ -49,9 +71,11 @@ def wiki(update: Update, context: CallbackContext):
                 )
         else:
             update.message.reply_text(
-                result, parse_mode=ParseMode.HTML, disable_web_page_preview=True
+                result,
+                parse_mode=ParseMode.HTML,
+                disable_web_page_preview=True,
             )
 
 
-WIKI_HANDLER = DisableAbleCommandHandler("wiki", wiki)
+WIKI_HANDLER = DisableAbleCommandHandler("wiki", wiki, run_async=True)
 dispatcher.add_handler(WIKI_HANDLER)

@@ -48,7 +48,7 @@ DARE = (
     "Try to lick your elbow",
     "Post the oldest selfie on your phone on Instagram Stories",
     "Tell the saddest story you know",
-    "Howl like a wolf for two minutes",
+    "Howl like a luinor for two minutes",
     "Dance without music for two minutes",
     "Pole dance with an imaginary pole",
     "Let someone else tickle you and try not to laugh",

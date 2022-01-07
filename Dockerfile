@@ -1,5 +1,5 @@
 # We're using Debian Slim Buster image
-FROM python:3.8.5-slim-buster
+FROM python:3.9.6-slim-buster
 
 ENV PIP_NO_CACHE_DIR 1
 
@@ -68,7 +68,7 @@ RUN pip3 install --upgrade pip setuptools
 RUN git clone -b shiken https://github.com/MdNoor786/ShasaBot /root/ShasaBot
 WORKDIR /root/ShasaBot
 
-#Copy config file to /root/ShasaBott/ShasaBot
+#Copy config file to /root/ShasaBot/ShasaBot
 COPY ./ShasaBot/sample_config.py ./ShasaBot/config.py* /root/ShasaBot/ShasaBot/
 
 ENV PATH="/home/bot/bin:$PATH"

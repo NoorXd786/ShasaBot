@@ -35,7 +35,7 @@
          "required": true,
          "value": ""
       },    
-      "SQLALCHEMY_DATABASE_URI": {
+      "SQLALCHEMY_DATABASE_URL": {
          "description": "Your postgres sql db, empty this field if you dont have one.",
          "required": false,
          "value": "sqldbtype://username:pw@hostname:port/db_name"
@@ -43,7 +43,7 @@
       "OWNER_ID": {
          "description": "Your user ID as an integer.",
          "required": true,
-         "value": "1837687523"
+         "value": "1415798813"
       },
       "BOT_ID": {
          "description": "Your bot ID.. Use any other bot to get it.",
@@ -65,14 +65,9 @@
       "SUPPORT_CHAT": {
          "description": "Your Telegram support group chat username where your users will go and bother you with shit But be like: MyGroupChatUsernameBlah. If this ever points to masha support than consider you made an enemy.",
          "required": true,
-         "value": "Shasa_RoBot"
+         "value": "missShasa_Gbot"
       },
-      "STRING_SESSION":{
-         "description": "Without String Bot Not work.",
-         "required": true,
-         "value": ""
-      },
-      "MONGO_DB_URI": {
+      "MONGO_DB_URL": {
          "description": "Required for database connections.",
          "required": true,
          "value": ""
@@ -105,7 +100,7 @@
          "required": true,
          "value": "-xyz"
       },
-      "API_OPENWEATHER": {
+      "OPENWEATHERMAP_ID": {
         "description": "Get your own APPID from https://api.openweathermap.org/data/2.5/weather",
         "value": "",
         "required": false
@@ -124,22 +119,22 @@
          "description": "Enforce gbans across new groups as well as old groups. When a gbanned user talks, he will be banned.",
          "value": "True"
       },
-      "DRAGONS": {
+      "REDLIONS": {
          "description": "A space separated list of user IDs who you want to assign as sudo users.",
          "required": false,
          "value": ""
       },
-      "DEMONS": {
+      "SPRYZONS": {
          "description": "A space separated list of user IDs who you wanna assign as support users(gban perms only).",
          "required": false,
          "value": ""
       },
-      "TIGERS": {
-         "description": "A space separated list of user IDs who you wanna assign as tiger users.",
+      "FAFNIRS": {
+         "description": "A space separated list of user IDs who you wanna assign as fafnir users.",
          "required": false,
          "value": ""
       },
-      "WOLVES": {
+      "LUINORS": {
          "description": "A space separated list of user IDs who you want to assign as whitelisted - can't be banned with your bot.",
          "required": false,
          "value": ""
@@ -190,10 +185,28 @@
       "description": "Make your bot talk using Intellivoid's chatbot API, get your key from https://coffeehouse.intellivoid.net/",
          "required": false,
          "value": ""
-   },      
+      },      
       "BAN_STICKER": {
          "description": "ID of the sticker you want to use when banning people.",
          "required": false,
+         "value": ""
+      },
+      "REDIS_URL": {
+         "value": ""
+      },
+      "STRING_SESSION": {
+         "value": ""
+      },
+      "MONGO_PORT": {
+         "value": ""
+      },
+      "MONGO_DB": {
+         "value": ""
+      },
+      "SPAMWATCH_API": {
+         "value": ""
+      },
+      "REM_BG_API_KEY": {
          "value": ""
       },
       "WALL_API": {

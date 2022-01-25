@@ -1,7 +1,7 @@
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext, CommandHandler
 
-from ShasaRoBot import dispatcher
+from ShasaBot import dispatcher
 
 
 def warns_help(update: Update, context: CallbackContext):

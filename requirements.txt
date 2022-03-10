@@ -85,7 +85,7 @@ textblob==0.15.3
 requests_html==0.10.0
 bs4==0.0.1
 multicolorcaptcha==1.2.0
-launchpadlib==1.10.14
+launchpadlib==1.10.16
 google-trans-new==1.1.9
 futures==3.1.1
 future==0.18.2

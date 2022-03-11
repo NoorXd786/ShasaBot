@@ -129,7 +129,9 @@ def gmute(update, context):
                 pass
             elif excp.message != "Can't demote chat creator":
                 message.reply_text("Unexpected Error!")
-                context.bot.send_message(ERROR_DUMP, f"Could not gmute due to: {excp.message}")
+                context.bot.send_message(
+                    ERROR_DUMP, f"Could not gmute due to: {excp.message}"
+                )
                 sql.ungmute_user(user_id)
                 return
         except TelegramError:
@@ -206,7 +208,9 @@ def ungmute(update, context):
                 pass
             elif excp.message != "Chat_admin_required":
                 message.reply_text("Unexpected Error!")
-                bot.send_message(ERROR_DUMP, f"Could not un-gmute due to: {excp.message}")
+                bot.send_message(
+                    ERROR_DUMP, f"Could not un-gmute due to: {excp.message}"
+                )
                 return
         except TelegramError:
             pass
@@ -255,9 +259,7 @@ def enforce_gmute(update, context):
     # Not using @restrict handler to avoid spamming - just ignore if cant gmute.
     if (
         not sql.does_chat_gmute(update.effective_chat.id)
-        or not update.effective_chat.get_member(
-            context.bot.id
-        ).can_restrict_members
+        or not update.effective_chat.get_member(context.bot.id).can_restrict_members
     ):
         return
     user = update.effective_user  # type: Optional[User]

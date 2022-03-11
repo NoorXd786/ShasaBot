@@ -153,7 +153,6 @@ def addsupport(
         f"{rt}\n{user_member.first_name} was added as a Spryzon Disaster!"
     )
 
-
     log_message = (
         f"#SUPPORT\n"
         f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"

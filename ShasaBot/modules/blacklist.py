@@ -125,14 +125,12 @@ def add_blacklist(update, context):
                 parse_mode=ParseMode.HTML,
             )
 
-
         else:
             send_message(
                 update.effective_message,
                 f"Added blacklist trigger: <code>{len(to_blacklist)}</code> in <b>{html.escape(chat_name)}</b>!",
                 parse_mode=ParseMode.HTML,
             )
-
 
     else:
         send_message(
@@ -188,7 +186,6 @@ def unblacklist(update, context):
                 f"Removed <code>{successful}</code> from blacklist in <b>{html.escape(chat_name)}</b>!",
                 parse_mode=ParseMode.HTML,
             )
-
 
         elif not successful:
             send_message(

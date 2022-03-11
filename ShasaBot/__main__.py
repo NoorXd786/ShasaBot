@@ -97,7 +97,7 @@ def get_readable_time(seconds: int) -> str:
     for x in range(len(time_list)):
         time_list[x] = str(time_list[x]) + time_suffix_list[x]
     if len(time_list) == 4:
-        ping_time += f'{time_list.pop()}, '
+        ping_time += f"{time_list.pop()}, "
 
     time_list.reverse()
     ping_time += ":".join(time_list)
@@ -490,7 +490,6 @@ def shasa_callback_data(update, context):
             ),
         )
 
-
     elif query.data == "shasa_notes":
         query.message.edit_text(
             text="<b> Setting up notes</b>",
@@ -541,9 +540,7 @@ def shasa_callback_data(update, context):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(
-                            text="ᴅᴇᴠ", url="t.me/simpleboy786"
-                        ),
+                        InlineKeyboardButton(text="ᴅᴇᴠ", url="t.me/simpleboy786"),
                         InlineKeyboardButton(
                             text="ɢɪᴛʜᴜʙ", url="https://github.com/MdNoor786"
                         ),
@@ -695,7 +692,6 @@ def settings_button(update: Update, context: CallbackContext):
                 ),
             )
 
-
         elif prev_match:
             chat_id = prev_match.group(1)
             curr_page = int(prev_match.group(2))
@@ -708,7 +704,6 @@ def settings_button(update: Update, context: CallbackContext):
                     )
                 ),
             )
-
 
         elif next_match:
             chat_id = next_match.group(1)
@@ -723,7 +718,6 @@ def settings_button(update: Update, context: CallbackContext):
                 ),
             )
 
-
         elif back_match:
             chat_id = back_match.group(1)
             chat = bot.get_chat(chat_id)
@@ -734,7 +728,6 @@ def settings_button(update: Update, context: CallbackContext):
                     paginate_modules(0, CHAT_SETTINGS, "stngs", chat=chat_id)
                 ),
             )
-
 
         # ensure no spinny white circle
         bot.answer_callback_query(query.id)
@@ -791,7 +784,6 @@ def donate(update: Update, context: CallbackContext):
                 f"You can also donate to the person currently running me [here]({DONATION_LINK})",
                 parse_mode=ParseMode.MARKDOWN,
             )
-
 
     else:
         try:

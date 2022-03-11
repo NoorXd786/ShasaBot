@@ -47,12 +47,12 @@ async def imdb(e):
             writer = credits[1].a.text
             actors = [x.text for x in credits[2].findAll("a")]
             actors.pop()
-            stars = f'{actors[0]},{actors[1]},{actors[2]}'
+            stars = f"{actors[0]},{actors[1]},{actors[2]}"
         else:
             writer = "Not available"
             actors = [x.text for x in credits[1].findAll("a")]
             actors.pop()
-            stars = f'{actors[0]},{actors[1]},{actors[2]}'
+            stars = f"{actors[0]},{actors[1]},{actors[2]}"
         if soup.find("div", "inline canwrap"):
             story_line = soup.find("div", "inline canwrap").findAll("p")[0].text
         else:
@@ -109,9 +109,7 @@ async def imdb(e):
                                                                     )
                                                                     + "</code>\n<b>Country : </b><code>"
                                                                 )
-                                                                + mov_country[
-                                                                    0
-                                                                ]
+                                                                + mov_country[0]
                                                             )
                                                             + "</code>\n<b>Language : </b><code>"
                                                         )

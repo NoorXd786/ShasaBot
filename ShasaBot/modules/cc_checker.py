@@ -96,7 +96,7 @@ async def alive(event):
         await event.delete()
         end_time = datetime.datetime.now()
         pingtime = end_time - start_time
-        time = f'{str(round(pingtime.total_seconds(), 2))}s'
+        time = f"{str(round(pingtime.total_seconds(), 2))}s"
         if "Invalid" in response.text:
             reply = f"SK Key : {ok}\n"
             reply += "Result: Invalid API Key\n"
@@ -113,7 +113,9 @@ async def alive(event):
             reply += f"Time: {time}\n"
             reply += f"Checked By **{fname}**"
         elif "Valid" in response.text:
-            reply = "SK Key : sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n" + "Result: LIVE\n"
+            reply = (
+                "SK Key : sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n" + "Result: LIVE\n"
+            )
             reply += "RESPONSE: ✅Valid Key\n"
             reply += f"Time: {time}\n"
             reply += f"Checked By **{fname}**"

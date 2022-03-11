@@ -78,7 +78,6 @@ def kukirm(update: Update, context: CallbackContext) -> str:
                 parse_mode=ParseMode.HTML,
             )
 
-
     return ""
 
 
@@ -103,7 +102,6 @@ def kukiadd(update: Update, context: CallbackContext) -> str:
                 f"ShasaRobot Chatbot enable by {mention_html(user.id, user.first_name)}.",
                 parse_mode=ParseMode.HTML,
             )
-
 
     return ""
 

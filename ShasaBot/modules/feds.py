@@ -169,11 +169,7 @@ def del_fed(update: Update, context: CallbackContext):
                         callback_data=f"rmfed_{fed_id}",
                     )
                 ],
-                [
-                    InlineKeyboardButton(
-                        text="Cancel", callback_data="rmfed_cancel"
-                    )
-                ],
+                [InlineKeyboardButton(text="Cancel", callback_data="rmfed_cancel")],
             ]
         ),
     )
@@ -275,7 +271,6 @@ def join_fed(update: Update, context: CallbackContext):
                     f'Chat *{chat.title}* has joined the federation *{getfed["fname"]}*',
                     parse_mode="markdown",
                 )
-
 
         message.reply_text(f'This group has joined the federation: {getfed["fname"]}!')
 
@@ -469,7 +464,7 @@ def fed_info(update: Update, context: CallbackContext):
 
     owner = bot.get_chat(info["owner"])
     try:
-        owner_name = f'{owner.first_name} {owner.last_name}'
+        owner_name = f"{owner.first_name} {owner.last_name}"
     except:
         owner_name = owner.first_name
     FEDADMIN = sql.all_fed_users(fed_id)
@@ -524,7 +519,7 @@ def fed_admin(update: Update, context: CallbackContext):
     text += "👑 Owner:\n"
     owner = bot.get_chat(info["owner"])
     try:
-        owner_name = f'{owner.first_name} {owner.last_name}'
+        owner_name = f"{owner.first_name} {owner.last_name}"
     except:
         owner_name = owner.first_name
     text += " • {}\n".format(mention_html(owner.id, owner_name))

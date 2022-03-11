@@ -187,11 +187,11 @@ def connect_chat(update, context):
                 ]
             else:
                 buttons = []
-            if conn := connected(
-                context.bot, update, chat, user.id, need_admin=False
-            ):
+            if conn := connected(context.bot, update, chat, user.id, need_admin=False):
                 connectedchat = dispatcher.bot.getChat(conn)
-                text = f"You are currently connected to *{connectedchat.title}* (`{conn}`)"
+                text = (
+                    f"You are currently connected to *{connectedchat.title}* (`{conn}`)"
+                )
                 buttons.append(
                     InlineKeyboardButton(
                         text="🔌 Disconnect",

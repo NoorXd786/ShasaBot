@@ -123,7 +123,6 @@ def add_blackliststicker(update: Update, context: CallbackContext):
                     parse_mode="markdown",
                 )
 
-
         if added == 0:
             return
 
@@ -157,7 +156,6 @@ def add_blackliststicker(update: Update, context: CallbackContext):
                 f"Sticker `{trigger}` can not be found!",
                 parse_mode="markdown",
             )
-
 
         if added == 0:
             return
@@ -224,7 +222,6 @@ def unblackliststicker(update: Update, context: CallbackContext):
                 f"Sticker <code>{successful}</code> deleted from blacklist in <b>{html.escape(chat_name)}</b>!",
                 parse_mode=ParseMode.HTML,
             )
-
 
         elif not successful:
             send_message(
@@ -335,7 +332,9 @@ def blacklist_mode(update: Update, context: CallbackContext):
             text = f"Blacklist sticker mode changed, users will be `{settypeblacklist}` at *{chat_name}*!"
 
         else:
-            text = f"Blacklist sticker mode changed, users will be `{settypeblacklist}`!"
+            text = (
+                f"Blacklist sticker mode changed, users will be `{settypeblacklist}`!"
+            )
         send_message(update.effective_message, text, parse_mode="markdown")
         return (
             "<b>{}:</b>\n"

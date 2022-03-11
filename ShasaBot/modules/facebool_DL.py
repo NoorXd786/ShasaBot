@@ -48,7 +48,7 @@ def download_video(quality, url, filename):
     file_size_request = requests.get(video_url, stream=True)
     int(file_size_request.headers["Content-Length"])
     block_size = 1024
-    with open(f'{filename}.mp4', "wb") as f:
+    with open(f"{filename}.mp4", "wb") as f:
         for data in file_size_request.iter_content(block_size):
             f.write(data)
     print("\nVideo downloaded successfully.")

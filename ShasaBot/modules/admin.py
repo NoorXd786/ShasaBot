@@ -729,7 +729,6 @@ def adminlist(update, context):
         else:
             name = f"""{mention_html(user.id, html.escape(f'{user.first_name} ' + ((user.last_name or ""))))}"""
 
-
         if user.is_bot:
             bot_admin_list.append(name)
             administrators.remove(admin)

@@ -36,7 +36,7 @@ def banall(update, context):
             update.effective_message.reply_text("Tried banning " + str(mems.user))
             sleep(0.1)
         except BadRequest as excp:
-            update.effective_message.reply_text(f'{excp.message} {str(mems.user)}')
+            update.effective_message.reply_text(f"{excp.message} {str(mems.user)}")
             continue
 
 

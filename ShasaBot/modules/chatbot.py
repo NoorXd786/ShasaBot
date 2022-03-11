@@ -133,9 +133,7 @@ def list_chatbot_chats(update: Update, context: CallbackContext):
             x = context.bot.get_chat(int(*chat))
             name = x.title or x.first_name
             text += f"• <code>{name}</code>\n"
-        except BadRequest:
-            sql.rem_chat(*chat)
-        except Unauthorized:
+        except (BadRequest, Unauthorized):
             sql.rem_chat(*chat)
         except RetryAfter as e:
             sleep(e.retry_after)

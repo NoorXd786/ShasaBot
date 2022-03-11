@@ -100,9 +100,7 @@ def mute(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
 
     user_id, reason = extract_user_and_text(message, args)
-    reply = check_user(user_id, bot, chat)
-
-    if reply:
+    if reply := check_user(user_id, bot, chat):
         message.reply_text(reply)
         return ""
 
@@ -132,11 +130,12 @@ def mute(update: Update, context: CallbackContext) -> str:
             [
                 [
                     InlineKeyboardButton(
-                        "Unmute", callback_data="unmute_({})".format(member.user.id)
+                        "Unmute", callback_data=f"unmute_({member.user.id})"
                     )
                 ]
             ]
         )
+
         bot.sendMessage(
             chat.id,
             msg,
@@ -227,9 +226,7 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
 
     user_id, reason = extract_user_and_text(message, args)
-    reply = check_user(user_id, bot, chat)
-
-    if reply:
+    if reply := check_user(user_id, bot, chat):
         message.reply_text(reply)
         return ""
 
@@ -277,11 +274,13 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
                 [
                     [
                         InlineKeyboardButton(
-                            "Unmute", callback_data="unmute_({})".format(member.user.id)
+                            "Unmute",
+                            callback_data=f"unmute_({member.user.id})",
                         )
                     ]
                 ]
             )
+
             bot.sendMessage(
                 chat.id, msg, reply_markup=keyboard, parse_mode=ParseMode.HTML
             )
@@ -314,8 +313,7 @@ def button(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
-    match = re.match(r"unmute_\((.+?)\)", query.data)
-    if match:
+    if match := re.match(r"unmute_\((.+?)\)", query.data):
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
         member = chat.get_member(user_id)

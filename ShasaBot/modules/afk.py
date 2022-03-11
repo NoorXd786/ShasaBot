@@ -55,7 +55,7 @@ def afk(update, context):
     REDIS.set(f"afk_time_{update.effective_user.id}", start_afk_time)
     fname = update.effective_user.first_name
     try:
-        update.effective_message.reply_text("{} is now Away!".format(fname))
+        update.effective_message.reply_text(f"{fname} is now Away!")
     except BadRequest:
         pass
 
@@ -133,11 +133,7 @@ def reply_afk(update, context):
                 try:
                     chat = context.bot.get_chat(user_id)
                 except BadRequest:
-                    print(
-                        "Error: Could not fetch userid {} for AFK module".format(
-                            user_id
-                        )
-                    )
+                    print(f"Error: Could not fetch userid {user_id} for AFK module")
                     return
                 fst_name = chat.first_name
 

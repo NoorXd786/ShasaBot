@@ -33,9 +33,9 @@ def song(client, message):
 
     user_id = message.from_user.id
     user_name = message.from_user.first_name
-    rpk = "[" + user_name + "](tg://user?id=" + str(user_id) + ")"
+    rpk = f"[{user_name}](tg://user?id={str(user_id)})"
 
-    query = "".join(" " + str(i) for i in message.command[1:])
+    query = "".join(f" {str(i)}" for i in message.command[1:])
     print(query)
     m = message.reply("🔎 Finding the song...")
     ydl_opts = {"format": "bestaudio[ext=m4a]"}
@@ -57,7 +57,7 @@ def song(client, message):
         m.edit(
             "✖️ Found Nothing. Sorry.\n\nTry another keywork or maybe spell it properly."
         )
-        print(str(e))
+        print(e)
         return
     m.edit("`Downloading Song... Please wait ⏱`")
     try:
@@ -287,8 +287,7 @@ async def _(client, message):
         return
 
     song = ""
-    song = Song.find_song(query)
-    if song:
+    if song := Song.find_song(query):
         if song.lyrics:
             reply = song.format()
         else:
@@ -315,9 +314,7 @@ async def _(client, message):
 @pbot.on_message(filters.command(["glyric", "glyrics"]))
 async def lyrics(client, message):
 
-    if r"-" in message.text:
-        pass
-    else:
+    if r"-" not in message.text:
         await message.reply(
             "`Error: please use '-' as divider for <artist> and <song>`\n"
             "eg: `.glyrics Nicki Minaj - Super Bass`"

@@ -29,7 +29,7 @@ pyrogram
 nekos.py==1.0.3
 telegraph==2.1.0
 tgcrypto==1.2.3
-youtube_dl==2021.6.6
+youtube_dl==2021.12.17
 youtube_search==2.1.0
 pytube==11.0.1
 youtube_search_python==1.6.2

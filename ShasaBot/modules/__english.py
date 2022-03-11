@@ -29,8 +29,7 @@ async def _(event):
     for change in changes:
         start = change.get("From")
         end = change.get("To") + 1
-        suggestions = change.get("Suggestions")
-        if suggestions:
+        if suggestions := change.get("Suggestions"):
             sugg_str = suggestions[0].get("Text")
             curr_string += msg[prev_end:start] + sugg_str
             prev_end = end

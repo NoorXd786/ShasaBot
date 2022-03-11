@@ -562,10 +562,7 @@ def set_desc(update, context):
 
 
 def __chat_settings__(chat_id, user_id):
-    return "You are *admin*: `{}`".format(
-        dispatcher.bot.get_chat_member(chat_id, user_id).status
-        in ("administrator", "creator")
-    )
+    return f'You are *admin*: `{dispatcher.bot.get_chat_member(chat_id, user_id).status in ("administrator", "creator")}`'
 
 
 @bot_admin
@@ -718,7 +715,7 @@ def adminlist(update, context):
         )
 
     administrators = bot.getChatAdministrators(chat_id)
-    text = "Admins in <b>{}</b>:".format(html.escape(update.effective_chat.title))
+    text = f"Admins in <b>{html.escape(update.effective_chat.title)}</b>:"
 
     bot_admin_list = []
 
@@ -730,11 +727,7 @@ def adminlist(update, context):
         if user.first_name == "":
             name = "☠ Deleted Account"
         else:
-            name = "{}".format(
-                mention_html(
-                    user.id, html.escape(user.first_name + " " + (user.last_name or ""))
-                )
-            )
+            name = f"""{mention_html(user.id, html.escape(f'{user.first_name} ' + ((user.last_name or ""))))}"""
 
         if user.is_bot:
             bot_admin_list.append(name)
@@ -763,19 +756,14 @@ def adminlist(update, context):
         if user.first_name == "":
             name = "☠ Deleted Account"
         else:
-            name = "{}".format(
-                mention_html(
-                    user.id, html.escape(user.first_name + " " + (user.last_name or ""))
-                )
-            )
-        # if user.username:
-        #    name = escape_markdown("@" + user.username)
+            name = f"""{mention_html(user.id, html.escape(f'{user.first_name} ' + ((user.last_name or ""))))}"""
+
         if status == "administrator":
             if custom_title:
                 try:
                     custom_admin_list[custom_title].append(name)
                 except KeyError:
-                    custom_admin_list.update({custom_title: [name]})
+                    custom_admin_list[custom_title] = [name]
             else:
                 normal_admin_list.append(name)
 

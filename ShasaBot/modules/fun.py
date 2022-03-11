@@ -117,12 +117,10 @@ def pat(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
 
-    reply_to = message.reply_to_message if message.reply_to_message else message
+    reply_to = message.reply_to_message or message
 
     curr_user = html.escape(message.from_user.first_name)
-    user_id = extract_user(message, args)
-
-    if user_id:
+    if user_id := extract_user(message, args):
         patted_user = bot.get_chat(user_id)
         user1 = curr_user
         user2 = html.escape(patted_user.first_name)
@@ -159,10 +157,11 @@ def roll(update: Update, context: CallbackContext):
 def shout(update: Update, context: CallbackContext):
     args = context.args
     text = " ".join(args)
-    result = []
-    result.append(" ".join(list(text)))
-    for pos, symbol in enumerate(text[1:]):
-        result.append(symbol + " " + "  " * pos + symbol)
+    result = [" ".join(list(text))]
+    result.extend(
+        f"{symbol} " + "  " * pos + symbol for pos, symbol in enumerate(text[1:])
+    )
+
     result = list("\n".join(result))
     result[0] = text[0]
     result = "".join(result)
@@ -332,9 +331,7 @@ def romance(update: Update, context: CallbackContext):
     reply_to = message.reply_to_message or message
 
     curr_user = html.escape(message.from_user.first_name)
-    user_id = extract_user(message, args)
-
-    if user_id:
+    if user_id := extract_user(message, args):
         romantic_user = bot.get_chat(user_id)
         user1 = curr_user
         user2 = html.escape(romantic_user.first_name)
@@ -388,9 +385,7 @@ def owo(update: Update, context: CallbackContext):
     reply_to = message.reply_to_message or message
 
     html.escape(message.from_user.first_name)
-    user_id = extract_user(message, args)
-
-    if user_id:
+    if user_id := extract_user(message, args):
         owo_user = bot.get_chat(user_id)
         html.escape(owo_user.first_name)
 
@@ -430,9 +425,7 @@ def gbam(update, context):
     message = update.effective_message
 
     curr_user = html.escape(message.from_user.first_name)
-    user_id = extract_user(message, args)
-
-    if user_id:
+    if user_id := extract_user(message, args):
         gbam_user = bot.get_chat(user_id)
         user1 = curr_user
         user2 = html.escape(gbam_user.first_name)

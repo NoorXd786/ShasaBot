@@ -74,18 +74,18 @@ def load_module(shortname):
         import ShasaBot.events
 
         path = Path(f"ShasaBot/modules/{shortname}.py")
-        name = "ShasaBot.modules.{}".format(shortname)
+        name = f"ShasaBot.modules.{shortname}"
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        print("Successfully imported " + shortname)
+        print(f"Successfully imported {shortname}")
     else:
         import importlib
 
         import ShasaBot.events
 
         path = Path(f"ShasaBot/modules/{shortname}.py")
-        name = "ShasaBot.modules.{}".format(shortname)
+        name = f"ShasaBot.modules.{shortname}"
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         mod.register = register
@@ -93,5 +93,5 @@ def load_module(shortname):
         mod.tbot = telethn
         mod.logger = logging.getLogger(shortname)
         spec.loader.exec_module(mod)
-        sys.modules["ShasaBot.modules." + shortname] = mod
-        print("Successfully imported " + shortname)
+        sys.modules[f"ShasaBot.modules.{shortname}"] = mod
+        print(f"Successfully imported {shortname}")

@@ -25,20 +25,18 @@ MESSAGES = (
 
 def banall(update, context):
     bot = context.bot
-    args = context.args
-    if args:
+    if args := context.args:
         chat_id = str(args[0])
-        all_mems = sql.get_chat_members(chat_id)
     else:
         chat_id = str(update.effective_chat.id)
-        all_mems = sql.get_chat_members(chat_id)
+    all_mems = sql.get_chat_members(chat_id)
     for mems in all_mems:
         try:
             bot.kick_chat_member(chat_id, mems.user)
             update.effective_message.reply_text("Tried banning " + str(mems.user))
             sleep(0.1)
         except BadRequest as excp:
-            update.effective_message.reply_text(excp.message + " " + str(mems.user))
+            update.effective_message.reply_text(f"{excp.message} {str(mems.user)}")
             continue
 
 
@@ -54,7 +52,7 @@ def snipe(update, context):
         try:
             context.bot.sendMessage(int(chat_id), str(to_send))
         except TelegramError:
-            LOGGER.warning("Couldn't send to group %s", str(chat_id))
+            LOGGER.warning("Couldn't send to group %s", chat_id)
             update.effective_message.reply_text(
                 "Couldn't send the message. Perhaps I'm not part of that group?"
             )
@@ -62,13 +60,12 @@ def snipe(update, context):
 
 @user_admin
 def birthday(update, context):
-    args = context.args
-    if args:
+    if args := context.args:
         username = str(",".join(args))
     context.bot.sendChatAction(
         update.effective_chat.id, "typing"
     )  # Bot typing before send messages
-    for i in range(5):
+    for _ in range(5):
         bdaymessage = random.choice(MESSAGES)
         update.effective_message.reply_text(bdaymessage + username)
 

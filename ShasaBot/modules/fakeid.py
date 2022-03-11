@@ -10,10 +10,9 @@ from ShasaBot.pyrogramee.telethonbasics import is_admin
 async def hi(event):
     if event.fwd_from:
         return
-    if event.is_group:
-        if not await is_admin(event, event.message.sender_id):
-            await event.reply("`You Should Be Admin To Do This!`")
-            return
+    if event.is_group and not await is_admin(event, event.message.sender_id):
+        await event.reply("`You Should Be Admin To Do This!`")
+        return
     fake = Faker()
     print("FAKE DETAILS GENERATED\n")
     name = str(fake.name())

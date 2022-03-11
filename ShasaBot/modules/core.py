@@ -11,14 +11,12 @@ client = tbot
 
 @register(pattern=r"^/send ?(.*)")
 async def Prof(event):
-    if event.sender_id == OWNER_ID:
-        pass
-    else:
+    if event.sender_id != OWNER_ID:
         return
     thumb = water
     message_id = event.message.id
     input_str = event.pattern_match.group(1)
-    the_plugin_file = "./ShasaBot/modules/{}.py".format(input_str)
+    the_plugin_file = f"./ShasaBot/modules/{input_str}.py"
     if os.path.exists(the_plugin_file):
         message_id = event.message.id
         await event.client.send_file(
@@ -42,9 +40,7 @@ from ShasaBot.events import load_module
 async def install(event):
     if event.fwd_from:
         return
-    if event.sender_id == OWNER_ID:
-        pass
-    else:
+    if event.sender_id != OWNER_ID:
         return
     if event.reply_to_msg_id:
         try:

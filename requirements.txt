@@ -24,7 +24,7 @@ telethon==1.23.0
 ujson==5.1.0
 wikipedia==1.4.0
 zalgo-text==0.6
-fontTools==4.29.1
+fontTools==4.30.0
 pyrogram
 nekos.py==1.0.3
 telegraph==2.1.0

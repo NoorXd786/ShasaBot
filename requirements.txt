@@ -32,7 +32,7 @@ tgcrypto==1.2.3
 youtube_dl==2021.12.17
 youtube_search==2.1.0
 pytube==11.0.1
-youtube_search_python==1.6.2
+youtube_search_python==1.4.9
 pymongo==4.0.2
 motor>=2.1.0,<2.6.0
 dnspython==2.1.0

@@ -36,7 +36,7 @@ youtube_search_python==1.4.9
 pymongo
 motor>=2.1.0,<2.6.0
 dnspython==2.1.0
-redis==3.5.3
+redis==4.2.0
 gtts==2.2.3
 cloudscraper==1.2.58
 wget==3.2

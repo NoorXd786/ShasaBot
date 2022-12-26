@@ -57,7 +57,7 @@ fuzzysearch
 search_engine_parser
 pytz==2021.3
 html2text==2020.1.16
-NumPy==1.21.2
+NumPy==1.24.1
 opencv-python-headless==4.5.5.64
 uvloop==0.16.0
 python-dotenv==0.19.2
